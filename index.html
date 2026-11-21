@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="description" content="Clickable concept prototype for a product case study (Bills Home), with an optional step-by-step guide. Not an official Paytm product; every name, amount and date is made up.">
+<title>Bills Home prototype · Paytm Product Campus Case 2</title>
+<style>
+:root{
+  --navy:#002E6E; --navy2:#0B1F44; --cyan:#00B9F5; --link:#0A8FE0; --bg:#F2F5FA; --card:#fff;
+  --ink:#1B1F2A; --muted:#6B7685; --line:#E3E8F0; --green:#1F9D6B; --greenbg:#E4F5EE;
+  --red:#E5484D; --redbg:#FDECEC; --amber:#B7791F; --amberbg:#FFF4DC; --orange:#F68B1F; --purple:#6C4BD8; --purplebg:#EEE9FD;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:#E9EEF6;color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.app{min-height:100vh;display:grid;grid-template-columns:minmax(260px,330px) auto minmax(280px,360px);gap:28px;justify-content:center;align-items:start;padding:24px 20px}
+.panel{background:#fff;border-radius:18px;padding:18px;box-shadow:0 1px 3px rgba(16,32,64,.08);position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto}
+.panel h2{font-size:15px;color:var(--navy);margin-bottom:4px}
+.panel .sub{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.45}
+.guidebox{background:linear-gradient(135deg,#EAF6FD,#F3F0FF);border:1.5px solid #CDEFFC;border-radius:14px;padding:12px 12px 10px;margin-bottom:14px}
+.guidebox b{display:block;font-size:13.5px;color:var(--navy);margin-bottom:3px}
+.guidebox p{font-size:12px;line-height:1.45;color:#3B485C;margin-bottom:9px}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;font-size:13px;font-weight:800;padding:10px 12px;border-radius:11px;background:var(--navy);color:#fff}
+.gbtn:hover{background:#00408F}
+.gbtn.on{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.linkbtn{font-size:12px;color:var(--link);font-weight:700;padding:6px 2px;text-align:left}
+.step{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;padding:9px 10px;border-radius:12px;margin-bottom:4px;border:1.5px solid transparent}
+.step:hover{background:#F4F7FC}
+.step.on{background:#EAF6FD;border-color:var(--cyan)}
+.step .n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.step .n.d{background:var(--cyan)} .step .n.r{background:var(--green)} .step .n.z{background:#9AA7BB}
+.step .n.seen{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--green)}
+.step b{display:block;font-size:13px;line-height:1.3}
+.step span{display:block;font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:1px}
+.legend{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 2px}
+.chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;letter-spacing:.2px;display:inline-block}
+.chip.d{background:#DDF4FD;color:#05789F} .chip.t{background:#DCE5F5;color:var(--navy)} .chip.r{background:var(--greenbg);color:#157A52}
+.tag{font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px;display:inline-block;letter-spacing:.3px}
+.tag.FOUND{background:var(--navy);color:#fff}.tag.INFERRED{background:var(--amberbg);color:var(--amber)}.tag.ASSUMED{background:var(--purplebg);color:var(--purple)}
+.ctl{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.ctl h3,.why h3{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.tog{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12.5px;margin-bottom:9px;width:100%;text-align:left}
+.tog small{color:var(--muted)}
+.sw{flex:none;width:36px;height:20px;border-radius:99px;background:#C6CFDC;position:relative;transition:.2s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--green)} .sw.on::after{left:18px}
+.btn2{display:block;width:100%;text-align:center;font-size:12.5px;font-weight:600;padding:9px 10px;border-radius:10px;border:1.5px solid var(--navy);color:var(--navy);margin-bottom:8px}
+.btn2:hover{background:#F0F5FF}
+.why p{font-size:13px;line-height:1.5;margin:6px 0 8px}
+.why .meta{font-size:12px;color:var(--muted);line-height:1.5;margin-top:4px}
+.why .meta b{color:var(--ink)}
+.rules{margin:8px 0 0 16px;font-size:12px;line-height:1.5;color:var(--ink)}
+.log{font-size:11.5px;font-family:ui-monospace,Menlo,Consolas,monospace;line-height:1.7;color:#33435C;background:#F4F7FC;border-radius:10px;padding:8px 10px;min-height:60px}
+.log i{font-style:normal;color:var(--muted)}
+.foot{grid-column:1/-1;order:9;text-align:center;font-size:11.5px;color:var(--muted);line-height:1.5;max-width:900px;margin:0 auto}
+/* phone */
+.pwrap{width:390px;height:812px;margin:0 auto}
+.phone{width:390px;height:812px;border-radius:50px;background:linear-gradient(145deg,#1A2338,#0A0F1C);padding:10px;box-shadow:0 22px 56px rgba(10,25,60,.30),inset 0 0 0 1.5px #2B3650;position:relative;transform-origin:top left}
+.phone::before{content:"";position:absolute;left:-3px;top:150px;width:3px;height:56px;border-radius:2px 0 0 2px;background:#1A2338;box-shadow:0 74px 0 #1A2338}
+.phone::after{content:"";position:absolute;right:-3px;top:190px;width:3px;height:84px;border-radius:0 2px 2px 0;background:#1A2338}
+.screen{position:relative;width:100%;height:100%;background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column}
+.status{height:44px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:8px 28px 0;font-size:14px;font-weight:700;background:var(--bg);z-index:3}
+.status.light{background:#fff}
+.status .sig{display:flex;gap:5px;align-items:center}
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);height:27px;min-width:104px;padding:0 12px 0 6px;border-radius:99px;background:#0A0F1C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:6px;z-index:70;letter-spacing:.2px}
+.island i{font-style:normal;width:17px;height:17px;border-radius:50%;background:var(--cyan);color:#06264F;font-size:11px;font-weight:900;display:grid;place-items:center}
+.island.live i{background:var(--orange)}
+.view{flex:1;overflow-y:auto;scrollbar-width:none;position:relative;animation:in .22s ease;display:flex;flex-direction:column}
+.view::-webkit-scrollbar{display:none}
+.view>*{flex:none}
+.view>.bnav,.view>.sticky{margin-top:auto}
+@keyframes in{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.homebar{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:120px;height:4.5px;border-radius:4px;background:#111;opacity:.8;z-index:80;pointer-events:none}
+.pad{padding:0 16px 24px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 16px 8px}
+.avatar{width:36px;height:36px;border-radius:50%;background:#C9D6EE;color:var(--navy);display:grid;place-items:center}
+.wordmark{font-weight:900;font-size:25px;letter-spacing:-1.2px;color:var(--navy);font-style:italic;transform:skewX(-4deg)}
+.wordmark em{font-style:normal;color:var(--cyan)}
+.tb-icons{display:flex;gap:16px;color:var(--navy);align-items:center}
+.bell{position:relative;display:grid}.bell i{position:absolute;top:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg)}
+.sec{font-size:17px;font-weight:800;margin:10px 16px 10px;color:var(--ink)}
+.circ4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:0 10px}
+.circ{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;text-align:center;line-height:1.2;color:#2A3446;padding:4px 2px}
+.circ .c{width:46px;height:46px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center}
+.card{background:var(--card);border-radius:16px;padding:14px;margin:12px 16px 0;box-shadow:0 1px 2px rgba(16,32,64,.06)}
+.card h4{font-size:16px;font-weight:800}
+.rb-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.link{color:var(--link);font-weight:700;font-size:13px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;text-align:center;line-height:1.2;color:#2A3446;padding:8px 2px;border-radius:12px;position:relative}
+.tile svg{color:var(--navy)}
+.tile:active,.btn:active,.brow:active,.plan:active,.li:active{transform:scale(.985)}
+.newtag{font-size:9.5px;font-weight:800;background:var(--orange);color:#fff;padding:2px 7px;border-radius:99px;letter-spacing:.3px;margin-left:8px;vertical-align:middle}
+.dueCard{display:flex;align-items:center;gap:12px;width:calc(100% - 32px);text-align:left}
+.dueCard .ico{flex:none;width:44px;height:44px;border-radius:12px;background:#E6F6FD;color:var(--navy);display:grid;place-items:center}
+.dueCard b{display:block;font-size:15px;color:var(--ink)}.dueCard span{font-size:12.5px;color:var(--muted)}
+.bnav{position:sticky;bottom:0;height:72px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:flex-start;padding:8px 6px 0;z-index:4}
+.bnav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:var(--muted);width:25%}
+.bnav button.on{color:var(--navy);font-weight:700}
+.bnav .mid{margin-top:-20px}
+.bnav .bt{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bnav .bt .newtag{position:absolute;top:-7px;left:50%;margin:0;transform:translateX(2px);font-size:8.5px;padding:1px 5px}
+.bnav .mid .c{width:50px;height:50px;border-radius:50%;background:var(--cyan);color:#fff;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,185,245,.4)}
+.hdr{display:flex;align-items:center;gap:10px;padding:6px 14px 10px;background:var(--bg)}
+.hdr b{font-size:18px}
+.hdr.white{background:#fff}
+.ib{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.ib:hover{background:#E4EAF4}
+.btn{display:block;width:100%;text-align:center;font-weight:800;font-size:15.5px;padding:14px;border-radius:14px;background:var(--cyan);color:#00305F;position:relative;transition:transform .08s}
+.btn.navy{background:var(--navy);color:#fff}
+.btn.ghost{background:transparent;color:var(--link);font-weight:700}
+.btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.warn{background:var(--amber);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.hint{position:relative}
+.hint::after{content:"";position:absolute;inset:-4px;border:2.5px solid var(--orange);border-radius:inherit;animation:pulse 1.4s infinite;pointer-events:none}
+.nohints .hint::after,.touring .hint::after{display:none}
+@keyframes pulse{0%{opacity:1;transform:scale(1)}70%{opacity:.25;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+.field{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}
+.field input,.field .fv{width:100%;border:0;outline:0;font:inherit;font-size:16px;font-weight:700;background:transparent;color:var(--ink);display:flex;justify-content:space-between;align-items:center}
+.field .fv.ph{color:#9AA7BB;font-weight:600}
+.field.dis{background:#F6F8FB}
+.note2{display:flex;gap:9px;align-items:flex-start;background:var(--amberbg);color:#7A5410;border-radius:12px;padding:10px 12px;font-size:12.5px;line-height:1.45;margin-bottom:12px}
+.card2{background:#EAF6FD;border:1.5px solid #CDEFFC;border-radius:14px;padding:12px;font-size:12.5px;line-height:1.5;margin-top:14px;color:#24384F}
+.link2{font-size:12.5px;color:var(--link);font-weight:700;margin:0 2px 14px}
+.chips{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.pchip{padding:6px 12px;border-radius:99px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;font-weight:600}
+.pchip.on{border-color:var(--cyan);background:#EAF8FE}
+.fchips{display:flex;gap:8px;margin:14px 16px 10px;align-items:center}
+.fchips .t{font-weight:800;margin-right:auto}
+.fchips button{padding:5px 12px;border-radius:99px;font-size:12px;font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--muted)}
+.fchips button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.plan{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px;gap:10px}
+.plan.on{border-color:var(--cyan);background:#F1FAFE}
+.plan b{font-size:20px}.plan small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.plan .pop{font-size:10px;font-weight:800;background:var(--greenbg);color:#157A52;padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:middle}
+.sticky{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 24%);padding:18px 16px 22px}
+.sheetBg{position:absolute;inset:0;background:rgba(10,20,40,.45);z-index:20;display:flex;align-items:flex-end;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{background:#fff;width:100%;border-radius:24px 24px 0 0;padding:18px 18px 30px;animation:up .25s ease}
+.sheet h5{font-size:17px;margin-bottom:6px}
+.sheet p{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid #D6E4F5;border-top-color:var(--cyan);margin:6px auto 12px;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.toast{position:absolute;left:16px;right:16px;bottom:88px;background:#1B2438;color:#fff;font-size:13px;line-height:1.4;padding:11px 14px;border-radius:12px;z-index:30;animation:fade .2s}
+.banner{position:absolute;left:10px;right:10px;top:50px;background:rgba(255,255,255,.97);border-radius:16px;padding:11px 12px;box-shadow:0 8px 24px rgba(10,25,60,.25);z-index:25;display:flex;gap:10px;align-items:center;text-align:left;width:calc(100% - 20px);animation:drop .3s ease}
+@keyframes drop{from{transform:translateY(-120%)}to{transform:none}}
+.banner .ico{flex:none;width:34px;height:34px;border-radius:9px;background:var(--navy);color:var(--cyan);display:grid;place-items:center;font-weight:900;font-size:12px}
+.banner small{font-size:11px;color:var(--muted);display:block}.banner b{display:block;font-size:13px;line-height:1.3}
+.okring{width:84px;height:84px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;margin:14px auto 10px;animation:pop .45s ease}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.center{text-align:center}
+.prompt{background:#fff;border-radius:18px;padding:16px;margin:14px 16px 0;box-shadow:0 2px 8px rgba(16,32,64,.08);border:1.5px solid #CDEFFC}
+.prompt .row{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+.prompt .ico{flex:none;width:44px;height:44px;border-radius:12px;background:#DDF4FD;color:var(--navy);display:grid;place-items:center}
+.prompt b{font-size:16px;display:block;margin-bottom:2px}.prompt span{font-size:13px;color:var(--muted);line-height:1.4}
+.why-s{font-size:11.5px;color:var(--muted);margin-top:10px;display:flex;gap:6px;align-items:flex-start;line-height:1.4}
+.mini{background:#fff;border-radius:14px;padding:12px 14px;margin:12px 16px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mini b{font-size:14px;display:block}.mini span{font-size:12px;color:var(--muted)}
+.pill{font-size:12px;font-weight:700;padding:6px 12px;border-radius:99px;border:1.5px solid var(--navy);color:var(--navy);white-space:nowrap}
+.pill.on{background:var(--greenbg);border-color:var(--green);color:#157A52}
+.seg{display:flex;background:#E4EAF4;border-radius:12px;padding:3px;margin:4px 16px 12px}
+.seg button{flex:1;padding:8px;border-radius:9px;font-size:13px;font-weight:700;color:var(--muted);display:flex;gap:6px;justify-content:center;align-items:center}
+.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.vf{margin:0 16px;height:360px;border-radius:20px;background:linear-gradient(160deg,#2A3140,#12161F);position:relative;overflow:hidden;display:grid;place-items:center}
+.paper{width:210px;background:#FBFBF7;border-radius:6px;padding:14px;transform:rotate(-3deg);box-shadow:0 10px 24px rgba(0,0,0,.45);font-size:10px;color:#333;line-height:1.55}
+.paper h6{font-size:13px;color:#8A1F1F;letter-spacing:.5px;margin-bottom:2px}
+.paper .ln{height:5px;background:#E1E1DA;border-radius:3px;margin:5px 0}
+.paper .amt{font-size:15px;font-weight:800;color:#111;margin-top:6px}
+.br{position:absolute;width:34px;height:34px;border:3px solid var(--cyan)}
+.br.a{top:22px;left:22px;border-right:0;border-bottom:0;border-radius:10px 0 0 0}.br.b{top:22px;right:22px;border-left:0;border-bottom:0;border-radius:0 10px 0 0}
+.br.c{bottom:22px;left:22px;border-right:0;border-top:0;border-radius:0 0 0 10px}.br.d{bottom:22px;right:22px;border-left:0;border-top:0;border-radius:0 0 10px 0}
+.vf .cap{position:absolute;top:10px;left:0;right:0;text-align:center;color:#fff;font-size:13px;font-weight:700}
+.vf .cap small{display:block;font-weight:400;opacity:.8;font-size:11.5px}
+.scanline{position:absolute;left:30px;right:30px;height:3px;background:var(--cyan);box-shadow:0 0 14px var(--cyan);animation:sl 1.1s ease-in-out infinite alternate}
+@keyframes sl{from{top:50px}to{top:300px}}
+.shutter{width:66px;height:66px;border-radius:50%;border:4px solid #fff;background:var(--cyan);margin:16px auto 0;display:block;position:relative;box-shadow:0 0 0 2px #C9D3E2}
+.list{margin:0 16px}
+.li{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:#fff;border-radius:14px;padding:13px 14px;margin-bottom:9px;font-size:13px;line-height:1.4}
+.li .ico{flex:none;width:38px;height:38px;border-radius:10px;background:#E6F6FD;color:var(--navy);display:grid;place-items:center}
+.found{background:#fff;border-radius:16px;margin:0 16px;padding:4px 14px}
+.frow{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:8px}
+.frow:last-child{border:0}.frow label{font-size:12px;color:var(--muted);flex:none;width:96px}
+.frow input{flex:1;border:0;outline:0;font:inherit;font-weight:700;font-size:15px;text-align:right;background:transparent;min-width:0}
+.frow .ok{color:var(--green);display:grid}
+.note{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center;margin:12px 20px}
+.check{background:#fff;border-radius:16px;margin:12px 16px 0;padding:13px 14px;display:flex;gap:12px;align-items:flex-start}
+.check .ico{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--greenbg);color:var(--green)}
+.check.bad .ico{background:var(--amberbg);color:var(--amber)} .check.bad{border:1.5px solid #F5D78F}
+.check b{font-size:14.5px;display:block;margin-bottom:2px}.check span{font-size:12.5px;color:var(--muted);line-height:1.45}
+.billhead{background:#fff;border-radius:16px;margin:0 16px;padding:14px;display:flex;justify-content:space-between;align-items:center}
+.billhead .big{font-size:26px;font-weight:900}
+.payvia{display:flex;justify-content:space-between;align-items:center;margin:12px 16px 0;padding:11px 14px;background:#fff;border-radius:14px;font-size:13px}
+.payvia b{font-size:13.5px}.payvia span{color:var(--muted);font-size:12px}
+.tl{background:#fff;border-radius:16px;margin:12px 16px 0;padding:14px}
+.tl h4{font-size:14.5px;margin-bottom:10px}
+.ts{display:flex;gap:12px;align-items:flex-start;position:relative;padding-bottom:16px}
+.ts:last-child{padding-bottom:0}
+.ts::before{content:"";position:absolute;left:11px;top:24px;bottom:-2px;width:2px;background:var(--line)}
+.ts:last-child::before{display:none}
+.ts.done::before{background:var(--green)}
+.dot{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #C6CFDC;background:#fff;display:grid;place-items:center;color:#fff;z-index:1}
+.ts.done .dot{background:var(--green);border-color:var(--green)}
+.ts.cur .dot{border-color:var(--cyan)}
+.ts b{font-size:14px;display:block}.ts span{font-size:12px;color:var(--muted)}
+.ts .when{margin-left:auto;font-size:12px;color:var(--muted);flex:none}
+.sumbar{background:linear-gradient(135deg,#002E6E,#0A4DA8);color:#fff;border-radius:18px;margin:0 16px;padding:16px}
+.sumbar small{opacity:.78;font-size:12px}.sumbar .big{font-size:30px;font-weight:900;margin:2px 0}
+.tline{position:relative;height:34px;margin:14px 4px 2px}
+.tline::before{content:"";position:absolute;left:0;right:0;top:12px;height:4px;border-radius:3px;background:rgba(255,255,255,.2)}
+.tline i{position:absolute;top:7px;width:14px;height:14px;border-radius:50%;background:var(--cyan);border:2px solid var(--navy);transform:translateX(-50%)}
+.tline i.paid{background:#4ADE9B}
+.tline s{position:absolute;top:22px;font-size:9.5px;opacity:.8;transform:translateX(-50%);text-decoration:none;white-space:nowrap}
+.brow{display:flex;gap:12px;align-items:center;background:#fff;border-radius:16px;margin:0 16px 10px;padding:12px 14px;width:calc(100% - 32px);text-align:left;transition:transform .08s}
+.brow .ico{flex:none;width:42px;height:42px;border-radius:12px;background:#E6F6FD;color:var(--navy);display:grid;place-items:center}
+.brow .mid{flex:1;min-width:0}.brow b{display:block;font-size:14.5px}.brow span{font-size:12px;color:var(--muted)}
+.brow .amt{font-weight:800;font-size:15px;text-align:right}
+.sbtn{font-size:12.5px;font-weight:800;padding:7px 12px;border-radius:99px;margin-top:4px;display:inline-block;position:relative;cursor:pointer}
+.sbtn.pay{background:var(--cyan);color:#00305F}.sbtn.rem{border:1.5px solid var(--navy);color:var(--navy)}.sbtn.rem.on{background:var(--greenbg);border-color:var(--green);color:#157A52}
+.sbtn.paid{background:var(--greenbg);color:#157A52;cursor:default}
+.v15{background:#fff;border-radius:16px;margin:4px 16px 0;padding:14px}
+.v15 .r{display:flex;gap:12px;align-items:center;padding:8px 0;width:100%;text-align:left}
+.v15 .lk{flex:none;width:38px;height:38px;border-radius:10px;background:#F0F2F7;color:#8A96A8;display:grid;place-items:center}
+.v15 b{font-size:14px;display:block}.v15 span{font-size:12px;color:var(--muted)}
+.vtag{font-size:10px;font-weight:800;background:#EEE9FD;color:var(--purple);padding:2px 7px;border-radius:99px;margin-left:6px}
+.goal{margin:14px 16px 0;text-align:center;font-size:12.5px;font-weight:700;color:var(--navy);border:1.5px dashed var(--navy);border-radius:14px;padding:10px}
+/* guided tour */
+#tour{position:absolute;inset:0;z-index:60;pointer-events:none}
+.tdim{position:absolute;background:rgba(8,18,40,.64);pointer-events:auto;transition:top .25s,left .25s,width .25s,height .25s}
+.thole{position:absolute;border-radius:16px;box-shadow:0 0 0 3px var(--orange),0 0 0 7px rgba(246,139,31,.28);pointer-events:none;transition:top .25s,left .25s,width .25s,height .25s;animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 3px var(--orange),0 0 0 12px rgba(246,139,31,.12)}}
+.tcard{position:absolute;background:#fff;border-radius:18px;padding:14px 14px 10px;box-shadow:0 16px 44px rgba(5,15,40,.5);pointer-events:auto;z-index:2;animation:fade .2s}
+.tcard.nudge{animation:nudge .35s}
+@keyframes nudge{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.tarrow{position:absolute;width:14px;height:14px;background:#fff;transform:rotate(45deg);border-radius:3px}
+.tcard.below .tarrow{top:-6px}.tcard.above .tarrow{bottom:-6px}
+.thd{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.tstep{font-size:10.5px;font-weight:800;color:var(--link);letter-spacing:.6px}
+.tx{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#5A6678;margin:-4px -6px 0 0}
+.tx:hover{background:#EEF2F8}
+.tcard h6{font-size:16px;margin:2px 0 5px;color:var(--navy);line-height:1.25}
+.tcard p{font-size:13px;line-height:1.5;color:#34425A}
+.tbar{display:flex;gap:2px;margin:11px 0 11px}
+.tbar i{flex:1;height:4px;border-radius:3px;background:#E1E7F0}.tbar i.d{background:var(--cyan)}
+.tbtns{display:flex;align-items:center;gap:6px}
+.tbtns .sp{flex:1}
+.tb{font-size:13px;font-weight:800;padding:9px 15px;border-radius:99px;white-space:nowrap}
+.tb.pri{background:var(--navy);color:#fff}.tb.pri:hover{background:#00408F}
+.tb.alt{border:1.5px solid var(--line);color:var(--ink);padding:8px 13px}
+.tb.lnk{color:var(--muted);padding:9px 6px;font-weight:700}
+.tfoot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:11px;color:#8A96A8}
+.tfoot .tb{font-size:12px;padding:6px 0;color:#5A6678;text-decoration:underline}
+.tcard.welcome{text-align:center;padding:20px 18px 16px}
+.wmark{width:56px;height:56px;border-radius:16px;background:var(--navy);color:var(--cyan);display:grid;place-items:center;margin:0 auto 10px;font-weight:900;font-size:18px;letter-spacing:-1px}
+.tcard.welcome h6{font-size:18px}
+.tcard.welcome p{margin-bottom:8px}
+.tcard.welcome .tb{display:block;width:100%;margin-top:8px;text-align:center}
+.touring .bnav{pointer-events:none}
+dialog{border:0;border-radius:18px;padding:22px;max-width:520px;width:calc(100% - 32px);box-shadow:0 24px 70px rgba(5,15,40,.4);color:var(--ink)}
+dialog::backdrop{background:rgba(8,18,40,.55)}
+dialog h3{font-size:18px;color:var(--navy);margin-bottom:8px}
+dialog h4{font-size:13px;margin:12px 0 4px;color:var(--navy)}
+dialog p,dialog li{font-size:13px;line-height:1.55;color:#34425A}
+dialog ul{margin:4px 0 0 18px}
+dialog .gbtn{margin-top:16px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media (max-width:1060px){
+  .app{grid-template-columns:1fr;justify-items:center}
+  .panel{position:static;max-height:none;width:100%;max-width:560px}
+  .left{order:2}.stage{order:1}.right{order:3}
+}
+@media (max-width:440px){
+  .app{padding:0;gap:14px}
+  .pwrap{width:100vw;height:100vh;height:100dvh}
+  .phone{width:100%;height:100%;border-radius:0;padding:0;box-shadow:none;background:var(--bg)}
+  .phone::before,.phone::after{display:none}
+  .screen{border-radius:0}
+  .panel{border-radius:0}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <aside class="panel left">
+    <div class="guidebox">
+      <b>Step-by-step guide</b>
+      <p>A short guided tour walks you through every screen, one tap at a time. Close it at any step with the ✕ or Esc, and pick it up again here.</p>
+      <button class="gbtn" id="guideBtn" data-act="guide-toggle">Start guided tour</button>
+    </div>
+    <h2>Bills Home: the journey</h2>
+    <p class="sub">Or jump straight to any step. Orange rings mark what to tap next.</p>
+    <div id="steps"></div>
+    <div class="legend"><span class="chip d">D Discover</span><span class="chip t">T Try</span><span class="chip r">R Regular</span></div>
+    <div class="ctl">
+      <h3>Demo controls</h3>
+      <button class="tog" data-act="t-hints"><span>Show tap hints</span><i class="sw on" id="sw-hints"></i></button>
+      <button class="tog" data-act="t-spike"><span>Simulate a bill spike<br><small>₹3,240 against a usual ₹1,500-₹1,900</small></span><i class="sw" id="sw-spike"></i></button>
+      <button class="btn2" data-act="send-reminder">Send a due-date reminder</button>
+      <button class="btn2" data-act="skip-day">Skip to tomorrow (bill posts)</button>
+      <button class="btn2" data-act="restart">Start over</button>
+      <button class="linkbtn" data-act="about">About this prototype</button>
+    </div>
+  </aside>
+
+  <main class="stage">
+    <div class="pwrap" id="pwrap"><div class="phone" id="phone"><div class="screen" id="scr">
+      <div class="status" id="status"><span>9:41</span><span class="sig">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+        <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.2" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#111"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="#111" opacity=".5"/></svg></span></div>
+      <button class="island" id="island" data-act="guide-toggle" aria-label="Open step-by-step guide"><i>?</i><span id="islandTxt">Guide</span></button>
+      <div class="view" id="view"></div>
+      <div id="overlay"></div>
+      <div id="tour" role="dialog" aria-label="Step-by-step guide" aria-live="polite"></div>
+      <div class="homebar"></div>
+    </div></div></div>
+  </main>
+
+  <aside class="panel right">
+    <div class="why" id="why"></div>
+    <div class="ctl"><h3>Events we would log</h3><div class="log" id="log"></div></div>
+  </aside>
+  <div class="foot">Concept prototype for the Paytm Product Campus Case 2 (Bills Home). It follows the look of Paytm's public app screens but is not an official Paytm product, and uses no Paytm assets. Every name, amount and date is made up; nothing here connects to a real account, biller or payment.</div>
+</div>
+
+<dialog id="about">
+  <h3>About this prototype</h3>
+  <p>A clickable concept of the Bills Home proposal in the Case 2 deck: <b>Find</b> a bill by scanning it, <b>Trust</b> the amount before paying, and <b>Repeat</b> without having to remember.</p>
+  <h4>What is simulated</h4>
+  <ul><li>All names, amounts, dates and bill details are made up.</li><li>No network calls, no real payment, no PIN: the Authorise step is a demo.</li><li>The AI bill reading is shown as a scripted result.</li></ul>
+  <h4>Design rules shown</h4>
+  <ul><li>The photo is deleted after reading; only four fields are kept.</li><li>No new fee added by Paytm on bills in V1.</li><li>Autopay and Bill Day are V1.5 concepts, offered only after trust is earned.</li></ul>
+  <h4>Look and feel</h4>
+  <p>Based on Paytm's public app screenshots. It is a recreation, not the real app, and uses a text wordmark instead of any Paytm logo.</p>
+  <h4>Where it sits in the deck</h4>
+  <p>Slides 5 and 6 (solution and journey), A7 and A8 (what apps show today), A12 (shown last in the research conversations).</p>
+  <form method="dialog"><button class="gbtn">Close</button></form>
+</dialog>
+
+<script>
+/* ---------- icons ---------- */
+const ic={
+ back:'<path d="M15 18l-6-6 6-6"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+ bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+ check:'<path d="M20 6L9 17l-5-5"/>',x:'<path d="M18 6L6 18M6 6l12 12"/>',chevd:'<path d="M6 9l6 6 6-6"/>',
+ camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+ file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+ msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+ shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',
+ cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',zap:'<path d="M13 2L3 14h9l-1 8 10-12h-9z"/>',
+ phone:'<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M12 18h.01"/>',
+ wifi:'<path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01M2 9a15 15 0 0 1 20 0"/>',
+ tv:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M17 2l-5 5-5-5"/>',
+ car:'<path d="M5 16v-5l2-5h10l2 5v5M3 16h18M3 11h18"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/>',
+ user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+ home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+ scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/>',
+ bank:'<path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10l10-7 10 7z"/>',
+ hist:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/>',
+ info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+ alert:'<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',
+ trash:'<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>',
+ contact:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+ repeat:'<path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/>',
+ coin:'<circle cx="12" cy="12" r="10"/><path d="M12 6v12M9 9.5h4.5a1.8 1.8 0 0 1 0 3.5H9.5a1.8 1.8 0 0 0 0 3.5H15"/>'
+};
+const icon=(n,s=22,sw=1.8)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ic[n]}</svg>`;
+
+/* ---------- helpers and state ---------- */
+const TODAY=new Date(2026,10,25);
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const addDays=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const dfmt=d=>d.getDate()+' '+MON[d.getMonth()];
+const daysTo=d=>Math.round((d-TODAY)/864e5);
+const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+const $=s=>document.querySelector(s);
+let S;
+function fresh(){
+  return {screen:'home',hints:S?S.hints:true,spike:false,plan:{amt:299,days:28},source:'camera',
+    scanning:false,elecAdded:false,remind:true,cur:'elec',from:'found',paySt:{sent:false,posted:false},who:'all',
+    visited:new Set(),log:[],
+    bills:{
+      elec:{key:'elec',name:'City Power',label:'Mom’s electricity',who:'mom',kind:'Electricity',icon:'zap',due:addDays(TODAY,3),paid:false,posted:false,remind:true,range:[1500,1900],cn:'4821'},
+      bb:{key:'bb',name:'NetLink Fibre',label:'Broadband',who:'home',kind:'Broadband',icon:'wifi',amt:799,due:addDays(TODAY,7),paid:false,posted:false,remind:false},
+      dth:{key:'dth',name:'Sky DTH',label:'DTH',who:'home',kind:'DTH',icon:'tv',amt:350,due:addDays(TODAY,10),paid:false,posted:false,remind:false}
+    },
+    mobile:{key:'mob',label:'Mom’s mobile',who:'mom',icon:'phone',amt:299,due:addDays(TODAY,28),renew:true}};
+}
+const amtOf=b=>b.paidAmt!=null?b.paidAmt:(b.key==='elec'?(S.spike?3240:1840):b.amt);
+const t0=Date.now();
+function track(ev,note=''){const s=Math.round((Date.now()-t0)/1000);S.log.unshift(`<i>${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}</i> ${ev}${note?' <i>'+note+'</i>':''}`);S.log=S.log.slice(0,7);renderLog();}
+function renderLog(){$('#log').innerHTML=S.log.length?S.log.join('<br>'):'<i>Nothing yet: tap through the phone.</i>';}
+function toast(msg){const o=$('#overlay');const old=o.querySelector('.toast');if(old)old.remove();const t=document.createElement('div');t.className='toast';t.textContent=msg;o.appendChild(t);setTimeout(()=>t.remove(),3600);}
+
+/* ---------- screens ---------- */
+const hdr=(title,back,white)=>`<div class="hdr ${white?'white':''}">${back?`<button class="ib" data-act="${back}" aria-label="Back">${icon('back',24,2)}</button>`:''}<b>${title}</b></div>`;
+const hint=(c=true)=>c?' hint':'';
+const bnav=on=>`<div class="bnav">
+  <button class="${on==='home'?'on':''}" data-act="go-home">${icon('home',24)}Home</button>
+  <button class="${on==='bills'?'on':''}" data-act="go-bills"><span class="bt">${icon('cal',24)}<span class="newtag">New</span></span>Bills</button>
+  <button class="mid" data-act="toast-scan" aria-label="Scan and pay"><span class="c">${icon('scan',26,2)}</span></button>
+  <button data-act="toast-hist">${icon('hist',24)}History</button></div>`;
+
+const SC={
+home(){
+  const n=unpaid().length,tot=unpaidTotal();
+  return `<div class="topbar"><div class="avatar">${icon('user',20)}</div><div class="wordmark">pay<em>tm</em></div>
+   <div class="tb-icons">${icon('search',22)}<span class="bell">${icon('bell',22)}<i></i></span></div></div>
+   <div class="sec">UPI Money Transfer</div>
+   <div class="circ4">
+     <div class="circ"><span class="c">${icon('scan',22)}</span>Scan<br>&amp; Pay</div>
+     <div class="circ"><span class="c">${icon('contact',22)}</span>To Mobile/<br>Contact</div>
+     <div class="circ"><span class="c">${icon('bank',22)}</span>To Bank &amp;<br>Self A/c</div>
+     <div class="circ"><span class="c">${icon('hist',22)}</span>Balance<br>&amp; History</div></div>
+   <div class="card"><div class="rb-h"><h4>Recharge &amp; Bills</h4><button class="link" data-act="go-bills">View All</button></div>
+     <div class="grid4">
+      <button class="tile${hint(S.screen==='home')}" data-act="open-recharge">${icon('phone',26)}Mobile<br>Recharge</button>
+      <button class="tile" data-act="toast-fastag">${icon('car',26)}Fastag<br>Recharge</button>
+      <button class="tile" data-act="open-today" data-tile="elec">${icon('zap',26)}Electricity<br>Bill</button>
+      <button class="tile" data-act="toast-dth">${icon('tv',26)}DTH<br>Recharge</button></div></div>
+   <button class="card dueCard" data-act="go-bills"><span class="ico">${icon('cal',24)}</span>
+     <span style="flex:1"><b>Bills Home<span class="newtag">New</span></b><span>${n?n+' bills tracked · '+inr(tot)+' due by '+dfmt(dueBy()):'All bills paid for now'}</span></span><span style="color:var(--link);transform:rotate(180deg);display:grid">${icon('back',20,2.2)}</span></button>
+   <div class="card" style="display:flex;gap:12px;align-items:center"><span class="ico" style="width:44px;height:44px;border-radius:12px;background:#FFF4DC;color:#B7791F;display:grid;place-items:center">${icon('coin',24)}</span><span><b style="font-size:15px;display:block">Save in Gold</b><span style="font-size:12.5px;color:var(--muted)">Start with ₹10</span></span></div>
+   <div style="height:24px"></div>${bnav('home')}`;
+},
+today(){
+  return hdr('Electricity Bill','go-home',true)+`<div class="pad" style="padding-top:12px">
+    <div class="note2">${icon('info',16)}<span><b>Today’s path.</b> Three things to fill in by hand before a bill even appears.</span></div>
+    <div class="todayForm">
+      <div class="field"><label>1  State</label><div class="fv ph">Select state ${icon('chevd',18,2)}</div></div>
+      <div class="field dis"><label>2  Electricity board</label><div class="fv ph">Select biller ${icon('chevd',18,2)}</div></div>
+      <div class="field dis"><label>3  Consumer number</label><div class="fv ph">Enter consumer number</div></div>
+      <button class="link2" data-act="toast-find">Where do I find this?</button>
+    </div>
+    <button class="btn" disabled>Proceed</button>
+    <div class="card2"><b>The new path starts elsewhere.</b><br>Tap back, then Mobile Recharge: the bill is offered right after a recharge, and scanning replaces all three fields.</div>
+   </div>`;
+},
+recharge(){
+  const pl=[{a:239,d:22,x:'1 GB/day · Unlimited calls'},{a:299,d:28,x:'1.5 GB/day · Unlimited calls',pop:1},{a:479,d:56,x:'1.5 GB/day · Unlimited calls'}];
+  return hdr('Mobile Recharge','go-home',true)+`<div class="pad" style="padding-top:14px">
+    <div class="field"><label>Mobile number</label><input value="98765 43210" readonly aria-label="Mobile number"></div>
+    <div class="chips"><span class="pchip on">Mom</span><span class="pchip">Dad</span><span class="pchip">My number</span><span class="pchip" style="color:var(--muted)">Recent: 2 numbers in 90 days</span></div>
+    <div class="field"><label>Operator and circle</label><input value="Jio Prepaid · Delhi" readonly aria-label="Operator and circle"></div>
+    <div style="font-weight:800;margin:14px 0 8px">Choose a plan</div>
+    ${pl.map(p=>`<button class="plan ${S.plan.amt===p.a?'on':''}" data-act="plan" data-a="${p.a}" data-d="${p.d}"><span><b>${inr(p.a)}</b>${p.pop?'<span class="pop">Popular</span>':''}<small>${p.d} days · ${p.x}</small></span><span class="link">Select</span></button>`).join('')}
+   </div><div class="sticky"><button class="btn${hint()}" data-act="pay-recharge">Proceed to pay ${inr(S.plan.amt)}</button></div>`;
+},
+success(){
+  const renew=dfmt(addDays(TODAY,S.plan.days));
+  return `<div class="center" style="padding-top:6px"><div class="okring">${icon('check',44,3)}</div>
+    <div style="font-size:21px;font-weight:900">Recharge successful</div>
+    <div style="font-size:14px;color:var(--muted);margin-top:4px">${inr(S.plan.amt)} · 98765 43210 (Mom)</div>
+    <div style="font-size:12.5px;color:var(--muted)">Plan renews ${renew}</div></div>
+    <div class="prompt"><div class="row"><span class="ico">${icon('zap',24)}</span><div><b>Paying for Mom?</b><span>Her electricity bill may be due soon. Add it in 10 seconds.</span></div></div>
+      <button class="btn${hint()}" data-act="start-scan">Scan her bill</button>
+      <button class="btn ghost" data-act="maybe-later" style="margin-top:4px">Maybe later</button>
+      <div class="why-s">${icon('info',14)}<span>Why you see this: you recharged 2 different numbers in the last 90 days.</span></div></div>
+    <div class="mini"><span><b>Coming up on this number</b><span>Plan renews ${renew}. Set a reminder?</span></span>
+      <button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'Reminder set ✓':'Set reminder'}</button></div>
+    <div style="height:30px"></div>`;
+},
+scan(){
+  const src=S.source;
+  const body=src==='camera'?`<div class="vf"><div class="cap">Point at any bill<small>electricity, broadband, DTH</small></div>
+      <div class="paper"><h6>CITY POWER</h6>Electricity bill · Nov<div class="ln"></div>Consumer no. ${S.bills.elec.cn}<br>Due date: ${dfmt(S.bills.elec.due)} 2026
+        <div class="ln"></div><div class="ln" style="width:70%"></div><div class="amt">Amount ${inr(amtOf(S.bills.elec))}</div>
+        <div style="font-size:8.5px;margin-top:4px;color:#666">Usual range on this bill: ${inr(1500)}-${inr(1900)}</div></div>
+      <i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i>${S.scanning?'<div class="scanline"></div>':''}</div>
+      <button class="shutter${hint(!S.scanning)}" data-act="shutter" aria-label="Take photo"></button>
+      <div class="center" style="font-size:12px;color:var(--muted);margin-top:10px">${S.scanning?'Reading the bill…':'Tap to scan. Works on a photo, PDF or SMS.'}</div>`
+   :src==='pdf'?`<div class="list"><div style="font-size:13px;color:var(--muted);margin:2px 2px 10px">Pick a bill PDF from Files</div>
+      <button class="li${hint()}" data-act="shutter"><span class="ico">${icon('file',20)}</span><span><b>City_Power_Nov.pdf</b><br><span style="color:var(--muted)">Downloads · 214 KB</span></span></button>
+      <button class="li" data-act="toast-other"><span class="ico">${icon('file',20)}</span><span><b>Statement_Oct.pdf</b><br><span style="color:var(--muted)">Downloads · 96 KB</span></span></button></div>`
+   :`<div class="list"><div style="font-size:13px;color:var(--muted);margin:2px 2px 10px">Share a bill SMS to Paytm</div>
+      <button class="li${hint()}" data-act="shutter"><span class="ico">${icon('msg',20)}</span><span><b>CITYPR</b><br>Bill for Nov: ${inr(amtOf(S.bills.elec))}, due ${dfmt(S.bills.elec.due)}. Consumer ${S.bills.elec.cn}.</span></button>
+      <button class="li" data-act="toast-other"><span class="ico">${icon('msg',20)}</span><span><b>HDFCBK</b><br>Your statement is ready.</span></button></div>`;
+  return hdr('Add a bill',S.from==='bills'?'go-bills':'go-success',true)+`<div style="padding-top:10px"><div class="seg">
+     <button class="${src==='camera'?'on':''}" data-act="src" data-s="camera">${icon('camera',16)}Camera</button>
+     <button class="${src==='pdf'?'on':''}" data-act="src" data-s="pdf">${icon('file',16)}PDF</button>
+     <button class="${src==='sms'?'on':''}" data-act="src" data-s="sms">${icon('msg',16)}SMS share</button></div>${body}</div>`;
+},
+found(){
+  const b=S.bills.elec;
+  return hdr('Add a bill','go-scan',true)+`<div class="center" style="padding:12px 16px 12px"><div style="font-size:18px;font-weight:900">We found these details</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-top:4px">AI read the bill and filled four fields. You confirm.</div></div>
+    <div class="found">
+      <div class="frow"><label>Biller</label><input value="${b.name}" id="f-biller" aria-label="Biller"><span class="ok">${icon('check',16,2.6)}</span></div>
+      <div class="frow"><label>Consumer no.</label><input value="•••• ${b.cn}" readonly aria-label="Consumer number"><span class="ok">${icon('check',16,2.6)}</span></div>
+      <div class="frow"><label>Amount</label><input value="${inr(amtOf(b))}" readonly aria-label="Amount"><span class="ok">${icon('check',16,2.6)}</span></div>
+      <div class="frow"><label>Due</label><input value="${dfmt(b.due)}" readonly aria-label="Due date"><span class="ok">${icon('check',16,2.6)}</span></div></div>
+    <div class="note">${icon('trash',16)}<span>Photo is deleted after reading. Only these four fields are kept.</span></div>
+    <div class="pad"><button class="btn${hint()}" data-act="confirm">Confirm and fetch</button></div>`;
+},
+pay(){
+  const b=S.bills[S.cur]; const a=amtOf(b);
+  let chk;
+  if(b.key==='elec'){
+    const bad=a>b.range[1];
+    chk=bad?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>Higher than usual</b><span>Bill fetched from the biller. History printed on it: usual range ${inr(b.range[0])}-${inr(b.range[1])}. This one is ${inr(a)}. Check the bill before paying.</span></div></div>`
+     :`<div class="check"><span class="ico">${icon('check',20,2.6)}</span><div><b>Amount check</b><span>Bill fetched from the biller. History printed on it: usual range ${inr(b.range[0])}-${inr(b.range[1])}. This one is normal.</span></div></div>`;
+  } else chk=`<div class="check"><span class="ico">${icon('check',20,2.6)}</span><div><b>Amount check</b><span>Bill fetched from the biller. Same as your last 3 payments (${inr(a)}). This one is normal.</span></div></div>`;
+  const bad=b.key==='elec'&&a>b.range[1];
+  return hdr('Pay '+inr(a),S.from==='bills'?'go-bills':'go-found',true)+`<div style="padding-top:12px"></div>
+   <div class="billhead"><div><div style="font-size:12px;color:var(--muted)">${b.label}</div><div style="font-size:16px;font-weight:800">${b.name}</div><div style="font-size:12px;color:var(--muted)">Due ${dfmt(b.due)}</div></div><div class="big">${inr(a)}</div></div>
+   ${chk}
+   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Refund promise</b><span>No biller confirmation in 24 hours? We refund you or chase the biller, and show each step.</span></div></div>
+   <div class="tl"><h4>Live status: what happens next</h4>
+     <div class="ts"><span class="dot"></span><div><b>1  Paid</b></div><span class="when">Now</span></div>
+     <div class="ts"><span class="dot"></span><div><b>2  Sent to biller</b></div><span class="when">Now</span></div>
+     <div class="ts"><span class="dot"></span><div><b>3  Posted</b></div><span class="when">By tomorrow</span></div></div>
+   <div class="payvia"><span><b>Pay using</b><br><span>UPI · Savings account ••0734</span></span><span style="color:var(--green)">${icon('check',20,2.6)}</span></div>
+   <div class="pad" style="padding-top:14px">
+     ${bad?`<button class="btn out" data-act="toast-check" style="margin-bottom:8px">Check the bill</button><button class="btn warn" data-act="pay-bill">Pay ${inr(a)} anyway</button>`
+          :`<button class="btn${hint()}" data-act="pay-bill">Pay ${inr(a)} via UPI</button>`}
+     <div class="center" style="font-size:12px;color:var(--muted);margin-top:10px">No new fee added by Paytm on this bill (design rule).</div></div>`;
+},
+status(){
+  const b=S.bills[S.cur]; const a=amtOf(b); const st=S.paySt;
+  const step=(done,cur,t,w,sub)=>`<div class="ts ${done?'done':''} ${cur?'cur':''}"><span class="dot">${done?icon('check',13,3):''}</span><div><b>${t}</b>${sub?`<span>${sub}</span>`:''}</div><span class="when">${w}</span></div>`;
+  return `<div class="center" style="padding-top:14px"><div class="okring" style="width:70px;height:70px">${icon('check',36,3)}</div>
+    <div style="font-size:20px;font-weight:900">${inr(a)} paid to ${b.name}</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">${b.label} · UPI</div></div>
+   <div class="tl" style="margin-top:16px"><h4>Live status</h4>
+     ${step(true,false,'Paid','Now')}
+     ${step(st.sent,!st.sent,'Sent to biller',st.sent?'Now':'…',st.sent?'':'Sending')}
+     ${step(st.posted,st.sent&&!st.posted,'Posted',st.posted?'Confirmed':'By tomorrow',st.posted?b.name+' confirmed your payment':'We will tell you the moment it posts')}</div>
+   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Refund promise</b><span>Not posted within 24 hours? We refund you or chase ${b.name}, and show each step.</span></div></div>
+   <div class="mini"><span><b>Remind me before the next one</b><span>A push 3 days and 1 day before the due date</span></span><button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'On ✓':'Turn on'}</button></div>
+   <div class="pad" style="padding-top:16px"><button class="btn${hint()}" data-act="go-bills-after">See Bills Home</button>
+   ${st.posted?'':`<button class="btn ghost" data-act="skip-day" style="margin-top:4px">Skip to tomorrow</button>`}</div>`;
+},
+bills(){
+  const all=billRows(); const rows=all.filter(r=>S.who==='all'||r.who===S.who);
+  const tot=unpaidTotal(); const by=dueBy(); const span=Math.max(14,Math.max(...all.map(r=>daysTo(r.due))));
+  const pos=r=>{const n=all.length,i=all.indexOf(r);return n>1?8+i*(84/(n-1)):50;};   // evenly spaced so the date labels never collide
+  const paidNote=r=>r.posted?'Posted ✓':'Posted by tomorrow';
+  const row=r=>{
+    const d=daysTo(r.due);
+    let act='';
+    if(r.renew)act=`<span style="font-size:12px;color:var(--muted);display:block;margin-top:6px">Renews</span>`;
+    else if(r.paid)act=`<span class="sbtn paid">Paid</span>`;
+    else if(d<=3)act=`<span class="sbtn pay${hint(S.screen==='bills')}" data-act="pay-row" data-k="${r.key}">Pay now</span>`;
+    else act=`<span class="sbtn rem ${r.remind?'on':''}" data-act="rem-row" data-k="${r.key}">${r.remind?'Reminder on ✓':'Remind me'}</span>`;
+    const sub=r.renew?`${dfmt(r.due)}`:r.paid?paidNote(r):`due ${dfmt(r.due)}`;
+    return `<div class="brow"><span class="ico">${icon(r.icon,22)}</span><div class="mid" ${(!r.renew&&!r.paid)?`data-act="pay-row" data-k="${r.key}" style="cursor:pointer"`:''}><b>${r.label}</b><span>${r.name?r.name+' · ':''}${sub}</span></div>
+      <div style="text-align:right"><div class="amt">${inr(r.paid?r.paidAmt:amtOf(r))}</div>${act}</div></div>`;};
+  const chip=(k,t)=>`<button class="${S.who===k?'on':''}" data-act="who" data-w="${k}">${t}</button>`;
+  return `<div class="hdr"><button class="ib" data-act="go-home" aria-label="Back">${icon('back',24,2)}</button><b>Bills Home</b></div>
+   <div class="sumbar"><small>${tot?'Due soon':'All paid for now'}</small><div class="big">${tot?inr(tot):'₹0'}</div><small>${tot?'due by '+dfmt(by)+' · ':''}${unpaid().length} bills open · ${all.filter(r=>r.paid).length} paid</small>
+     <div class="tline">${all.map(r=>`<i class="${r.paid?'paid':''}" style="left:${pos(r)}%"></i><s style="left:${pos(r)}%">${dfmt(r.due)}</s>`).join('')}</div></div>
+   <div class="fchips"><span class="t">By due date</span>${chip('all','All')}${chip('mom','Mom')}${chip('home','Home')}</div>
+   ${rows.length?rows.map(row).join(''):'<div class="center" style="color:var(--muted);font-size:13px;margin:10px 0 16px">Nothing here yet.</div>'}
+   <button class="brow" data-act="add-bill" style="border:1.5px dashed #9FB3D1;background:transparent;justify-content:center;color:var(--navy);font-weight:800;gap:8px">${icon('plus',20,2.4)}Add bill</button>
+   <div class="mini"><span><b>Reminders</b><span>A push 3 days and 1 day before each due date, with one-tap pay</span></span><button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'On ✓':'Off'}</button></div>
+   <div style="font-weight:800;margin:18px 16px 8px">Next, once trust is earned</div>
+   <div class="v15"><button class="r" data-act="toast-billday"><span class="lk">${icon('cal',20)}</span><span><b>Bill Day<span class="vtag">V1.5</span></b><span>One day each month to pay everything due in one go</span></span></button>
+     <button class="r" data-act="toast-autopay"><span class="lk">${icon('repeat',20)}</span><span><b>Autopay<span class="vtag">V1.5</span></b><span>Capped, offered after your 2nd on-time payment</span></span></button></div>
+   <div class="goal">Design goal: nothing to remember</div><div style="height:24px"></div>${bnav('bills')}`;
+}
+};
+
+/* ---------- derived ---------- */
+function billRows(){const r=[S.bills.bb,S.bills.dth,S.mobile];if(S.elecAdded)r.push(S.bills.elec);return r.sort((a,b)=>a.due-b.due);}
+function unpaid(){return billRows().filter(r=>!r.paid);}
+function unpaidTotal(){return unpaid().reduce((s,r)=>s+amtOf(r),0);}
+function dueBy(){const u=unpaid();return u.length?u.reduce((m,r)=>r.due>m?r.due:m,u[0].due):TODAY;}
+
+/* ---------- side panel copy ---------- */
+const WHY={
+ home:{step:0,title:'Home: the familiar card, plus a Bills tab',tag:'FOUND',text:'The Recharge &amp; Bills card keeps its category icons. Tapping Electricity Bill opens a state-and-biller picker today (try it), and no scan option is listed on the listings or pages captured in A7 and A8. The New Bills tab and Bills Home card are the proposal.',barrier:['d'],deck:'Slide 4, [8]; A7 image 1; A8',metric:'Baseline: electricity is 33% of Bharat Connect bill volume; Paytm’s unit carries 9%'},
+ today:{step:0,title:'Today’s path: three things to type',tag:'INFERRED',text:'State, then biller, then a consumer number that people often do not know (a published design study found this [33]). This is the Discover and Try barrier the proposal removes.',barrier:['d','t'],deck:'Slide 4; [8], [33]; A8 (web pages), A7 (listing images)',metric:'Add-to-first-pay within 14 days: 40%+'},
+ recharge:{step:0,title:'The moment the user already has',tag:'INFERRED',text:'A recharge for someone else is the entry point. The user is already paying for family, so no new habit is asked for yet.',barrier:['d'],deck:'Slide 5, A6 (enter at a moment the user already has)',ml:'Who sees the prompt',metric:'S1 = users who recharge 2+ different numbers in 90 days (slide 4)'},
+ success:{step:1,title:'Entry: the recharge-to-bill prompt',tag:'INFERRED',text:'The success screen offers the electricity bill of the person just recharged. It is shown to remote family payers (S1) with a plain reason: “you recharged 2 different numbers in the last 90 days”.',barrier:['d'],deck:'Slide 5, slide 6; [31], [33]',metric:'Nudge click rate 8%+ on S1',rules:['Reminder for the plan renewal is optional and off the critical path']},
+ scan:{step:2,title:'Find: scan-to-add',tag:'INFERRED',text:'Camera, PDF or SMS share. AI reads the biller, consumer ID, due date and amount, so nobody has to type a consumer ID they may not know.',barrier:['d','t'],deck:'Slide 5, slide 6; [33] Simpl case study (A14)',metric:'Add-to-first-pay within 14 days: 40%+',rules:['Photo is deleted after reading','Fallback: the manual form if the read is low-confidence']},
+ found:{step:3,title:'Confirm four fields',tag:'ASSUMED',text:'The user checks what the AI read and taps Confirm. The 95% field-accuracy target is a working proposal; below it the product falls back to the form.',barrier:['t'],deck:'Slide 5 (accuracy target, ASSUMED); [23] DPDP Rules',metric:'Bill-fetch success: 90%+',rules:['Only biller, consumer ID, due date and amount are stored','Consent and a DPDP-ready notice']},
+ pay:{step:4,title:'Trust: amount check and refund promise',tag:'INFERRED',text:'The fetched amount is compared with the history printed on the bill and a spike is flagged before paying. The refund promise and all three status steps are shown up front. Try “Simulate a bill spike”.',barrier:['t'],deck:'Slide 5, slide 6; [34], [36] (RBI turnaround rules)',metric:'Guardrails: payment failure rate, refund time p90, complaints per 10k bills',rules:['No new fee added on bills in V1','Quote the 5-day outer limit, aim for faster']},
+ status:{step:5,title:'Live status',tag:'FOUND',text:'Paid, Sent to biller, Posted. Failed or unposted payments are the loudest complaint in the reviews and posts we read (43 of 63 PayZapp bill reviews describe a failure; single posts report paid bills that did not post), so each step stays visible until the biller confirms.',barrier:['t'],deck:'Slide 3 insight 4; [13], [28], [29]; A13',metric:'Refund time p90; complaints per 10k bills',rules:['Reminders are offered after the first payment','Autopay waits for V1.5']},
+ bills:{step:6,title:'Repeat: Bills Home and reminders',tag:'INFERRED',text:'Every bill by due date with one-tap pay, and a push 3 days and 1 day before each due date. Bill Day and Autopay are V1.5, after trust is earned.',barrier:['r'],deck:'Slide 5, slide 7; [16], [24] (RBI e-mandate rules)',metric:'Cycle-2 repeat 50%+; North Star: cross-category repeat rate +1.5 pp vs holdout',rules:['Autopay: capped, after the 2nd on-time payment, 24-hour pre-debit notice','Cap nudges per user per month']}
+};
+const STEPS=[
+ {n:0,c:'z',t:'Start: Home',s:'Recharge & Bills, plus a Bills tab',go:'home'},
+ {n:1,c:'d',t:'Entry: recharge-to-bill prompt',s:'After recharging Mom’s number',go:'success'},
+ {n:2,c:'d',t:'Find: scan-to-add',s:'Camera, PDF or SMS share',go:'scan'},
+ {n:3,c:'',t:'Confirm four fields',s:'Biller, ID, due date, amount',go:'found'},
+ {n:4,c:'',t:'Trust: amount check',s:'Plus the refund promise',go:'pay'},
+ {n:5,c:'',t:'Live status',s:'Paid, Sent to biller, Posted',go:'status'},
+ {n:6,c:'r',t:'Repeat: Bills Home',s:'Due calendar and reminders',go:'bills'}];
+const scrStep=s=>({home:0,today:0,recharge:0,success:1,scan:2,found:3,pay:4,status:5,bills:6}[s]);
+
+/* ---------- render ---------- */
+const LIGHT=['recharge','scan','found','pay','today'];
+function render(anim=true){
+  const v=$('#view'); v.style.animation='none'; v.innerHTML=SC[S.screen](); void v.offsetWidth; v.style.animation=anim?'':'none'; v.scrollTop=0;
+  $('#status').classList.toggle('light',LIGHT.includes(S.screen));
+  $('#status').style.background=LIGHT.includes(S.screen)?'#fff':'';
+  document.body.classList.toggle('nohints',!S.hints);
+  $('#sw-hints').classList.toggle('on',S.hints); $('#sw-spike').classList.toggle('on',S.spike);
+  const cur=scrStep(S.screen); if(S.screen!=='home'||S.visited.size)S.visited.add(cur); else S.visited.add(0);
+  $('#steps').innerHTML=STEPS.map(s=>{const seen=S.visited.has(s.n)&&s.n!==cur;return `<button class="step ${s.n===cur?'on':''}" data-act="jump" data-g="${s.go}"><span class="n ${s.c} ${seen?'seen':''}">${seen?'✓':(s.n===0?'•':s.n)}</span><span><b>${s.t}</b><span>${s.s}</span></span></button>`;}).join('');
+  const w=WHY[S.screen];
+  $('#why').innerHTML=`<h3>${w.step?'Step '+w.step+' of 6':'Where we start'}</h3><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${w.barrier.map(b=>`<span class="chip ${b}">${{d:'D Discover',t:'T Try',r:'R Regular'}[b]}</span>`).join('')}<span class="tag ${w.tag}">${w.tag}</span></div>
+   <div style="font-size:16px;font-weight:800;color:var(--navy);margin-top:10px;line-height:1.3">${w.title}</div><p>${w.text}</p>
+   <div class="meta"><b>${w.ml||'Metric it moves'}:</b> ${w.metric}<br><b>Deck:</b> ${w.deck}</div>
+   ${w.rules?`<ul class="rules">${w.rules.map(r=>`<li>${r}</li>`).join('')}</ul>`:''}`;
+  renderLog(); updateGuideUI();
+}
+function go(s,opt){S.screen=s;if(opt&&opt.from)S.from=opt.from;render();}
+function sheet(html){const o=$('#overlay');const d=document.createElement('div');d.className='sheetBg';d.innerHTML=`<div class="sheet">${html}</div>`;d.addEventListener('click',e=>{if(e.target===d)d.remove();});o.appendChild(d);}
+function closeSheet(){document.querySelectorAll('.sheetBg').forEach(e=>e.remove());}
+function clearOverlay(){document.querySelectorAll('#overlay .sheetBg,#overlay .banner,#overlay .toast').forEach(e=>e.remove());}
+function banner(b){
+  const o=$('#overlay');o.querySelectorAll('.banner').forEach(e=>e.remove());
+  const d=document.createElement('button');d.className='banner';d.dataset.act='banner-open';d.dataset.k=b.key;
+  d.innerHTML=`<span class="ico">pay</span><span><small>Paytm · now</small><b>Reminder: ${b.label} ${inr(amtOf(b))}</b><small>Due ${dfmt(b.due)} · Tap to pay in one step</small></span>`;
+  o.appendChild(d);setTimeout(()=>{if(d.isConnected&&!(T.on&&!T.welcome&&TOUR[T.i]&&TOUR[T.i].id==='banner'))d.remove();},9000);track('reminder_sent','t-3 '+b.key);
+}
+function postAll(){Object.values(S.bills).forEach(b=>{if(b.paid&&!b.posted){b.posted=true;}});S.paySt.posted=true;S.paySt.sent=true;}
+function payElec(){const b=S.bills.elec;S.elecAdded=true;S.cur='elec';if(!b.paid){b.paid=true;b.paidAmt=amtOf(b);}}
+function resetElec(){const b=S.bills.elec;S.elecAdded=false;b.paid=false;b.posted=false;delete b.paidAmt;S.paySt={sent:false,posted:false};S.scanning=false;S.cur='elec';S.from='found';}
+
+/* ---------- actions ---------- */
+const ACT={
+ 'go-home':()=>go('home'),
+ 'go-bills':()=>{track('bills_home_open');go('bills');},
+ 'go-bills-after':()=>{track('bills_home_open','after first pay');go('bills');},
+ 'go-success':()=>go('success'),'go-scan':()=>{S.scanning=false;go('scan');},'go-found':()=>go('found'),
+ 'open-recharge':()=>{track('recharge_open');go('recharge');},
+ 'open-today':()=>{track('electricity_tile_open','today path');go('today');},
+ plan:el=>{S.plan={amt:+el.dataset.a,days:+el.dataset.d};S.mobile.amt=S.plan.amt;S.mobile.due=addDays(TODAY,S.plan.days);render(false);},
+ 'pay-recharge':()=>sheet(`<h5>Pay ${inr(S.plan.amt)} via UPI</h5><p>Mobile recharge for Mom · 98765 43210<br>Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="auth-recharge">Authorise</button>`),
+ 'auth-recharge':()=>{closeSheet();track('recharge_success');track('nudge_impression','S1');go('success');},
+ 'start-scan':()=>{track('nudge_click','recharge-to-bill');S.scanning=false;S.from='success';go('scan');},
+ 'maybe-later':()=>{track('nudge_dismiss');toast('No problem. “Bills” in the bottom bar and Bills Home stay one tap away.');go('home');},
+ src:el=>{S.source=el.dataset.s;S.scanning=false;render(false);},
+ shutter:()=>{if(S.scanning)return;track('scan_start',S.source);if(S.source==='camera'){S.scanning=true;render(false);setTimeout(()=>{if(S.screen==='scan'&&S.scanning){S.scanning=false;track('scan_read','4 fields');go('found');}},1500);}else{track('scan_read','4 fields');go('found');}},
+ confirm:()=>{
+   if(S.elecAdded){toast('City Power is already in Bills Home.');go('bills');return;}
+   S.elecAdded=true;S.bills.elec.name=($('#f-biller')||{value:'City Power'}).value||'City Power';track('fields_confirmed');track('bill_added','electricity');
+   sheet(`<div class="center"><div class="spin"></div><h5>Fetching from ${S.bills.elec.name}…</h5><p>Through Bharat Connect, with the amount checked against the bill’s history.</p></div>`);
+   setTimeout(()=>{closeSheet();S.cur='elec';S.from='found';track('amount_check_shown',amtOf(S.bills.elec)>1900?'spike':'normal');go('pay',{from:'found'});},1100);},
+ 'pay-bill':()=>{const b=S.bills[S.cur];sheet(`<h5>Pay ${inr(amtOf(b))} to ${b.name}</h5><p>Via UPI. Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="auth-bill">Authorise</button>`);},
+ 'auth-bill':()=>{closeSheet();const b=S.bills[S.cur];b.paid=true;b.paidAmt=amtOf(b);S.paySt={sent:false,posted:false};track('first_pay',b.key);go('status');
+   setTimeout(()=>{if(S.screen==='status'&&!S.paySt.sent){S.paySt.sent=true;track('sent_to_biller');render(false);}},1400);},
+ 'skip-day':()=>{const any=Object.values(S.bills).some(b=>b.paid&&!b.posted);if(!any){toast('Nothing is waiting to post. Pay a bill first.');return;}postAll();track('status_posted','next day');toast('Next day: the biller confirmed. Status is now Posted.');render(false);},
+ 'send-reminder':()=>{const nx=[S.bills.elec,S.bills.bb,S.bills.dth].find(b=>!b.paid&&(b.key!=='elec'||S.elecAdded));if(!nx){toast('Everything is paid. Nothing to remind.');return;}banner(nx);},
+ 'banner-open':el=>{const b=S.bills[el.dataset.k];el.remove();S.cur=b.key;S.from='bills';track('reminder_tap',b.key);go('pay',{from:'bills'});},
+ 'pay-row':el=>{S.cur=el.dataset.k;S.from='bills';track('one_tap_pay_open',S.cur);go('pay',{from:'bills'});},
+ 'rem-row':el=>{const b=S.bills[el.dataset.k];b.remind=!b.remind;track('reminder_toggle',b.key+' '+(b.remind?'on':'off'));render(false);},
+ who:el=>{S.who=el.dataset.w;render(false);},
+ 'add-bill':()=>{track('add_bill_open');S.scanning=false;S.from='bills';go('scan');},
+ 't-remind':()=>{S.remind=!S.remind;track('reminder_pref',S.remind?'on':'off');render(false);},
+ 't-hints':()=>{S.hints=!S.hints;render(false);},
+ 't-spike':()=>{if(S.bills.elec.paid){toast('The electricity bill is already paid. Start over to try the spike.');return;}S.spike=!S.spike;render(false);},
+ restart:()=>{clearOverlay();S=fresh();if(T.on&&!T.welcome)T.i=0;render();},
+ jump:el=>{const g=el.dataset.g;clearOverlay();
+   if(['success','scan','found'].includes(g)){resetElec();}
+   if(['pay','status','bills'].includes(g)){S.elecAdded=true;}
+   if(g==='pay'){S.cur='elec';S.from='found';}
+   if(g==='status'){payElec();S.paySt={sent:true,posted:false};}
+   S.scanning=false;go(g);},
+ about:()=>{const d=$('#about');if(d.showModal)d.showModal();else d.setAttribute('open','');},
+ 'guide-toggle':()=>{ if(T.on) tourClose(); else if(T.done) tourStart(); else if(T.started) tourResume(); else {T.on=true;T.welcome=true;tourSync();updateGuideUI();} },
+ 'toast-fastag':()=>toast('Same as today. This prototype only changes the bill paths.'),
+ 'toast-find':()=>toast('It is printed on the paper bill or in the biller’s SMS, which you may not have at hand.'),
+ 'toast-dth':()=>toast('Same as today. DTH comes after electricity in V1.'),
+ 'toast-scan':()=>toast('Scan & Pay is unchanged. Bills use the scan on the Add a bill screen.'),
+ 'toast-hist':()=>toast('Not part of this prototype.'),
+ 'toast-other':()=>toast('Pick the first file or message in the demo.'),
+ 'toast-check':()=>{const b=S.bills[S.cur];track('amount_check_open_bill');sheet(`<h5>Compare with the bill</h5><p>The amount we fetched is ${inr(amtOf(b))}. Check it against the figure printed on your bill.</p>
+   <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · Nov<div class="ln"></div>Consumer no. ${b.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(amtOf(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(1500)}-${inr(1900)}</div></div>
+   <button class="btn navy" data-act="close-sheet">Close</button>`);},
+ 'close-sheet':()=>closeSheet(),
+ 'toast-billday':()=>toast('V1.5 concept: one day each month to pay everything due. Not in V1.'),
+ 'toast-autopay':()=>toast('V1.5 concept: capped Autopay after the 2nd on-time payment, with a 24-hour notice.')
+};
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-tour]');
+  if(t){e.stopPropagation();tourAction(t.dataset.tour);return;}
+  const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];
+  if(f){e.stopPropagation();f(el);tourAfterAct(el.dataset.act);}
+});
+
+/* ---------- guided tour ---------- */
+const T={on:false,i:0,welcome:false,started:false,done:false,shown:-1};
+const q=sel=>document.querySelector('#overlay '+sel)||document.querySelector('#view '+sel);
+const sheetOpen=()=>!!document.querySelector('#overlay .sheetBg');
+const bannerUp=()=>!!document.querySelector('#overlay .banner');
+const onPayFound=()=>S.screen==='pay'&&S.from==='found'&&!sheetOpen();
+const TOUR=[
+ {id:'peek',match:()=>S.screen==='home'&&!sheetOpen(),target:'[data-act="open-today"]',act:'open-today',skipTo:'tile',skipLabel:'Skip peek',
+  title:'First, a peek at today',text:'Today, bills sit behind a category icon. Tap <b>Electricity Bill</b> to see what a user faces. (Skip this if you like.)',setup:()=>{clearOverlay();resetElec();go('home');}},
+ {id:'today',match:()=>S.screen==='today',target:['.hdr','.todayForm'],act:'go-home',
+  title:'Three things to type by hand',text:'State, then biller, then a consumer number many people do not have at hand. This is the barrier the proposal removes. Tap <b>back</b> to return.',setup:()=>{clearOverlay();resetElec();go('today');}},
+ {id:'tile',match:()=>S.screen==='home'&&!sheetOpen(),target:'[data-act="open-recharge"]',act:'open-recharge',
+  title:'The new path starts at a recharge',text:'A recharge is a moment the user already has: they are paying for family anyway. Tap <b>Mobile Recharge</b>.',setup:()=>{clearOverlay();resetElec();go('home');}},
+ {id:'recharge',match:()=>S.screen==='recharge'&&!sheetOpen(),target:'[data-act="pay-recharge"]',act:'pay-recharge',
+  title:'Recharge Mom’s number as usual',text:'Mom’s number and a ₹299 plan are picked for you. Tap <b>Proceed to pay</b>.',setup:()=>{clearOverlay();resetElec();go('recharge');}},
+ {id:'auth1',match:()=>S.screen==='recharge'&&sheetOpen(),target:'[data-act="auth-recharge"]',act:'auth-recharge',
+  title:'Demo only',text:'No PIN is asked and nothing is charged. Tap <b>Authorise</b>.',setup:()=>{clearOverlay();resetElec();go('recharge');ACT['pay-recharge']();}},
+ {id:'prompt',match:()=>S.screen==='success'&&!sheetOpen(),target:'.prompt',act:'start-scan',
+  title:'Recharge-to-bill prompt',text:'Right after the recharge, Paytm offers Mom’s electricity bill and says why: you recharged 2 numbers in 90 days. Tap <b>Scan her bill</b>.',setup:()=>{clearOverlay();resetElec();go('success');}},
+ {id:'scan',match:()=>S.screen==='scan'&&!S.scanning&&!sheetOpen(),target:['[data-act="shutter"]'],act:'shutter',
+  title:'Scan-to-add: no typing',text:'Camera, PDF or SMS share: AI reads the bill, so there is nothing to type. Tap the <b>shutter</b>. (Try the PDF and SMS tabs after the tour.)',setup:()=>{clearOverlay();resetElec();S.from='success';go('scan');}},
+ {id:'found',match:()=>S.screen==='found'&&!sheetOpen(),target:['.found','[data-act="confirm"]'],act:'confirm',
+  title:'Check four fields',text:'AI filled biller, consumer number, amount and due date, and the photo is deleted after reading. Tap <b>Confirm and fetch</b>.',setup:()=>{clearOverlay();resetElec();go('found');}},
+ {id:'trust',match:onPayFound,target:['.check'],
+  title:'Amount check and refund promise',text:'Before paying, the amount is compared with the history printed on the bill, and the refund promise is shown. Try <b>Simulate a bill spike</b> in the demo controls later.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
+ {id:'live',match:onPayFound,target:'.tl',
+  title:'Live status, before you pay',text:'The user sees all three steps up front: <b>Paid, Sent to biller, Posted</b>.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
+ {id:'pay',match:onPayFound,target:['[data-act="pay-bill"]','[data-act="toast-check"]'],act:'pay-bill',
+  title:'One tap to pay',text:'No new fee is added on this bill in V1 (design rule). Tap <b>Pay</b>.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
+ {id:'auth2',match:()=>S.screen==='pay'&&sheetOpen(),target:'[data-act="auth-bill"]',act:'auth-bill',
+  title:'Demo only',text:'Again, no PIN and no charge. Tap <b>Authorise</b>.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});ACT['pay-bill']();}},
+ {id:'status',match:()=>S.screen==='status',target:['[data-act="go-bills-after"]','[data-act="skip-day"]'],act:'go-bills-after',
+  title:'Live status keeps going',text:'Each step stays visible until the biller confirms. Tap <b>Skip to tomorrow</b> to watch it post, then <b>See Bills Home</b>.',setup:()=>{clearOverlay();payElec();S.paySt={sent:true,posted:false};go('status');}},
+ {id:'bills',match:()=>S.screen==='bills'&&!bannerUp()&&!sheetOpen(),target:'.sumbar',
+  title:'Bills Home: nothing to remember',text:'Every bill by due date with the total due. The user no longer has to hold it all in their head.',setup:()=>{clearOverlay();S.elecAdded=true;go('bills');}},
+ {id:'reminders',match:()=>S.screen==='bills'&&!bannerUp()&&!sheetOpen(),target:'.mini',
+  title:'Reminders do the remembering',text:'A push 3 days and 1 day before each due date, with one-tap pay. Press <b>Next</b> to receive one.',next:()=>ACT['send-reminder'](),setup:()=>{clearOverlay();S.elecAdded=true;go('bills');}},
+ {id:'banner',match:()=>S.screen==='bills'&&bannerUp(),target:'.banner',act:'banner-open',
+  title:'A reminder arrives',text:'It names the bill, the amount and the due date. Tap it to pay in one step.',setup:()=>{clearOverlay();S.elecAdded=true;go('bills');ACT['send-reminder']();}},
+ {id:'onetap',match:()=>S.screen==='pay'&&S.from==='bills'&&!sheetOpen(),target:['[data-act="pay-bill"]','[data-act="toast-check"]'],act:'pay-bill',noClick:true,
+  title:'Same checks, one tap',text:'From reminder to payment, the Amount check and refund promise are still shown. Tap <b>Pay</b>, or press Next to finish.',setup:()=>{clearOverlay();payElec();const nb=[S.bills.bb,S.bills.dth].find(b=>!b.paid)||S.bills.bb;S.cur=nb.key;S.from='bills';go('pay',{from:'bills'});}},
+ {id:'final',final:true,sticky:true,
+  title:'That is the loop: Find, Trust, Repeat',text:'Try the <b>bill spike</b> toggle, <b>Add bill</b> on Bills Home, or switch scan sources. Bill Day and Autopay are V1.5 concepts. Reopen this guide any time from <b>? Guide</b>.',setup:()=>{}}
+];
+const idxOf=id=>TOUR.findIndex(s=>s.id===id);
+
+function updateGuideUI(){
+  const b=$('#guideBtn'),i=$('#island'),t=$('#islandTxt'); if(!b)return;
+  let label='Start guided tour',short='Guide';
+  if(T.on){label='Close the guide';short='Close';}
+  else if(T.done){label='Restart guided tour';short='Guide';}
+  else if(T.started){label='Resume guide (step '+(T.i+1)+' of '+TOUR.length+')';short='Resume';}
+  b.textContent=label; b.classList.toggle('on',T.on); t.textContent=short; i.classList.toggle('live',T.on);
+  i.setAttribute('aria-label',label);
+}
+function rel(el){const s=$('#scr'),sr=s.getBoundingClientRect(),k=sr.width/s.offsetWidth||1,r=el.getBoundingClientRect();return {x:(r.left-sr.left)/k,y:(r.top-sr.top)/k,w:r.width/k,h:r.height/k};}
+function tourTargets(st){
+  const out=new Set();
+  (st.target?(Array.isArray(st.target)?st.target:[st.target]):[]).forEach(sel=>{
+    document.querySelectorAll('#overlay '+sel+', #view '+sel).forEach(e=>out.add(e));
+  });
+  return [...out];
+}
+function ensureVisible(el){const v=$('#view');if(!v.contains(el))return;const H=$('#scr').offsetHeight,r=rel(el);if(r.y<64||r.y+r.h>H-96){v.scrollTop+=r.y-130;}}
+function hideTour(){const L=$('#tour');L.innerHTML='';T.shown=-1;document.body.classList.remove('touring');}
+function cardHTML(i,st){
+  if(T.welcome) return `<div class="tcard welcome"><button class="tx" data-tour="close" aria-label="Close guide" style="position:absolute;top:10px;right:10px">${icon('x',18,2.4)}</button>
+    <div class="wmark"><span>pay<span style="color:#fff">tm</span></span></div><h6>Welcome to the Bills Home prototype</h6>
+    <p>A clickable concept of the proposal: <b>find</b> a bill by scanning it, <b>trust</b> the amount before paying, and <b>never miss</b> the next due date.</p>
+    <p><b>Want a guided walk-through?</b> ${TOUR.length} short steps, about 2 minutes. You can close it at any step and pick it up again from the <b style="white-space:nowrap">? Guide</b> pill.</p>
+    <button class="tb pri" data-tour="start">Start guided tour</button><button class="tb alt" data-tour="explore">Explore on my own</button></div>`;
+  const dots=TOUR.map((_,j)=>`<i class="${j<=i?'d':''}"></i>`).join('');
+  return `<div class="tcard"><div class="tarrow"></div><div class="thd"><span class="tstep">${st.final?'ALL DONE':'STEP '+(i+1)+' OF '+TOUR.length}</span><button class="tx" data-tour="close" aria-label="Close guide">${icon('x',18,2.4)}</button></div>
+   <h6>${st.title}</h6><p>${st.text}</p><div class="tbar">${dots}</div>
+   <div class="tbtns">${i>0?'<button class="tb alt" data-tour="back">‹ Back</button>':''}<span class="sp"></span>${st.skipTo?`<button class="tb lnk" data-tour="skip">${st.skipLabel||'Skip'}</button>`:''}${st.final?'<button class="tb alt" data-tour="restart">Restart</button>':''}<button class="tb pri" data-tour="next">${st.final?'Finish':'Next ›'}</button></div>
+   <div class="tfoot"><button class="tb" data-tour="close">Skip tour</button><span>← → keys · Esc closes</span></div></div>`;
+}
+function showStep(i){
+  const L=$('#tour'),st=T.welcome?{}:TOUR[i];
+  if(T.shown!==i||T.welcomeShown!==T.welcome||!L.firstChild){
+    L.innerHTML='<div class="tdim d0"></div><div class="tdim d1"></div><div class="tdim d2"></div><div class="tdim d3"></div><div class="thole"></div>'+cardHTML(i,st);
+    T.shown=i;T.welcomeShown=T.welcome;T.scrolled=false;
+    L.querySelectorAll('.tdim').forEach(d=>d.addEventListener('click',nudge));
+    const pb=L.querySelector('[data-tour="next"],[data-tour="start"]'); if(pb)pb.focus({preventScroll:true});
+  }
+  document.body.classList.add('touring');
+  tourLayout();
+  setTimeout(tourLayout,60);setTimeout(tourLayout,340);
+}
+function nudge(){const c=$('#tour .tcard');if(!c)return;c.classList.remove('nudge');void c.offsetWidth;c.classList.add('nudge');}
+function tourLayout(){
+  if(!T.on||T.shown<0)return;
+  const L=$('#tour'),card=L.querySelector('.tcard'); if(!card)return;
+  const st=T.welcome?{}:TOUR[T.shown],W=$('#scr').offsetWidth,H=$('#scr').offsetHeight;
+  const dims=[...L.querySelectorAll('.tdim')],hole=L.querySelector('.thole');
+  const els=T.welcome?[]:tourTargets(st);
+  let R=null;
+  if(els.length){
+    if(!T.scrolled){ensureVisible(els[0]);T.scrolled=true;}
+    const rs=els.map(rel),x0=Math.min(...rs.map(r=>r.x)),y0=Math.min(...rs.map(r=>r.y)),x1=Math.max(...rs.map(r=>r.x+r.w)),y1=Math.max(...rs.map(r=>r.y+r.h)),p=6;
+    const x=Math.max(2,x0-p),y=Math.max(2,y0-p),w=Math.min(W-2,x1+p)-x,h=Math.min(H-2,y1+p)-y;
+    if(w>0&&h>0)R={x,y,w,h};
+  }
+  const set=(el,a,b,c,d)=>{el.style.left=a+'px';el.style.top=b+'px';el.style.width=Math.max(0,c)+'px';el.style.height=Math.max(0,d)+'px';el.style.display='block';};
+  if(R){
+    set(dims[0],0,0,W,R.y);set(dims[1],0,R.y+R.h,W,H-(R.y+R.h));set(dims[2],0,R.y,R.x,R.h);set(dims[3],R.x+R.w,R.y,W-(R.x+R.w),R.h);
+    hole.style.display='block';hole.style.left=R.x+'px';hole.style.top=R.y+'px';hole.style.width=R.w+'px';hole.style.height=R.h+'px';
+  }else{
+    set(dims[0],0,0,W,H);dims[1].style.display=dims[2].style.display=dims[3].style.display='none';hole.style.display='none';
+  }
+  card.style.width=Math.min(T.welcome?300:318,W-24)+'px';
+  const cw=card.offsetWidth,ch=card.offsetHeight,arrow=card.querySelector('.tarrow');
+  card.classList.remove('above','below');
+  let left,top;
+  if(R){
+    const below=(H-24)-(R.y+R.h+12),above=(R.y-12)-52;
+    if(ch<=below){top=R.y+R.h+12;card.classList.add('below');}
+    else if(ch<=above){top=R.y-12-ch;card.classList.add('above');}
+    else{
+      // neither side fits: keep the card away from the element to tap (the last target)
+      const last=rel(els[els.length-1]);
+      top=(last.y+last.h/2>H/2)?52:Math.max(52,H-24-ch);
+    }
+    left=Math.min(Math.max(R.x+R.w/2-cw/2,12),W-cw-12);
+    if(arrow&&(card.classList.contains('above')||card.classList.contains('below'))){arrow.style.left=Math.min(Math.max(R.x+R.w/2-left-7,20),cw-34)+'px';}
+    else if(arrow)arrow.style.display='none';
+  }else{left=(W-cw)/2;top=Math.max(52,(H-ch)/2);if(arrow)arrow.style.display='none';}
+  card.style.left=left+'px';card.style.top=top+'px';
+}
+let syncing=false;
+function schedSync(){if(syncing)return;syncing=true;try{tourSync();}finally{syncing=false;}}
+function tourSync(){
+  if(!T.on){hideTour();return;}
+  if(T.welcome){showStep(0);return;}
+  let idx=-1;const cur=TOUR[T.i];
+  if(cur&&(cur.sticky||cur.match()))idx=T.i;
+  else{
+    for(let j=T.i+1;j<TOUR.length;j++)if(!TOUR[j].sticky&&TOUR[j].match()){idx=j;break;}
+    if(idx<0)for(let j=T.i-1;j>=0;j--)if(!TOUR[j].sticky&&TOUR[j].match()){idx=j;break;}
+  }
+  if(idx<0){hideTour();return;}   // waiting for a transition to finish
+  T.i=idx;showStep(idx);updateGuideUI();
+}
+function findAct(a){return document.querySelector('#overlay [data-act="'+a+'"]')||document.querySelector('#view [data-act="'+a+'"]');}
+function tourAfterAct(a){
+  if(!T.on||T.welcome)return;
+  const st=TOUR[T.i];
+  if(st&&st.act===a&&!st.sticky){T.i=Math.min(T.i+1,TOUR.length-1);}
+  tourSync();
+}
+function tourStart(){S=fresh();clearOverlay();T.on=true;T.welcome=false;T.started=true;T.done=false;T.i=0;render();tourSync();}
+function tourResume(){T.on=true;T.welcome=false;tourSync();updateGuideUI();}
+function tourClose(){
+  const wasWelcome=T.welcome;T.on=false;T.welcome=false;hideTour();updateGuideUI();
+  toast(wasWelcome?'No guide. Tap “? Guide” at the top of the phone any time for step-by-step help.':'Guide closed. Tap “? Guide” to pick up where you left off.');
+}
+function tourFinish(){T.on=false;T.done=true;T.welcome=false;hideTour();updateGuideUI();toast('Tour complete. Explore freely, or reopen the guide from “? Guide”.');}
+function tourBack(){if(T.i<=0)return;T.i--;TOUR[T.i].setup();tourSync();}
+function tourNext(){
+  const st=TOUR[T.i];
+  if(st.final){tourFinish();return;}
+  if(st.act&&!st.noClick){const el=findAct(st.act);if(el){el.click();return;}}
+  if(st.next)st.next();
+  T.i=Math.min(T.i+1,TOUR.length-1);tourSync();
+}
+function tourAction(a){
+  if(a==='start'){tourStart();}
+  else if(a==='explore'||a==='close'){tourClose();}
+  else if(a==='next'){tourNext();}
+  else if(a==='back'){tourBack();}
+  else if(a==='skip'){const st=TOUR[T.i];T.i=idxOf(st.skipTo);TOUR[T.i].setup();tourSync();}
+  else if(a==='restart'){tourStart();}
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){const d=$('#about');if(d.open)return; if(T.on){tourClose();e.preventDefault();}else closeSheet();return;}
+  if(!T.on||T.welcome)return; const tg=e.target.tagName;if(tg==='INPUT'||tg==='TEXTAREA')return;
+  if(e.key==='ArrowRight'){e.preventDefault();tourNext();}
+  else if(e.key==='ArrowLeft'){e.preventDefault();tourBack();}
+});
+new MutationObserver(schedSync).observe($('#view'),{childList:true,subtree:true});
+new MutationObserver(schedSync).observe($('#overlay'),{childList:true,subtree:true});
+$('#view').addEventListener('scroll',()=>{if(T.on&&T.shown>=0)tourLayout();},{passive:true});
+['#view','#overlay'].forEach(s=>{$(s).addEventListener('animationend',()=>{if(T.on&&T.shown>=0)tourLayout();});});
+
+/* ---------- fit to window ---------- */
+function fit(){
+  const p=$('#phone'),w=$('#pwrap');let k=1;
+  if(innerWidth>1060)k=Math.min(1,(innerHeight-40)/812);
+  if(innerWidth<=440){p.style.transform='';w.style.width='';w.style.height='';}
+  else{p.style.transform=k<1?`scale(${k.toFixed(3)})`:'';w.style.width=(390*k)+'px';w.style.height=(812*k)+'px';}
+  tourLayout();
+}
+window.addEventListener('resize',fit);
+S=fresh();render();fit();
+T.on=true;T.welcome=true;tourSync();updateGuideUI();
+</script>
+</body>
+</html>
