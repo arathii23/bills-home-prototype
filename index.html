@@ -225,11 +225,16 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--orange);ou
 .sbtn{font-size:12.5px;font-weight:800;padding:7px 12px;border-radius:99px;margin-top:4px;display:inline-block;position:relative;cursor:pointer}
 .sbtn.pay{background:var(--cyan);color:#00305F}.sbtn.rem{border:1.5px solid var(--navy);color:var(--navy)}.sbtn.rem.on{background:var(--greenbg);border-color:var(--green);color:#157A52}
 .sbtn.paid{background:var(--greenbg);color:#157A52;cursor:default}
-.v15{background:#fff;border-radius:16px;margin:4px 16px 0;padding:14px}
-.v15 .r{display:flex;gap:12px;align-items:center;padding:8px 0;width:100%;text-align:left}
-.v15 .lk{flex:none;width:38px;height:38px;border-radius:10px;background:#F0F2F7;color:#8A96A8;display:grid;place-items:center}
-.v15 b{font-size:14px;display:block}.v15 span{font-size:12px;color:var(--muted)}
-.vtag{font-size:10px;font-weight:800;background:#EEE9FD;color:var(--purple);padding:2px 7px;border-radius:99px;margin-left:6px}
+.v15{background:#fff;border-radius:16px;margin:4px 16px 0;padding:6px 8px}
+.v15 .r{position:relative;display:flex;gap:12px;align-items:center;padding:10px 8px;width:100%;text-align:left;border-radius:12px;transition:background .15s}
+.v15 .r+.r::before{content:"";position:absolute;left:58px;right:8px;top:0;height:1px;background:var(--line)}
+.v15 .r:hover{background:#F4F7FC}.v15 .r:active{background:#E8EEF8}
+.v15 .lk{flex:none;width:38px;height:38px;border-radius:10px;background:var(--purplebg);color:var(--purple);display:grid;place-items:center}
+.v15 .rt{flex:1;min-width:0}
+.v15 .rt>b{font-size:14px;display:block;color:var(--ink)}
+.v15 .sub{display:block;font-size:12px;line-height:1.4;color:var(--muted)}
+.v15 .go{flex:none;display:grid;place-items:center;color:#8A96A8}
+.vtag{font-size:10px;font-weight:800;background:var(--purplebg);color:var(--purple);padding:2px 7px;border-radius:99px;margin-left:6px}
 .goal{margin:14px 16px 0;text-align:center;font-size:12.5px;font-weight:700;color:var(--navy);border:1.5px dashed var(--navy);border-radius:14px;padding:10px}
 .tag.TOVALIDATE{background:var(--redbg);color:var(--red)}
 .step .n.v{background:var(--purple)}
@@ -347,6 +352,9 @@ dialog .gbtn{margin-top:16px}
       <h3>Demo controls</h3>
       <button class="tog" data-act="t-hints"><span>Show tap hints</span><i class="sw on" id="sw-hints"></i></button>
       <button class="tog" data-act="t-spike"><span>Simulate a bill spike<br><small>₹3,240 against a usual ₹1,500-₹1,900</small></span><i class="sw" id="sw-spike"></i></button>
+      <button class="tog" data-act="t-down"><span>Simulate biller unavailable<br><small>Shows the recovery sheet when fetching</small></span><i class="sw" id="sw-down"></i></button>
+      <button class="tog" data-act="t-fail"><span>Simulate one failing payment<br><small>Bill Day: the broadband payment fails, then retry</small></span><i class="sw" id="sw-fail"></i></button>
+      <button class="btn2" data-act="next-invoice">Next invoice: 23 Dec</button>
       <button class="btn2" data-act="send-reminder">Send a due-date reminder</button>
       <button class="btn2" data-act="skip-day">Skip to tomorrow (bill posts)</button>
       <button class="btn2" data-act="restart">Start over</button>
@@ -376,11 +384,11 @@ dialog .gbtn{margin-top:16px}
 
 <dialog id="about">
   <h3>About this prototype</h3>
-  <p>A clickable concept of the Bills Home proposal in the Case 2 deck: <b>Find</b> a bill by scanning it, <b>Trust</b> the amount before paying, and <b>Repeat</b> without having to remember.</p>
+  <p>A clickable concept of the Bills Home proposal in the Case 2 deck: <b>Find</b> a bill from a photo, PDF or SMS, <b>Trust</b> the invoice before paying, and <b>Repeat</b> with a guided next invoice.</p>
   <h4>What is simulated</h4>
-  <ul><li>All names, amounts, dates and bill details are made up.</li><li>No network calls, no real payment, no PIN: the Authorise step is a demo.</li><li>The AI bill reading is shown as a scripted result.</li></ul>
+  <ul><li>All names, amounts, dates and bill details are made up.</li><li>No network calls, no real payment, no PIN: the Authorise step is a demo.</li><li>The bill reading is a scripted result; the amount and due date come from a simulated biller fetch.</li></ul>
   <h4>Design rules shown</h4>
-  <ul><li>The photo is deleted after reading; only four fields are kept.</li><li>No new fee added by Paytm on bills in V1.</li><li>Bill Day and Autopay are V1.5 previews, offered only after trust is earned: one day a month to pay everything due, and capped Autopay after the 2nd on-time payment.</li></ul>
+  <ul><li>The file is deleted after reading; only the biller and a masked consumer number are kept.</li><li>No new Paytm fee on bills in the pilot (a design rule). Reminders are opt-in and stop once an invoice is confirmed.</li><li>Bill Day and Autopay are V1.5 previews, offered only after trust is earned: one day a month to review what is due and approve each payment, and optional capped Autopay after the 2nd confirmed on-time payment.</li></ul>
   <h4>Look and feel</h4>
   <p>Based on Paytm's public app screenshots. It is a recreation, not the real app, and uses a text wordmark instead of any Paytm logo.</p>
   <h4>Where it sits in the deck</h4>
@@ -393,7 +401,7 @@ dialog .gbtn{margin-top:16px}
 const ic={
  back:'<path d="M15 18l-6-6 6-6"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
  bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
- check:'<path d="M20 6L9 17l-5-5"/>',x:'<path d="M18 6L6 18M6 6l12 12"/>',chevd:'<path d="M6 9l6 6 6-6"/>',
+ check:'<path d="M20 6L9 17l-5-5"/>',x:'<path d="M18 6L6 18M6 6l12 12"/>',chevd:'<path d="M6 9l6 6 6-6"/>',chevr:'<path d="M9 6l6 6-6 6"/>',
  camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
  file:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
  msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
@@ -423,23 +431,25 @@ const TODAY=new Date(2026,10,25);
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const addDays=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
 const dfmt=d=>d.getDate()+' '+MON[d.getMonth()];
-const daysTo=d=>Math.round((d-TODAY)/864e5);
+let NOWD=TODAY;
+const daysTo=d=>Math.round((d-NOWD)/864e5);
 const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
 const $=s=>document.querySelector(s);
 let S;
-function bd0(){return {day:25,set:false,sel:{},paid:false,sent:false,posted:false,cap:2500,autopay:false,paidList:[]};}
+function bd0(){return {day:25,set:false,init:false,sel:{},appr:{},cap:2500,autopay:false,apOpt:false,paidList:[]};}
 function fresh(){
+  NOWD=TODAY;
   return {screen:'home',hints:S?S.hints:true,spike:false,plan:{amt:299,days:28},source:'camera',
-    scanning:false,elecAdded:false,remind:true,cur:'elec',from:'found',paySt:{sent:false,posted:false},who:'all',
+    scanning:false,elecAdded:false,remind:false,planRemind:false,inv:1,billerDown:false,failOne:false,fv:null,cur:'elec',from:'found',paySt:{sent:false,posted:false},who:'all',
     visited:new Set(),log:[],bd:bd0(),
     bills:{
-      elec:{key:'elec',name:'City Power',label:'Mom’s electricity',who:'mom',kind:'Electricity',icon:'zap',due:addDays(TODAY,3),paid:false,posted:false,remind:true,range:[1500,1900],cn:'4821'},
-      bb:{key:'bb',name:'NetLink Fibre',label:'Broadband',who:'home',kind:'Broadband',icon:'wifi',amt:799,due:addDays(TODAY,7),paid:false,posted:false,remind:false},
-      dth:{key:'dth',name:'Sky DTH',label:'DTH',who:'home',kind:'DTH',icon:'tv',amt:350,due:addDays(TODAY,10),paid:false,posted:false,remind:false}
+      elec:{key:'elec',name:'City Power',label:'Mom’s electricity',who:'mom',kind:'Electricity',icon:'zap',due:addDays(TODAY,3),paid:false,posted:false,remind:false,range:[1500,1900],cn:'4821'},
+      bb:{key:'bb',name:'NetLink Fibre',label:'Broadband',who:'home',kind:'Broadband',icon:'wifi',amt:799,due:addDays(TODAY,7),paid:false,posted:false,remind:false,linked:false},
+      dth:{key:'dth',name:'Sky DTH',label:'DTH',who:'home',kind:'DTH',icon:'tv',amt:350,due:addDays(TODAY,10),paid:false,posted:false,remind:false,linked:false}
     },
     mobile:{key:'mob',label:'Mom’s mobile',who:'mom',icon:'phone',amt:299,due:addDays(TODAY,28),renew:true}};
 }
-const amtOf=b=>b.paidAmt!=null?b.paidAmt:(b.key==='elec'?(S.spike?3240:1840):b.amt);
+const amtOf=b=>b.paidAmt!=null?b.paidAmt:(b.key==='elec'?(S.spike?3240:(S.inv===2?1760:1840)):b.amt);
 const t0=Date.now();
 function track(ev,note=''){const s=Math.round((Date.now()-t0)/1000);S.log.unshift(`<i>${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}</i> ${ev}${note?' <i>'+note+'</i>':''}`);S.log=S.log.slice(0,7);renderLog();}
 function renderLog(){$('#log').innerHTML=S.log.length?S.log.join('<br>'):'<i>Nothing yet: tap through the phone.</i>';}
@@ -456,7 +466,7 @@ const bnav=on=>`<div class="bnav">
 
 const SC={
 home(){
-  const n=unpaid().length,tot=unpaidTotal();
+  const lk=billRows().length,n=unpaid().length,tot=unpaidTotal();
   return `<div class="topbar"><div class="avatar">${icon('user',20)}</div><div class="wordmark">pay<em>tm</em></div>
    <div class="tb-icons">${icon('search',22)}<span class="bell">${icon('bell',22)}<i></i></span></div></div>
    <div class="sec">UPI Money Transfer</div>
@@ -472,7 +482,7 @@ home(){
       <button class="tile" data-act="open-today" data-tile="elec">${icon('zap',26)}Electricity<br>Bill</button>
       <button class="tile" data-act="toast-dth">${icon('tv',26)}DTH<br>Recharge</button></div></div>
    <button class="card dueCard" data-act="go-bills"><span class="ico">${icon('cal',24)}</span>
-     <span style="flex:1"><b>Bills Home<span class="newtag">New</span></b><span>${n?n+' bills tracked · '+inr(tot)+' due by '+dfmt(dueBy()):'All bills paid for now'}</span></span><span style="color:var(--link);transform:rotate(180deg);display:grid">${icon('back',20,2.2)}</span></button>
+     <span style="flex:1"><b>Bills Home<span class="newtag">New</span></b><span>${!lk?'Add your first bill in 10 seconds':(n?n+(n===1?' bill':' bills')+' linked · '+inr(tot)+' due by '+dfmt(dueBy()):'All linked bills paid for now')}</span></span><span style="color:var(--link);transform:rotate(180deg);display:grid">${icon('back',20,2.2)}</span></button>
    <div class="card" style="display:flex;gap:12px;align-items:center"><span class="ico" style="width:44px;height:44px;border-radius:12px;background:#FFF4DC;color:#B7791F;display:grid;place-items:center">${icon('coin',24)}</span><span><b style="font-size:15px;display:block">Save in Gold</b><span style="font-size:12.5px;color:var(--muted)">Start with ₹10</span></span></div>
    <div style="height:24px"></div>${bnav('home')}`;
 },
@@ -509,40 +519,42 @@ success(){
       <button class="btn${hint()}" data-act="start-scan">Scan her bill</button>
       <button class="btn ghost" data-act="maybe-later" style="margin-top:4px">Maybe later</button>
       <div class="why-s">${icon('info',14)}<span>Why you see this: you recharged 2 different numbers in the last 90 days.</span></div></div>
-    <div class="mini"><span><b>Coming up on this number</b><span>Plan renews ${renew}. Set a reminder?</span></span>
-      <button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'Reminder set ✓':'Set reminder'}</button></div>
+    <div class="mini"><span><b>Coming up on this number</b><span>Plan renews ${renew}. Optional reminder, separate from bills</span></span>
+      <button class="pill ${S.planRemind?'on':''}" data-act="t-plan">${S.planRemind?'Reminder set ✓':'Set reminder'}</button></div>
     <div style="height:30px"></div>`;
 },
 scan(){
   const src=S.source;
-  const body=src==='camera'?`<div class="vf"><div class="cap">Point at any bill<small>electricity, broadband, DTH</small></div>
-      <div class="paper"><h6>CITY POWER</h6>Electricity bill · Nov<div class="ln"></div>Consumer no. ${S.bills.elec.cn}<br>Due date: ${dfmt(S.bills.elec.due)} 2026
+  const body=src==='camera'?`<div class="vf"><div class="cap">Photo of a bill<small>chosen from your gallery</small></div>
+      <div class="paper"><h6>CITY POWER</h6>Electricity bill · Nov<div class="ln"></div>Consumer no. 7720 ${S.bills.elec.cn}<br>Due date: ${dfmt(S.bills.elec.due)} 2026
         <div class="ln"></div><div class="ln" style="width:70%"></div><div class="amt">Amount ${inr(amtOf(S.bills.elec))}</div>
         <div style="font-size:8.5px;margin-top:4px;color:#666">Usual range on this bill: ${inr(1500)}-${inr(1900)}</div></div>
       <i class="br a"></i><i class="br b"></i><i class="br c"></i><i class="br d"></i>${S.scanning?'<div class="scanline"></div>':''}</div>
-      <button class="shutter${hint(!S.scanning)}" data-act="shutter" aria-label="Take photo"></button>
-      <div class="center" style="font-size:12px;color:var(--muted);margin-top:10px">${S.scanning?'Reading the bill…':'Tap to scan. Works on a photo, PDF or SMS.'}</div>`
+      <button class="shutter${hint(!S.scanning)}" data-act="shutter" aria-label="Read this photo"></button>
+      <div class="center" style="font-size:12px;color:var(--muted);margin-top:10px">${S.scanning?'Reading the photo…':'Tap to read the photo. Works on a photo, PDF or SMS share.'}</div>`
    :src==='pdf'?`<div class="list"><div style="font-size:13px;color:var(--muted);margin:2px 2px 10px">Pick a bill PDF from Files</div>
       <button class="li${hint()}" data-act="shutter"><span class="ico">${icon('file',20)}</span><span><b>City_Power_Nov.pdf</b><br><span style="color:var(--muted)">Downloads · 214 KB</span></span></button>
       <button class="li" data-act="toast-other"><span class="ico">${icon('file',20)}</span><span><b>Statement_Oct.pdf</b><br><span style="color:var(--muted)">Downloads · 96 KB</span></span></button></div>`
    :`<div class="list"><div style="font-size:13px;color:var(--muted);margin:2px 2px 10px">Share a bill SMS to Paytm</div>
-      <button class="li${hint()}" data-act="shutter"><span class="ico">${icon('msg',20)}</span><span><b>CITYPR</b><br>Bill for Nov: ${inr(amtOf(S.bills.elec))}, due ${dfmt(S.bills.elec.due)}. Consumer ${S.bills.elec.cn}.</span></button>
+      <button class="li${hint()}" data-act="shutter"><span class="ico">${icon('msg',20)}</span><span><b>CITYPR</b><br>Bill for Nov: ${inr(amtOf(S.bills.elec))}, due ${dfmt(S.bills.elec.due)}. Consumer 7720 ${S.bills.elec.cn}.</span></button>
       <button class="li" data-act="toast-other"><span class="ico">${icon('msg',20)}</span><span><b>HDFCBK</b><br>Your statement is ready.</span></button></div>`;
   return hdr('Add a bill',S.from==='bills'?'go-bills':'go-success',true)+`<div style="padding-top:10px"><div class="seg">
-     <button class="${src==='camera'?'on':''}" data-act="src" data-s="camera">${icon('camera',16)}Camera</button>
+     <button class="${src==='camera'?'on':''}" data-act="src" data-s="camera">${icon('camera',16)}Photo</button>
      <button class="${src==='pdf'?'on':''}" data-act="src" data-s="pdf">${icon('file',16)}PDF</button>
      <button class="${src==='sms'?'on':''}" data-act="src" data-s="sms">${icon('msg',16)}SMS share</button></div>${body}</div>`;
 },
 found(){
-  const b=S.bills.elec;
-  return hdr('Add a bill','go-scan',true)+`<div class="center" style="padding:12px 16px 12px"><div style="font-size:18px;font-weight:900">We found these details</div>
-    <div style="font-size:12.5px;color:var(--muted);margin-top:4px">AI read the bill and filled four fields. You confirm.</div></div>
+  const b=S.bills.elec,f=S.fv||{biller:b.name,cn:'7720 '+b.cn};
+  const ok=`<span class="ok">${icon('check',16,2.6)}</span>`;
+  const later=`<span style="flex:1;text-align:right;color:var(--muted);font-size:12.5px;font-weight:600">From City Power, after you confirm</span>`;
+  return hdr('Add a bill','go-scan',true)+`<div class="center" style="padding:12px 16px 12px"><div style="font-size:18px;font-weight:900">Check what we read</div>
+    <div style="font-size:12.5px;color:var(--muted);margin-top:4px">Biller and consumer number come from your file. Edit either one if it looks wrong.</div></div>
     <div class="found">
-      <div class="frow"><label>Biller</label><input value="${b.name}" id="f-biller" aria-label="Biller"><span class="ok">${icon('check',16,2.6)}</span></div>
-      <div class="frow"><label>Consumer no.</label><input value="•••• ${b.cn}" readonly aria-label="Consumer number"><span class="ok">${icon('check',16,2.6)}</span></div>
-      <div class="frow"><label>Amount</label><input value="${inr(amtOf(b))}" readonly aria-label="Amount"><span class="ok">${icon('check',16,2.6)}</span></div>
-      <div class="frow"><label>Due</label><input value="${dfmt(b.due)}" readonly aria-label="Due date"><span class="ok">${icon('check',16,2.6)}</span></div></div>
-    <div class="note">${icon('trash',16)}<span>Photo is deleted after reading. Only these four fields are kept.</span></div>
+      <div class="frow"><label>Biller</label><input value="${esc(f.biller)}" id="f-biller" aria-label="Biller">${ok}</div>
+      <div class="frow"><label>Consumer no.</label><input value="${esc(f.cn)}" id="f-cn" inputmode="numeric" aria-label="Consumer number">${ok}</div>
+      <div class="frow"><label>Amount</label>${later}</div>
+      <div class="frow"><label>Due date</label>${later}</div></div>
+    <div class="note">${icon('trash',16)}<span>The file is deleted after reading. Only the biller and a masked consumer number (••••${b.cn}) are stored.</span></div>
     <div class="pad"><button class="btn${hint()}" data-act="confirm">Confirm and fetch</button></div>`;
 },
 pay(){
@@ -550,180 +562,243 @@ pay(){
   let chk;
   if(b.key==='elec'){
     const bad=a>b.range[1];
-    chk=bad?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>Higher than usual</b><span>Bill fetched from the biller. History printed on it: usual range ${inr(b.range[0])}-${inr(b.range[1])}. This one is ${inr(a)}. Check the bill before paying.</span></div></div>`
-     :`<div class="check"><span class="ico">${icon('check',20,2.6)}</span><div><b>Amount check</b><span>Bill fetched from the biller. History printed on it: usual range ${inr(b.range[0])}-${inr(b.range[1])}. This one is normal.</span></div></div>`;
-  } else chk=`<div class="check"><span class="ico">${icon('check',20,2.6)}</span><div><b>Amount check</b><span>Bill fetched from the biller. Same as your last 3 payments (${inr(a)}). This one is normal.</span></div></div>`;
+    chk=bad?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>Higher than usual</b><span>Fetched from the biller. History printed on the bill: usual range ${inr(b.range[0])}-${inr(b.range[1])}. This one is ${inr(a)}. Check the bill before paying.</span></div></div>`
+     :`<div class="check"><span class="ico">${icon('check',20,2.6)}</span><div><b>Amount check</b><span>Fetched from the biller. History printed on the bill: usual range ${inr(b.range[0])}-${inr(b.range[1])}. This one is inside it.</span></div></div>`;
+  } else chk=`<div class="check"><span class="ico">${icon('check',20,2.6)}</span><div><b>Amount check</b><span>Fetched from the biller. Same as your last 3 payments (${inr(a)}).</span></div></div>`;
   const bad=b.key==='elec'&&a>b.range[1];
   return hdr('Pay '+inr(a),S.from==='bills'?'go-bills':'go-found',true)+`<div style="padding-top:12px"></div>
    <div class="billhead"><div><div style="font-size:12px;color:var(--muted)">${b.label}</div><div style="font-size:16px;font-weight:800">${b.name}</div><div style="font-size:12px;color:var(--muted)">Due ${dfmt(b.due)}</div></div><div class="big">${inr(a)}</div></div>
+   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('file',20)}</span><div><b>Verified invoice</b><span>${b.name} · account ••••${b.cn} · invoice ${S.inv===2?'Dec':'Nov'} 2026. Amount and due date were fetched from the biller, not read from your file.</span></div></div>
    ${chk}
-   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Refund promise</b><span>No biller confirmation in 24 hours? We refund you or chase the biller, and show each step.</span></div></div>
-   <div class="tl"><h4>Live status: what happens next</h4>
-     <div class="ts"><span class="dot"></span><div><b>1  Paid</b></div><span class="when">Now</span></div>
-     <div class="ts"><span class="dot"></span><div><b>2  Sent to biller</b></div><span class="when">Now</span></div>
-     <div class="ts"><span class="dot"></span><div><b>3  Posted</b></div><span class="when">By tomorrow</span></div></div>
+   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('coin',20)}</span><div><b>Fees and total</b><span>Bill ${inr(a)} + Paytm fee ₹0 = ${inr(a)} to pay. Shown before you authorise. (Pilot design rule: no new Paytm fee on bills.)</span></div></div>
+   <div class="tl"><h4>What happens after you pay</h4>
+     <div class="ts"><span class="dot"></span><div><b>1  Payment pending</b></div><span class="when">Now</span></div>
+     <div class="ts"><span class="dot"></span><div><b>2  Payment confirmed</b><span>A receipt and a reference</span></div><span class="when">Seconds</span></div>
+     <div class="ts"><span class="dot"></span><div><b>3  Posted by ${b.name}</b><span>Posting can take longer</span></div><span class="when">Up to a day</span></div></div>
    <div class="payvia"><span><b>Pay using</b><br><span>UPI · Savings account ••0734</span></span><span style="color:var(--green)">${icon('check',20,2.6)}</span></div>
    <div class="pad" style="padding-top:14px">
      ${bad?`<button class="btn out" data-act="toast-check" style="margin-bottom:8px">Check the bill</button><button class="btn warn" data-act="pay-bill">Pay ${inr(a)} anyway</button>`
           :`<button class="btn${hint()}" data-act="pay-bill">Pay ${inr(a)} via UPI</button>`}
-     <div class="center" style="font-size:12px;color:var(--muted);margin-top:10px">No new fee added by Paytm on this bill (design rule).</div></div>`;
+     <div class="center" style="font-size:12px;color:var(--muted);margin-top:10px">A payment reference is created when you pay, for any help request.</div></div>`;
 },
 status(){
-  const b=S.bills[S.cur]; const a=amtOf(b); const st=S.paySt;
+  const b=S.bills[S.cur]; const a=amtOf(b); const st=S.paySt; const ref=b.ref||'BC25NOV7K2';
   const step=(done,cur,t,w,sub)=>`<div class="ts ${done?'done':''} ${cur?'cur':''}"><span class="dot">${done?icon('check',13,3):''}</span><div><b>${t}</b>${sub?`<span>${sub}</span>`:''}</div><span class="when">${w}</span></div>`;
-  return `<div class="center" style="padding-top:14px"><div class="okring" style="width:70px;height:70px">${icon('check',36,3)}</div>
-    <div style="font-size:20px;font-weight:900">${inr(a)} paid to ${b.name}</div>
-    <div style="font-size:13px;color:var(--muted);margin-top:3px">${b.label} · UPI</div></div>
+  const ring=st.sent?`<div class="okring" style="width:70px;height:70px">${icon('check',36,3)}</div>`:`<div class="okring" style="width:70px;height:70px;background:#FFF4DC;color:#B7791F">${icon('hist',34,2.4)}</div>`;
+  const nextOn=S.remind&&b.remind;
+  return `<div class="center" style="padding-top:14px">${ring}
+    <div style="font-size:20px;font-weight:900">${inr(a)} ${st.sent?'paid to':'pending to'} ${b.name}</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">${b.label} · UPI · Ref ${ref}</div></div>
    <div class="tl" style="margin-top:16px"><h4>Live status</h4>
-     ${step(true,false,'Paid','Now')}
-     ${step(st.sent,!st.sent,'Sent to biller',st.sent?'Now':'…',st.sent?'':'Sending')}
-     ${step(st.posted,st.sent&&!st.posted,'Posted',st.posted?'Confirmed':'By tomorrow',st.posted?b.name+' confirmed your payment':'We will tell you the moment it posts')}</div>
-   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Refund promise</b><span>Not posted within 24 hours? We refund you or chase ${b.name}, and show each step.</span></div></div>
-   <div class="mini"><span><b>Remind me before the next one</b><span>A push 3 days and 1 day before the due date</span></span><button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'On ✓':'Turn on'}</button></div>
+     ${step(true,false,'Payment initiated','Now','Reference '+ref)}
+     ${step(st.sent,!st.sent,st.sent?'Payment confirmed':'Payment pending',st.sent?'Receipt ready':'…',st.sent?'Receipt: '+inr(a)+' to '+b.name:'Waiting for confirmation')}
+     ${step(st.posted,st.sent&&!st.posted,'Posted by '+b.name,st.posted?'Posted':'Pending',st.posted?b.name+' has posted your payment':'Biller posting pending. We will tell you when it posts')}</div>
+   <div class="mini"><span><b>Need help?</b><span>Quote reference ${ref}</span></span><button class="pill on" data-act="help">Get help</button></div>
+   <div class="mini"><span><b>Remind me before the next invoice</b><span>Opt in: a push 3 days and 1 day before the due date. Stops once paid</span></span><button class="pill ${nextOn?'on':''}" data-act="t-remind-next">${nextOn?'On ✓':'Turn on'}</button></div>
    <div class="pad" style="padding-top:16px"><button class="btn${hint()}" data-act="go-bills-after">See Bills Home</button>
    ${st.posted?'':`<button class="btn ghost" data-act="skip-day" style="margin-top:4px">Skip to tomorrow</button>`}</div>`;
 },
 bills(){
   const all=billRows(); const rows=all.filter(r=>S.who==='all'||r.who===S.who);
-  const tot=unpaidTotal(); const by=dueBy(); const span=Math.max(14,Math.max(...all.map(r=>daysTo(r.due))));
+  const tot=unpaidTotal(); const by=dueBy(); const op=unpaid().length;
   const pos=r=>{const n=all.length,i=all.indexOf(r);return n>1?8+i*(84/(n-1)):50;};   // evenly spaced so the date labels never collide
-  const paidNote=r=>r.posted?'Posted ✓':'Posted by tomorrow';
+  const paidNote=r=>r.posted?'Posted ✓':'Payment '+(r.key==='elec'&&!S.paySt.sent?'pending':'confirmed');
   const row=r=>{
     const d=daysTo(r.due);
     let act='';
-    if(r.renew)act=`<span style="font-size:12px;color:var(--muted);display:block;margin-top:6px">Renews</span>`;
-    else if(r.paid)act=`<span class="sbtn paid">Paid</span>`;
+    if(r.paid)act=`<span class="sbtn paid">Paid</span>`;
     else if(d<=3)act=`<span class="sbtn pay${hint(S.screen==='bills')}" data-act="pay-row" data-k="${r.key}">Pay now</span>`;
-    else act=`<span class="sbtn rem ${r.remind?'on':''}" data-act="rem-row" data-k="${r.key}">${r.remind?'Reminder on ✓':'Remind me'}</span>`;
-    const sub=r.renew?`${dfmt(r.due)}`:r.paid?paidNote(r):`due ${dfmt(r.due)}`;
-    return `<div class="brow"><span class="ico">${icon(r.icon,22)}</span><div class="mid" ${(!r.renew&&!r.paid)?`data-act="pay-row" data-k="${r.key}" style="cursor:pointer"`:''}><b>${r.label}</b><span>${r.name?r.name+' · ':''}${sub}</span></div>
+    else{const on=r.remind&&S.remind;act=`<span class="sbtn rem ${on?'on':''}" data-act="rem-row" data-k="${r.key}">${on?'Reminder on ✓':'Remind me'}</span>`;}
+    const sub=r.paid?paidNote(r):`due ${dfmt(r.due)}`;
+    return `<div class="brow"><span class="ico">${icon(r.icon,22)}</span><div class="mid" ${!r.paid?`data-act="pay-row" data-k="${r.key}" style="cursor:pointer"`:''}><b>${r.label}</b><span>${r.name?r.name+' · ':''}${sub}</span></div>
       <div style="text-align:right"><div class="amt">${inr(r.paid?r.paidAmt:amtOf(r))}</div>${act}</div></div>`;};
+  const unl=unlinkedRows().filter(r=>S.who==='all'||r.who===S.who).map(r=>`<div class="brow" style="opacity:.82"><span class="ico">${icon(r.icon,22)}</span><div class="mid"><b>${r.label}</b><span>Not linked · not in the total</span></div><div style="text-align:right"><span class="sbtn rem" data-act="link-later" data-k="${r.key}">Add bill</span></div></div>`).join('');
+  const mob=(S.who==='all'||S.mobile.who===S.who)?`<div class="brow" style="opacity:.9"><span class="ico">${icon('phone',22)}</span><div class="mid"><b>${S.mobile.label}</b><span>Plan renews ${dfmt(S.mobile.due)} · not in the total</span></div><div style="text-align:right"><div class="amt">${inr(S.mobile.amt)}</div><span class="sbtn rem ${S.planRemind?'on':''}" data-act="t-plan">${S.planRemind?'Reminder on ✓':'Remind me'}</span></div></div>`:'';
   const chip=(k,t)=>`<button class="${S.who===k?'on':''}" data-act="who" data-w="${k}">${t}</button>`;
+  const head=all.length?`<small>${tot?'Due soon':'All paid for now'}</small><div class="big">${tot?inr(tot):'₹0'}</div><small>${tot?'due by '+dfmt(by)+' · ':''}${op} open · ${all.filter(r=>r.paid).length} paid · linked bills only</small>
+     <div class="tline">${all.map(r=>`<i class="${r.paid?'paid':''}" style="left:${pos(r)}%"></i><s style="left:${pos(r)}%">${dfmt(r.due)}</s>`).join('')}</div>`
+    :`<small>No bills linked yet</small><div class="big">₹0</div><small>Add a bill to see what is due</small>`;
   return `<div class="hdr"><button class="ib" data-act="go-home" aria-label="Back">${icon('back',24,2)}</button><b>Bills Home</b></div>
-   <div class="sumbar"><small>${tot?'Due soon':'All paid for now'}</small><div class="big">${tot?inr(tot):'₹0'}</div><small>${tot?'due by '+dfmt(by)+' · ':''}${unpaid().length} bills open · ${all.filter(r=>r.paid).length} paid</small>
-     <div class="tline">${all.map(r=>`<i class="${r.paid?'paid':''}" style="left:${pos(r)}%"></i><s style="left:${pos(r)}%">${dfmt(r.due)}</s>`).join('')}</div></div>
+   <div class="sumbar">${head}</div>
    <div class="fchips"><span class="t">By due date</span>${chip('all','All')}${chip('mom','Mom')}${chip('home','Home')}</div>
-   ${rows.length?rows.map(row).join(''):'<div class="center" style="color:var(--muted);font-size:13px;margin:10px 0 16px">Nothing here yet.</div>'}
+   ${rows.length?rows.map(row).join(''):'<div class="center" style="color:var(--muted);font-size:13px;margin:10px 0 10px">No linked bill here yet.</div>'}
+   ${unl}${mob}
    <button class="brow" data-act="add-bill" style="border:1.5px dashed #9FB3D1;background:transparent;justify-content:center;color:var(--navy);font-weight:800;gap:8px">${icon('plus',20,2.4)}Add bill</button>
-   <div class="mini"><span><b>Reminders</b><span>A push 3 days and 1 day before each due date, with one-tap pay</span></span><button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'On ✓':'Off'}</button></div>
-   <div style="font-weight:800;margin:18px 16px 8px">Next, once trust is earned</div>
-   <div class="v15"><button class="r" data-act="bd-open"><span class="lk">${icon('cal',20)}</span><span><b>Bill Day<span class="vtag">V1.5</span></b><span>${S.bd.set?'On: the '+S.bd.day+'th of every month':'One day each month to pay everything due in one go'}</span></span></button>
-     <button class="r" data-act="toast-autopay"><span class="lk">${icon('repeat',20)}</span><span><b>Autopay<span class="vtag">V1.5</span></b><span>${S.bd.autopay?'On for City Power, capped at '+inr(S.bd.cap):'Capped, offered after your 2nd on-time payment'}</span></span></button></div>
+   <div class="mini"><span><b>Reminders</b><span>Opt in: a push 3 days and 1 day before a due date, with one-tap pay. They stop once the invoice is confirmed</span></span><button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'On ✓':'Off'}</button></div>
+   <div style="display:flex;align-items:baseline;justify-content:space-between;margin:18px 16px 8px"><b style="font-weight:800">Next, once trust is earned</b><span style="font-size:11.5px;color:var(--muted)">Tap to preview</span></div>
+   <div class="v15"><button class="r" data-act="bd-open"><span class="lk">${icon('cal',20)}</span><span class="rt"><b>Bill Day<span class="vtag">V1.5</span></b><span class="sub">${S.bd.set?'On: the '+S.bd.day+'th of every month':'One day each month to pay what is due, bill by bill'}</span></span><span class="go">${icon('chevr',18,2.2)}</span></button>
+     <button class="r" data-act="ap-open"><span class="lk">${icon('repeat',20)}</span><span class="rt"><b>Autopay<span class="vtag">V1.5</span></b><span class="sub">${S.bd.autopay?'On for City Power, capped at '+inr(S.bd.cap):'Optional, capped, offered after 2 on-time confirmed payments'}</span></span><span class="go">${icon('chevr',18,2.2)}</span></button></div>
    <div class="goal">Design goal: nothing to remember</div><div style="height:24px"></div>${bnav('bills')}`;
 },
 bdset(){
-  const D=S.bd.day,cnt=d=>BD_BILLS.filter(b=>b.due<=addDays(new Date(2026,11,d),14)).length,n=cnt(D);
+  const D=S.bd.day,cnt=d=>bdEligible(d).length,n=cnt(D);
   const chip=d=>`<button class="dchip${D===d?' on':''}" data-act="bd-day" data-d="${d}" aria-pressed="${D===d}">${d===25?'<span class="sg">Suggested</span>':''}<b>${d}th</b><span>${cnt(d)} bill${cnt(d)===1?'':'s'}</span></button>`;
-  return hdr('Bill Day','go-bills',true)+`<div class="bdhero" style="margin-top:12px"><small>V1.5 preview · next cycle, Dec 2026</small><div class="big">One day a month.<br>Everything due, paid.</div><small>Pick a day. On that day Bills Home lists every bill due in the next 14 days, each with its Amount check, so you pay once.</small></div>
+  return hdr('Bill Day','go-bills',true)+`<div class="bdhero" style="margin-top:12px"><small>V1.5 preview · next cycle, Dec 2026</small><div class="big">One day a month.<br>Every due bill, in one list.</div><small>Pick a day. On that day Bills Home lists each issued, unpaid bill due within the next 14 days, with its Amount check. You approve each payment separately.</small></div>
    <div style="font-weight:800;margin:16px 16px 0">Pick your Bill Day</div>
-   <div class="dchips" style="margin-top:14px">${[15,20,25].map(chip).join('')}</div>
-   <div class="note">${icon('info',16)}<span>${D===25?'Suggested: the 25th, 3 days before your first due date (28 Dec), so all 3 bills are caught.':'The 25th would catch all 3 bills. Pick any day and change it later.'}</span></div>
+   <div class="dchips" style="margin-top:14px">${[15,20,25,30].map(chip).join('')}</div>
+   <div class="note">${icon('info',16)}<span>${D===25?'Suggested: the 25th. All 3 invoices are issued by then (the last on 23 Dec) and the first is due 28 Dec.':D===30?'On the 30th, City Power (due 28 Dec) is already late, so it is shown separately; 2 bills are listed.':'On the '+D+'th only '+n+' of 3 invoices are issued, so the rest wait for their own reminders.'}</span></div>
    <div class="cmp"><div class="a">Without Bill Day<b>3 due dates</b>28 Dec, 2 Jan and 5 Jan: each bill needs its own moment</div><div class="b">With Bill Day<b>1 day</b>${dfmt(BD_DATE())}: one push, one list with ${n} bill${n===1?'':'s'} due in the next 14 days</div></div>
    <div class="sticky"><button class="btn${hint()}" data-act="bd-set">${S.bd.set?'Preview the Bill Day push':'Set Bill Day: the '+D+'th of every month'}</button>
-    <div class="center" style="font-size:11.5px;color:var(--muted);margin-top:8px">No new fee added by Paytm on these bills (design rule). Change or switch off any time.</div></div>`;
+    <div class="center" style="font-size:11.5px;color:var(--muted);margin-top:8px">No new Paytm fee on these bills (pilot design rule). Change or switch off any time.</div></div>`;
 },
 bdreview(){
-  const L=bdList(),tick=bdTicked(),tot=bdTotal(),anyBad=tick.some(bdBad);
+  const L=bdList(),tick=bdTicked(),tot=bdTotal(),anyBad=tick.some(bdBad),early=bdEarlier();
   const row=b=>{
-    const a=bdAmt(b),bad=bdBad(b),on=!!S.bd.sel[b.k];
+    const a=bdAmt(b),bad=bdBad(b),on=!!S.bd.sel[b.k],dn=bdDone(b.k);
     const chk=bad?`<div class="bdchk bad">${icon('alert',15)}<span><b>Higher than usual.</b> ${inr(a)} against ${inr(b.usual[0])}-${inr(b.usual[1])} on the bill.${on?'':' Left unticked.'} <button class="inl" data-act="bd-check" data-k="${b.k}">Check the bill</button></span></div>`
-      :`<div class="bdchk">${icon('check',15,2.6)}<span><b>Amount check:</b> ${b.usual?'inside the usual '+inr(b.usual[0])+'-'+inr(b.usual[1]):'same as your last 3 payments'}</span></div>`;
-    return `<div class="bdrow"><div class="top"><button class="cb${on?' on':''}" data-act="bd-tick" data-k="${b.k}" role="checkbox" aria-checked="${on}" aria-label="Pay ${b.label}, ${inr(a)}">${on?icon('check',16,3):''}</button><span class="ico">${icon(b.icon,20)}</span><div class="mid"><b>${b.label}</b><span>${b.name} · due ${dfmt(b.due)}</span></div><div class="amt">${inr(a)}</div></div>${chk}</div>`;};
-  return hdr('Bill Day · '+dfmt(BD_DATE()),'bd-back',true)+`<div class="billhead" style="margin-top:10px;padding:12px 14px"><div><div style="font-size:12px;color:var(--muted)">${tick.length} of ${L.length} bills ticked · next 14 days</div><div style="font-size:15px;font-weight:800">Due ${dfmt(L[0].due)} to ${dfmt(L[L.length-1].due)}</div></div><div class="big">${inr(tot)}</div></div>
+      :`<div class="bdchk">${icon('check',15,2.6)}<span><b>Amount check:</b> ${b.usual?'inside the usual '+inr(b.usual[0])+'-'+inr(b.usual[1]):'same as your last payments'}</span></div>`;
+    const lead=dn?`<span class="stp on" style="margin-top:6px">${icon('check',11,3)}${dn.st==='pending'?'Pending':dn.st==='confirmed'?'Confirmed':'Posted'}</span>`
+      :`<button class="cb${on?' on':''}" data-act="bd-tick" data-k="${b.k}" role="checkbox" aria-checked="${on}" aria-label="Pay ${b.label}, ${inr(a)}">${on?icon('check',16,3):''}</button>`;
+    return `<div class="bdrow"><div class="top">${lead}<span class="ico">${icon(b.icon,20)}</span><div class="mid"><b>${b.label}</b><span>${b.name} · issued ${dfmt(b.issued)} · due ${dfmt(b.due)}</span></div><div class="amt">${inr(a)}</div></div>${chk}</div>`;};
+  const earlyBox=early.length?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>Due earlier, not part of this list</b><span>${early.map(b=>b.name+' ('+inr(bdAmt(b))+', due '+dfmt(b.due)+')').join(', ')} ${early.length===1?'is':'are'} already past ${early.length===1?'its':'their'} due date. Pay ${early.length===1?'it':'them'} from the individual reminder, which stays on.</span></div></div>`:'';
+  return hdr('Bill Day · '+dfmt(BD_DATE()),'bd-back',true)+`<div class="billhead" style="margin-top:10px;padding:12px 14px"><div><div style="font-size:12px;color:var(--muted)">${tick.length} of ${L.length} bills ticked · due within 14 days</div><div style="font-size:15px;font-weight:800">Due ${dfmt(L[0].due)}${L.length>1?' to '+dfmt(L[L.length-1].due):''}</div></div><div class="big">${inr(tot)}</div></div>
    <div style="font-weight:800;margin:12px 16px 8px;font-size:14px">Tick the bills to pay</div>
-   <div class="bdlist">${L.map(row).join('')}</div>
-   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Refund promise and Live status</b><span>Each bill keeps its own Paid, Sent to biller, Posted status. No biller confirmation in 24 hours? We refund you or chase the biller, and show each step.</span></div></div>
+   <div class="bdlist">${L.map(row).join('')}</div>${earlyBox}
+   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Each bill is its own payment</b><span>You approve each one, and each keeps its own status, reference and receipt. A failed payment can be retried without touching the others.</span></div></div>
    <div class="payvia"><span><b>Pay using</b><br><span>UPI · Savings account ••0734</span></span><span style="color:var(--green)">${icon('check',20,2.6)}</span></div>
-   <div class="sticky"><button class="btn${anyBad?' warn':hint(tick.length>0)}" data-act="bd-pay"${tick.length?'':' disabled'}>${tick.length?(anyBad?'Pay '+inr(tot)+' anyway':'Pay '+inr(tot)+' · '+tick.length+' bill'+(tick.length>1?'s':'')):'Tick a bill to pay'}</button>
-     <div class="center" style="font-size:11.5px;color:var(--muted);margin-top:8px">No new fee added by Paytm on these bills (design rule).</div></div>`;
+   <div class="sticky"><button class="btn${anyBad?' warn':hint(tick.length>0)}" data-act="bd-pay"${tick.length?'':' disabled'}>${tick.length?(anyBad?'Review '+tick.length+' bill'+(tick.length>1?'s':'')+' · '+inr(tot)+' anyway':'Review '+tick.length+' bill'+(tick.length>1?'s':'')+' · '+inr(tot)):(L.every(b=>bdDone(b.k))?'All listed bills are paid':'Tick a bill to pay')}</button>
+     <div class="center" style="font-size:11.5px;color:var(--muted);margin-top:8px">No new Paytm fee on these bills (pilot design rule).</div></div>`;
 },
 bddone(){
-  const P=S.bd.paidList,tot=P.reduce((s,p)=>s+p.amt,0),L=bdList(),left=L.filter(b=>!P.some(p=>p.k===b.k));
+  const P=S.bd.paidList,L=bdList(),left=L.filter(b=>!P.some(p=>p.k===b.k));
+  const okp=p=>p.st==='confirmed'||p.st==='posted';
+  const live=P.filter(p=>p.st!=='failed'),tot=live.reduce((s,p)=>s+p.amt,0),pend=P.some(p=>p.st==='pending'),fail=P.filter(p=>p.st==='failed');
   const stp=(on,t)=>`<span class="stp${on?' on':''}">${on?icon('check',11,3):''}${t}</span>`;
-  const rows=P.map(p=>{const b=bdMeta(p.k);return `<div class="bds"><b>${b.label}</b><span>${b.name} · ${inr(p.amt)}</span><div class="stps">${stp(true,'Paid')}${stp(S.bd.sent,'Sent to biller')}${stp(S.bd.posted,'Posted')}</div></div>`;}).join('');
-  const unl=P.filter(p=>bdMeta(p.k).prior+1>=2);
-  const apRows=P.map(p=>{const b=bdMeta(p.k),c=b.prior+1;return `<div class="apr"><span class="apd on"></span><span class="apd${c>=2?' on':''}"></span><b>${b.name}</b><i style="margin-left:auto;font-style:normal;font-size:11.5px;font-weight:700">${c>=2?'Offer unlocked':c+' of 2'}</i></div>`;}).join('');
+  const rows=P.map(p=>{const b=bdMeta(p.k);
+    const chips=p.st==='failed'?`<span class="stp" style="border-color:#D9534F;color:#B83A36">Failed · not paid</span><button class="inl" data-act="bd-retry" data-k="${p.k}" style="align-self:center">Retry this bill</button>`
+      :stp(true,'Initiated')+stp(okp(p),'Confirmed')+stp(p.st==='posted','Posted');
+    return `<div class="bds"><b>${b.label}</b><span>${b.name} · ${inr(p.amt)} · ref ${p.ref}</span><div class="stps">${chips}</div></div>`;}).join('');
+  const cnt=p=>bdMeta(p.k).prior+(okp(p)?1:0);
+  const unl=P.filter(p=>cnt(p)>=2);
+  const apRows=P.map(p=>{const c=cnt(p);return `<div class="apr"><span class="apd${c>=1?' on':''}"></span><span class="apd${c>=2?' on':''}"></span><b>${bdMeta(p.k).name}</b><i style="margin-left:auto;font-style:normal;font-size:11.5px;font-weight:700">${c>=2?'Offer unlocked':p.st==='pending'?'Counts once confirmed':c+' of 2'}</i></div>`;}).join('');
   const apAct=S.bd.autopay?`<div class="bdchk" style="margin-top:8px">${icon('check',15,2.6)}<span><b>Autopay is on for City Power</b>, capped at ${inr(S.bd.cap)}. A notice goes 24 hours before every debit.</span></div>`
     :unl.length?`<button class="btn${hint()}" data-act="bd-autopay" style="margin-top:10px;font-size:14px;padding:11px">Set up Autopay for ${bdMeta(unl[0].k).name}</button>`
-    :`<div style="margin-top:6px">No bill has reached its 2nd on-time payment yet, so no Autopay offer is shown.</div>`;
-  return `<div class="center" style="padding-top:14px"><div class="okring" style="width:70px;height:70px">${icon('check',36,3)}</div>
-    <div style="font-size:20px;font-weight:900">${inr(tot)} paid · ${P.length} bill${P.length===1?'':'s'}</div>
-    <div style="font-size:13px;color:var(--muted);margin-top:3px">Bill Day ${dfmt(BD_DATE())} · UPI</div></div>
+    :`<div style="margin-top:6px">${pend?'Payments are still pending.':'No bill has two confirmed on-time payments yet, so no Autopay offer is shown.'}</div>`;
+  const ring=pend?`<div class="okring" style="width:70px;height:70px;background:#FFF4DC;color:#B7791F">${icon('hist',34,2.4)}</div>`:`<div class="okring" style="width:70px;height:70px">${icon('check',36,3)}</div>`;
+  const ttl=live.length?`${inr(tot)} ${pend?'pending':'paid'} · ${live.length} bill${live.length===1?'':'s'}`:'No payment went through';
+  return `<div class="center" style="padding-top:14px">${ring}
+    <div style="font-size:20px;font-weight:900">${ttl}</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">Bill Day ${dfmt(BD_DATE())} · UPI · one payment per bill</div></div>
    <div class="tl bdtl" style="margin-top:16px"><h4>Live status, bill by bill</h4>${rows}</div>
-   ${left.length?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>${left.length} bill${left.length===1?'':'s'} left out</b><span>${left.map(b=>b.label+' ('+inr(bdAmt(b))+')').join(', ')} ${left.length===1?'was':'were'} not ticked, so ${left.length===1?'it stays':'they stay'} in Bills Home with reminders until checked.</span></div></div>`:''}
-   <div class="apc"><b style="display:block;font-size:13.5px;color:#2C2166;margin-bottom:6px">Autopay unlocks after the 2nd on-time payment</b>${apRows}${apAct}</div>
-   <div class="pad" style="padding-top:16px"><button class="btn ghost" data-act="go-bills">Back to Bills Home</button>${S.bd.posted?'':`<button class="btn ghost" data-act="skip-day" style="margin-top:2px">Skip to tomorrow</button>`}</div>`;
+   ${fail.length?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>${fail.length} payment${fail.length===1?'':'s'} failed</b><span>The other bills are unaffected. Retrying pays only the failed invoice, once. Help uses the reference shown on that bill.</span></div></div>`:''}
+   ${left.length?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>${left.length} bill${left.length===1?'':'s'} left out</b><span>${left.map(b=>b.label+' ('+inr(bdAmt(b))+')').join(', ')} ${left.length===1?'was':'were'} not paid, so ${left.length===1?'it stays':'they stay'} in Bills Home with reminders until checked.</span></div></div>`:''}
+   <div class="apc"><b style="display:block;font-size:13.5px;color:#2C2166;margin-bottom:6px">Autopay is offered after 2 on-time confirmed payments</b>${apRows}${apAct}</div>
+   <div class="pad" style="padding-top:16px"><button class="btn ghost" data-act="go-bills">Back to Bills Home</button>${P.some(p=>p.st==='confirmed')?`<button class="btn ghost" data-act="skip-day" style="margin-top:2px">Skip to tomorrow</button>`:''}</div>`;
 }
 };
 
 /* ---------- derived ---------- */
-function billRows(){const r=[S.bills.bb,S.bills.dth,S.mobile];if(S.elecAdded)r.push(S.bills.elec);return r.sort((a,b)=>a.due-b.due);}
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function billRows(){const r=[];if(S.elecAdded)r.push(S.bills.elec);['bb','dth'].forEach(k=>{if(S.bills[k].linked)r.push(S.bills[k]);});return r.sort((a,b)=>a.due-b.due);}   // linked bills only; the plan renewal never counts as a bill due
+function unlinkedRows(){return ['bb','dth'].map(k=>S.bills[k]).filter(b=>!b.linked);}
 function unpaid(){return billRows().filter(r=>!r.paid);}
 function unpaidTotal(){return unpaid().reduce((s,r)=>s+amtOf(r),0);}
-function dueBy(){const u=unpaid();return u.length?u.reduce((m,r)=>r.due>m?r.due:m,u[0].due):TODAY;}
+function dueBy(){const u=unpaid();return u.length?u.reduce((m,r)=>r.due>m?r.due:m,u[0].due):NOWD;}
+function optIn(){S.remind=true;S.bills.elec.remind=true;}
+function nextInvoice(){const b=S.bills.elec;NOWD=addDays(TODAY,28);S.inv=2;b.paid=false;b.posted=false;delete b.paidAmt;delete b.ref;b.due=new Date(2026,11,28);S.paySt={sent:false,posted:false};}
+function toInv1(){const b=S.bills.elec;NOWD=TODAY;S.inv=1;b.due=new Date(2026,10,28);}
 
 /* ---------- Bill Day (V1.5 preview): an independent next-cycle scenario, Dec 2026 ---------- */
 const BD_BILLS=[
- {k:'elec',name:'City Power',label:'Mom’s electricity',icon:'zap',due:new Date(2026,11,28),usual:[1500,1900],prior:1},
- {k:'bb',name:'NetLink Fibre',label:'Broadband',icon:'wifi',due:new Date(2027,0,2),amt:799,prior:0},
- {k:'dth',name:'Sky DTH',label:'DTH',icon:'tv',due:new Date(2027,0,5),amt:350,prior:0}];
+ {k:'elec',name:'City Power',label:'Mom’s electricity',icon:'zap',issued:new Date(2026,11,10),due:new Date(2026,11,28),usual:[1500,1900],prior:1},
+ {k:'bb',name:'NetLink Fibre',label:'Broadband',icon:'wifi',issued:new Date(2026,11,22),due:new Date(2027,0,2),amt:799,prior:0},
+ {k:'dth',name:'Sky DTH',label:'DTH',icon:'tv',issued:new Date(2026,11,23),due:new Date(2027,0,5),amt:350,prior:0}];
 const bdAmt=b=>b.k==='elec'?(S.spike?3240:1760):b.amt;
 const bdBad=b=>!!b.usual&&bdAmt(b)>b.usual[1];
 const BD_DATE=()=>new Date(2026,11,S.bd.day);
-const bdList=()=>BD_BILLS.filter(b=>b.due<=addDays(BD_DATE(),14));
-const bdTicked=()=>bdList().filter(b=>S.bd.sel[b.k]);
+const bdEligible=d=>{const D=new Date(2026,11,d||S.bd.day),E=addDays(D,14);return BD_BILLS.filter(b=>b.issued<=D&&b.due>=D&&b.due<=E);};   // issued, not yet due, due within 14 days
+const bdList=()=>bdEligible();
+const bdEarlier=()=>{const D=BD_DATE();return BD_BILLS.filter(b=>b.issued<=D&&b.due<D&&!bdDone(b.k));};
+const bdDone=k=>S.bd.paidList.find(p=>p.k===k&&p.st!=='failed');
+const bdTicked=()=>bdList().filter(b=>S.bd.sel[b.k]&&!bdDone(b.k));
 const bdTotal=()=>bdTicked().reduce((s,b)=>s+bdAmt(b),0);
 const bdMeta=k=>BD_BILLS.find(b=>b.k===k);
+const bdRef=b=>'BD'+S.bd.day+'DEC'+b.k.toUpperCase();
 function bdAuto(){BD_BILLS.forEach(b=>{S.bd.sel[b.k]=!bdBad(b);});}   // a bill above its usual range starts unticked
-function bdReview(){bdAuto();S.bd.paid=false;S.bd.sent=false;S.bd.posted=false;S.bd.autopay=false;S.bd.paidList=[];track('bill_day_open',bdList().length+' bills');go('bdreview');}
-function bdPrep(){const sp=S.spike;S.spike=false;S.elecAdded=true;if(!S.bills.elec.paid)payElec();S.spike=sp;postAll();}   // cycle 1 is complete: electricity paid and posted
-function bdPaid(){S.bd.set=true;bdAuto();S.bd.paid=true;S.bd.sent=true;S.bd.posted=false;S.bd.autopay=false;S.bd.paidList=bdTicked().map(b=>({k:b.k,amt:bdAmt(b)}));}
+function bdReview(){if(!S.bd.init){bdAuto();S.bd.init=true;}track('bill_day_open',bdList().length+' bills');go('bdreview');}
+function bdPrep(){const sp=S.spike;S.spike=false;S.elecAdded=true;if(S.inv===2)toInv1();if(!S.bills.elec.paid)payElec();S.spike=sp;postAll();}   // cycle 1 is complete: electricity paid and posted
+function bdPaid(){S.bd.set=true;S.bd.init=true;bdAuto();S.bd.autopay=false;S.bd.paidList=bdTicked().map(b=>({k:b.k,amt:bdAmt(b),st:'confirmed',ref:bdRef(b)}));}
+function bdResolve(keys,noFail){
+  let ch=false;
+  keys.forEach(k=>{const p=S.bd.paidList.find(x=>x.k===k&&x.st==='pending');if(!p)return;p.st=(S.failOne&&!noFail&&k==='bb')?'failed':'confirmed';ch=true;track(p.st==='failed'?'payment_failed':'payment_confirmed',k+' (Bill Day)');});
+  if(ch&&S.screen==='bddone'){render(false);if(T.on)T.shown=-1;tourSync();}
+}
 function bdBanner(){
   const o=$('#overlay');o.querySelectorAll('.banner').forEach(e=>e.remove());
   const L=bdList(),tot=L.reduce((s,b)=>s+bdAmt(b),0);
   const d=document.createElement('button');d.className='banner';d.dataset.act='bd-open-review';
-  d.innerHTML=`<span class="ico">pay</span><span><small>Paytm · ${dfmt(BD_DATE())}, 9:00 am</small><b>It’s Bill Day: ${L.length} bill${L.length===1?'':'s'} due, ${inr(tot)}</b><small>Tap to review and pay in one go</small></span>`;
+  d.innerHTML=`<span class="ico">pay</span><span><small>Paytm · ${dfmt(BD_DATE())}, 9:00 am</small><b>It’s Bill Day: ${L.length} bill${L.length===1?'':'s'} due, ${inr(tot)}</b><small>Tap to review and approve each payment</small></span>`;
   o.appendChild(d);setTimeout(()=>{if(d.isConnected&&!(T.on&&!T.welcome&&TOUR[T.i]&&TOUR[T.i].id==='bdpush'))d.remove();},9000);track('bill_day_push',dfmt(BD_DATE()));
 }
-function apSheet(){
-  const c=S.bd.cap,tick=icon('check',16,2.6);
-  return `<h5>Autopay for City Power</h5><p>Pays this bill on its due date, never above the cap you choose. Demo only: the one-time registration with extra authentication is not shown.</p>
-   <div style="font-weight:800;font-size:13px">Your cap for one bill</div>
-   <div class="dchips" style="margin:14px 0 6px">${[2000,2500,3000].map(x=>`<button class="dchip${c===x?' on':''}" data-act="bd-cap" data-c="${x}" aria-pressed="${c===x}">${x===2500?'<span class="sg">Suggested</span>':''}<b style="font-size:16px">${inr(x)}</b></button>`).join('')}</div>
-   <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">Suggested: about a third above your highest recent bill (${inr(1900)}).</div>
-   <ul class="aplist"><li>${tick}<span>A notice 24 hours before every debit, with a choice to skip that one</span></li>
+function bdPaySheet(){
+  const L=bdTicked(),ap=L.filter(b=>S.bd.appr[b.k]),tot=ap.reduce((s,b)=>s+bdAmt(b),0);
+  return `<h5>Approve each payment</h5><p>Each bill is its own payment to its own biller, so each is approved on its own. Via UPI. Demo only: no PIN is entered and nothing is charged.</p>
+   <div class="apprlist">${L.map(b=>`<div class="bdrow" style="margin:0 0 8px;border:1.5px solid var(--line)"><div class="top"><button class="cb${S.bd.appr[b.k]?' on':''}" data-act="bd-approve" data-k="${b.k}" role="checkbox" aria-checked="${!!S.bd.appr[b.k]}" aria-label="Approve ${b.label}, ${inr(bdAmt(b))}">${S.bd.appr[b.k]?icon('check',16,3):''}</button><div class="mid"><b>${b.label}</b><span>${b.name} · ${inr(bdAmt(b))}</span></div></div></div>`).join('')}</div>
+   <button class="btn${ap.length?' hint':''}" data-act="bd-auth"${ap.length?'':' disabled'} style="margin-top:6px">${ap.length?'Authorise '+ap.length+' approved · '+inr(tot):'Approve at least one bill'}</button>`;
+}
+function apRules(){
+  const tick=icon('check',16,2.6);
+  return `<ul class="aplist"><li>${tick}<span>A notice 24 hours before every debit, with a choice to skip that one</span></li>
     <li>${tick}<span>A bill above your cap is never paid automatically: we ask you first</span></li>
     <li>${tick}<span>A low-balance nudge the day before, so the debit does not fail</span></li>
-    <li>${tick}<span>Pause or cancel any time in Bills Home</span></li></ul>
-   <button class="btn hint" data-act="bd-ap-on">Turn on Autopay · cap ${inr(c)}</button>`;
+    <li>${tick}<span>Pause or cancel any time in Bills Home</span></li></ul>`;
+}
+function apInfoSheet(){   // what the Autopay row on Bills Home opens
+  if(S.bd.autopay){
+    return `<h5>Autopay is on for City Power</h5><p>Capped at ${inr(S.bd.cap)} a bill. The next debit is on 28 Jan, after a notice 24 hours before. A bill above the cap is never paid automatically: we ask you first.</p>
+     <button class="btn navy" data-act="ap-off">Turn off Autopay</button>
+     <button class="btn ghost" data-act="close-sheet" style="margin-top:2px">Keep it on</button>`;
+  }
+  const rows=BD_BILLS.map(b=>`<div class="apr"><span class="apd${b.prior>=1?' on':''}"></span><span class="apd${b.prior>=2?' on':''}"></span><b>${b.name}</b><i style="margin-left:auto;font-style:normal;font-size:11.5px;font-weight:700">${b.prior} of 2</i></div>`).join('');
+  return `<h5>Autopay<span class="vtag">V1.5 preview</span></h5>
+   <p>Optional, and offered per bill only after two on-time payments of two different invoices are confirmed. A payment counts only when it is confirmed, never at authorisation. Where each bill stands in this preview:</p>
+   <div class="apc" style="margin:0 0 12px">${rows}</div>
+   ${apRules()}
+   <button class="btn hint" data-act="ap-preview" style="margin-top:6px">See the offer after a Bill Day payment</button>`;
+}
+function capErr(){const c=S.bd.cap,cur=bdAmt(bdMeta('elec'));
+  if(!Number.isInteger(c)||c<=0)return 'Enter a whole-rupee cap.';
+  if(c<cur)return 'The cap must cover the current bill ('+inr(cur)+').';
+  if(c>15000)return 'The cap can be at most ₹15,000 in this preview.';
+  return '';}
+function apSheet(){
+  const err=capErr(),ok=!err&&S.bd.apOpt;
+  return `<h5>Autopay for City Power</h5><p>Optional. Pays this bill on its due date, never above the cap you set. Demo only: the one-time registration with extra authentication is not shown.</p>
+   <div class="field" style="margin-bottom:6px"><label>Cap for one bill (₹)</label><input id="ap-cap" type="number" inputmode="numeric" min="1" max="15000" value="${Number.isInteger(S.bd.cap)?S.bd.cap:''}" aria-label="Autopay cap in rupees"></div>
+   <div id="ap-err" style="font-size:11.5px;color:#C0392B;min-height:16px;margin-bottom:4px">${err}</div>
+   <div class="dchips" style="margin:6px 0 6px">${[2000,2500,3000].map(x=>`<button class="dchip${S.bd.cap===x?' on':''}" data-act="bd-cap" data-c="${x}" aria-pressed="${S.bd.cap===x}">${x===2500?'<span class="sg">Suggested</span>':''}<b style="font-size:16px">${inr(x)}</b></button>`).join('')}</div>
+   <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">Suggested: about a third above your highest recent bill (${inr(1900)}). You can type any cap up to ₹15,000.</div>
+   ${apRules()}
+   <div class="bdrow" style="margin:6px 0 10px;border:1.5px solid var(--line)"><div class="top"><button class="cb${S.bd.apOpt?' on':''}" data-act="ap-opt" role="checkbox" aria-checked="${!!S.bd.apOpt}" aria-label="Agree to Autopay">${S.bd.apOpt?icon('check',16,3):''}</button><div class="mid"><span style="color:var(--ink)">I agree to City Power debits up to my cap, each after a 24-hour notice. I can cancel any time in Bills Home.</span></div></div></div>
+   <button class="btn${ok?' hint':''}" id="ap-on" data-act="bd-ap-on"${ok?'':' disabled'}>Turn on Autopay · cap ${Number.isInteger(S.bd.cap)?inr(S.bd.cap):'—'}</button>`;
 }
 
 /* ---------- side panel copy ---------- */
 const WHY={
  home:{step:0,title:'Home: the familiar card, plus a Bills tab',tag:'FOUND',text:'The Recharge &amp; Bills card keeps its category icons. Tapping Electricity Bill opens a state-and-biller picker today (try it), and no scan option is listed on the listings or pages captured in A7. The New Bills tab and Bills Home card are the proposal.',barrier:['d'],deck:'Slide 4, [8]; A7 (image 1)',metric:'Baseline: electricity is 33% of Bharat Connect bill volume; Paytm’s unit carries 9%'},
- today:{step:0,title:'Today’s path: three things to type',tag:'INFERRED',text:'State, then biller, then a consumer number that people often do not know (a published design study found this [33]). This is the Discover and Try barrier the proposal removes.',barrier:['d','t'],deck:'Slide 4; [8], [33]; A7 (listing images and web pages)',metric:'Add-to-first-pay within 14 days: 40%+'},
+ today:{step:0,title:'Today’s path: three things to type',tag:'INFERRED',text:'State, then biller, then a consumer number that people often do not know (a published design study found this [33]). This is the Discover and Try barrier the proposal removes.',barrier:['d','t'],deck:'Slide 4; [8], [33]; A7 (listing images and web pages)',metric:'Add-to-first-pay within 14 days: 40%+ (working target)'},
  recharge:{step:0,title:'The moment the user already has',tag:'INFERRED',text:'A recharge for someone else is the entry point. The user is already paying for family, so no new habit is asked for yet.',barrier:['d'],deck:'Slide 5, A6 (enter at a moment the user already has)',ml:'Who sees the prompt',metric:'S1 = users who recharge 2+ different numbers in 90 days (slide 4)'},
- success:{step:1,title:'Entry: the recharge-to-bill prompt',tag:'INFERRED',text:'The success screen offers the electricity bill of the person just recharged. It is shown to remote family payers (S1) with a plain reason: “you recharged 2 different numbers in the last 90 days”.',barrier:['d'],deck:'Slide 5, slide 6; [31], [33]',metric:'Nudge click rate 8%+ on S1',rules:['Reminder for the plan renewal is optional and off the critical path']},
- scan:{step:2,title:'Find: scan-to-add',tag:'INFERRED',text:'Camera, PDF or SMS share. AI reads the biller, consumer ID, due date and amount, so nobody has to type a consumer ID they may not know.',barrier:['d','t'],deck:'Slide 5, slide 6; [33] Simpl case study (A13)',metric:'Add-to-first-pay within 14 days: 40%+',rules:['Photo is deleted after reading','Fallback: the manual form if the read is low-confidence']},
- found:{step:3,title:'Confirm four fields',tag:'ASSUMED',text:'The user checks what the AI read and taps Confirm. The 95% field-accuracy target is a working proposal; below it the product falls back to the form.',barrier:['t'],deck:'Slide 5 (accuracy target, ASSUMED); [23] DPDP Rules',metric:'Bill-fetch success: 90%+',rules:['Only biller, consumer ID, due date and amount are stored','Consent and a DPDP-ready notice']},
- pay:{step:4,title:'Trust: amount check and refund promise',tag:'INFERRED',text:'The fetched amount is compared with the history printed on the bill and a spike is flagged before paying. The refund promise and all three status steps are shown up front. Try “Simulate a bill spike”.',barrier:['t'],deck:'Slide 5, slide 6; [34], [36] (RBI turnaround rules)',metric:'Guardrails: payment failure rate, refund time p90, complaints per 10k bills',rules:['No new fee added on bills in V1','Quote the 5-day outer limit, aim for faster']},
- status:{step:5,title:'Live status',tag:'FOUND',text:'Paid, Sent to biller, Posted. Failed or unposted payments are the loudest complaint in the reviews and posts we read (43 of 63 PayZapp bill reviews describe a failure; single posts report paid bills that did not post), so each step stays visible until the biller confirms.',barrier:['t'],deck:'Slide 3 insight 4; [13], [28], [29]; A12',metric:'Refund time p90; complaints per 10k bills',rules:['Reminders are offered after the first payment','Autopay waits for V1.5']},
- bills:{step:6,title:'Repeat: Bills Home and reminders',tag:'INFERRED',text:'Every bill by due date with one-tap pay, and a push 3 days and 1 day before each due date. Bill Day and Autopay are V1.5, after trust is earned: tap Bill Day below for a preview.',barrier:['r'],deck:'Slide 5, slide 7; [16], [24] (RBI e-mandate rules)',metric:'Cycle-2 repeat 50%+; North Star: cross-category repeat rate +1.5 pp vs holdout',rules:['Autopay: capped, after the 2nd on-time payment, 24-hour pre-debit notice','Cap nudges per user per month']},
- bdset:{step:7,title:'Bill Day: the user picks one day a month',tag:'ASSUMED',text:'Bills Home suggests the day that catches every bill: here the 25th, three days before the first due date (28 Dec). On that day one push opens one list of everything due in the next 14 days. The 14-day window and the suggested-day rule are working assumptions to tune in the test. Only bills the biller has already issued can be paid; the rest stay on reminders.',barrier:['r'],deck:'Slide 5, slide 6 (Repeat, V1.5); A9; A11',metric:'Bill Day opt-in among users with 2+ bills; share of cycle-2 bills paid on Bill Day',rules:['Offered to users with 2+ bills after their first on-time payment (ASSUMED)','Change or switch off the day any time','Preview scenario: next cycle, Dec 2026']},
- bdreview:{step:8,title:'Bill Day: one list, every bill checked',tag:'INFERRED',text:'Every bill due in the next 14 days, each with its own Amount check. A bill that is higher than usual arrives unticked, so Bill Day never quietly pays a spike: try “Simulate a bill spike” in the demo controls. Each bill is still its own payment to its biller, so each keeps its own Live status and the same refund promise.',barrier:['t','r'],deck:'Slide 5, slide 6; [34], [36]; A9; A11',metric:'Bill Day completion rate; Amount check flags per 1,000 bills; payment failure rate (guardrail)',val:'whether one approval can cover several bills (each is a separate biller payment). Fallback: one approval per bill inside the same flow.',rules:['Higher-than-usual bills start unticked','No new fee added on bills in V1','Refund promise and Live status apply to every bill']},
- bddone:{step:9,title:'Bill Day done: Live status, then Autopay',tag:'ASSUMED',text:'Every paid bill shows Paid, Sent to biller, Posted. Autopay is offered per bill, only after its 2nd on-time payment: City Power has it (this was its 2nd), the other two are at 1 of 2. The offer is capped, with a 24-hour notice before every debit, a low-balance nudge, and a pause or cancel option.',barrier:['r'],deck:'Slide 5; A14 [24], [37]; [16], [43] (Autopay failure data); A11',metric:'Autopay opt-in among eligible bills; Autopay debit failure rate (guardrail); cycle-3 repeat',rules:['The user sets the cap; suggested at about a third above the highest recent bill','24-hour pre-debit notice with a per-debit opt-out (RBI e-mandate framework)','A bill above the cap is never debited: the user is asked first']}
+ success:{step:1,title:'Entry: the recharge-to-bill prompt',tag:'INFERRED',text:'The success screen offers the electricity bill of the person just recharged. It is shown to remote family payers (S1) with a plain reason: “you recharged 2 different numbers in the last 90 days”. The plan-renewal reminder is a separate, optional opt-in.',barrier:['d'],deck:'Slide 5, slide 6; [31], [33]',metric:'Nudge click rate 8%+ on S1 (working target)',rules:['The plan-renewal reminder is separate from bill reminders','It is not counted in any bill total']},
+ scan:{step:2,title:'Find: scan-to-add',tag:'INFERRED',text:'Choose a photo, a PDF or a shared SMS. The app reads the biller and the consumer number from it, and both stay editable, so nobody has to type an ID they may not know. The amount and due date are not taken from the file: they come from the biller.',barrier:['d','t'],deck:'Slide 5, slide 6; [33] Simpl case study (A13)',metric:'Add-to-first-pay within 14 days: 40%+ (working target)',rules:['The file is deleted after reading','Fallback: the manual form if the read is wrong or low-confidence']},
+ found:{step:3,title:'Check what we read, then fetch',tag:'ASSUMED',text:'Biller and consumer number are read from the file and stay editable. Amount and due date arrive from the biller after “Confirm and fetch”. If the details do not match a biller account, or the biller is down, a recovery sheet offers Edit details or the sample bill. Edit a field, or use “Simulate biller unavailable”, to see it.',barrier:['t'],deck:'Slide 5 (reading accuracy, ASSUMED); [23] DPDP Rules; A11',metric:'Bill-fetch success: 90%+ (working target)',rules:['Only the biller and a masked consumer number are stored','Consent and a DPDP-ready notice']},
+ pay:{step:4,title:'Trust: verified invoice, fees and total',tag:'INFERRED',text:'The invoice is fetched from the biller. The Amount check compares it with the history printed on the bill and flags a spike. Fees and the total are shown before the user authorises, and the three stages after paying are listed up front. Try “Simulate a bill spike”.',barrier:['t'],deck:'Slide 5, slide 6; [34], [36] (RBI turnaround rules)',metric:'Guardrails: payment failure rate, time to resolve, complaints per 10k bills',rules:['No new Paytm fee on bills in the pilot (design rule)','Help follows the payment reference, not a blanket promise']},
+ status:{step:5,title:'Live status and a reference for help',tag:'FOUND',text:'Payment pending, Payment confirmed (with a receipt), then Posted by the biller, each stage visible. Failed or unposted payments are the loudest complaint in the reviews and posts we read (43 of 63 PayZapp bill reviews describe a failure; single posts report paid bills that did not post). The reference opens a help sheet; retrying cannot pay the same invoice twice.',barrier:['t'],deck:'Slide 3 insight 4; [13], [28], [29]; A12',metric:'Time to resolve; complaints per 10k bills',rules:['Reminders are opt-in and offered after the first payment','Autopay waits for V1.5']},
+ bills:{step:6,title:'Repeat: Bills Home and opted-in reminders',tag:'INFERRED',text:'Linked bills by due date with one-tap pay. Unlinked categories show “Not linked”, and the mobile plan renewal sits apart: neither is in the amount due. Reminders are opt-in (3 days and 1 day before the due date) and stop once the invoice is confirmed. Use “Next invoice: 23 Dec” in the demo controls to see the guided next invoice. Bill Day and Autopay are V1.5 previews.',barrier:['r'],deck:'Slide 5, slide 7; [16], [24] (RBI e-mandate rules)',metric:'Cycle-2 repeat 50%+ (working target); North Star: cross-category repeat rate +1.5 pp vs holdout',rules:['Reminders: master opt-in and a per-bill opt-in','Autopay: optional, capped, 24-hour pre-debit notice']},
+ bdset:{step:7,title:'Bill Day: the user picks one day a month',tag:'ASSUMED',text:'Bills Home suggests a day when the invoices have been issued: the 25th, three days before the first due date (28 Dec). On that day one push opens one list of invoices already issued, unpaid, and due within the next 14 days. Try the other days: on the 15th and 20th only electricity is issued; on the 30th City Power is already late and is shown separately. The 14-day window and the suggested-day rule are working assumptions to tune in the test.',barrier:['r'],deck:'Slide 5, slide 6 (Repeat, V1.5); A9; A11',metric:'Bill Day opt-in among users with 2+ bills; share of cycle-2 bills paid on Bill Day',rules:['Offered to users with 2+ bills after their first on-time payment (ASSUMED)','Change or switch off the day any time','Preview scenario: next cycle, Dec 2026']},
+ bdreview:{step:8,title:'Bill Day: one list, each bill approved',tag:'INFERRED',text:'Each invoice due in the next 14 days shows its own Amount check. A bill that is higher than usual arrives unticked, so Bill Day never quietly pays a spike: try “Simulate a bill spike”. Each bill is its own payment to its own biller, so paying opens a sheet where each one is approved separately.',barrier:['t','r'],deck:'Slide 5, slide 6; [34], [36]; A9; A11',metric:'Bill Day completion rate; Amount check flags per 1,000 bills; payment failure rate (guardrail)',val:'whether one approval can cover several bills. The preview asks for one approval per bill; a combined approval would need the payment provider and the billers.',rules:['Higher-than-usual bills start unticked','No new Paytm fee on bills in the pilot (design rule)','Each bill keeps its own status, reference and retry']},
+ bddone:{step:9,title:'Bill Day done: status per bill, then Autopay',tag:'ASSUMED',text:'Every payment has its own status, reference and result; one can fail and be retried without touching the others (try “Simulate one failing payment”). Autopay is optional and offered per bill only after its 2nd on-time payment is confirmed: here City Power is the one that has two (the first was last cycle). The offer needs an opt-in tick, a cap you set (at most ₹15,000), a 24-hour notice before each debit, and a cancel option.',barrier:['r'],deck:'Slide 5; A14 [24], [37]; [16], [43] (Autopay failure data); A11',metric:'Autopay opt-in among eligible bills; Autopay debit failure rate (guardrail); cycle-3 repeat',rules:['A payment counts only when confirmed on or before its due date','24-hour pre-debit notice with a per-debit opt-out (RBI e-mandate framework)','A bill above the cap is never debited: the user is asked first']}
 };
 const STEPS=[
  {n:0,c:'z',t:'Start: Home',s:'Recharge & Bills, plus a Bills tab',go:'home'},
  {n:1,c:'d',t:'Entry: recharge-to-bill prompt',s:'After recharging Mom’s number',go:'success'},
- {n:2,c:'d',t:'Find: scan-to-add',s:'Camera, PDF or SMS share',go:'scan'},
- {n:3,c:'',t:'Confirm four fields',s:'Biller, ID, due date, amount',go:'found'},
- {n:4,c:'',t:'Trust: amount check',s:'Plus the refund promise',go:'pay'},
- {n:5,c:'',t:'Live status',s:'Paid, Sent to biller, Posted',go:'status'},
- {n:6,c:'r',t:'Repeat: Bills Home',s:'Due calendar and reminders',go:'bills'},
+ {n:2,c:'d',t:'Find: scan-to-add',s:'Photo, PDF or SMS share',go:'scan'},
+ {n:3,c:'',t:'Check what we read',s:'Biller and ID; the rest from the biller',go:'found'},
+ {n:4,c:'',t:'Trust: verified invoice',s:'Amount check, fees and total',go:'pay'},
+ {n:5,c:'',t:'Live status',s:'Pending, confirmed, posted; reference',go:'status'},
+ {n:6,c:'r',t:'Repeat: Bills Home',s:'Due dates, opted-in reminders, next invoice',go:'bills'},
  {n:7,c:'v',t:'Pick the day',s:'One day a month, suggested for you',go:'bdset'},
- {n:8,c:'v',t:'Review and pay',s:'Amount check on every bill',go:'bdreview'},
- {n:9,c:'v',t:'Done, then Autopay',s:'Live status and the unlock rule',go:'bddone'}];
+ {n:8,c:'v',t:'Review and approve',s:'Amount check; approval per bill',go:'bdreview'},
+ {n:9,c:'v',t:'Done, then optional Autopay',s:'Status per bill; two confirmed on-time payments',go:'bddone'}];
 const scrStep=s=>({home:0,today:0,recharge:0,success:1,scan:2,found:3,pay:4,status:5,bills:6,bdset:7,bdreview:8,bddone:9}[s]);
 
 /* ---------- render ---------- */
@@ -733,7 +808,7 @@ function render(anim=true){
   $('#status').classList.toggle('light',LIGHT.includes(S.screen));
   $('#status').style.background=LIGHT.includes(S.screen)?'#fff':'';
   document.body.classList.toggle('nohints',!S.hints);
-  $('#sw-hints').classList.toggle('on',S.hints); $('#sw-spike').classList.toggle('on',S.spike);
+  $('#sw-hints').classList.toggle('on',S.hints); $('#sw-spike').classList.toggle('on',S.spike);$('#sw-down').classList.toggle('on',S.billerDown);$('#sw-fail').classList.toggle('on',S.failOne);
   const cur=scrStep(S.screen); if(S.screen!=='home'||S.visited.size)S.visited.add(cur); else S.visited.add(0);
   $('#steps').innerHTML=STEPS.map(s=>{const seen=S.visited.has(s.n)&&s.n!==cur;const lab=s.c==='v'?'V'+(s.n-6):(s.n===0?'•':s.n);return (s.n===7?'<div class="stepdiv">V1.5 preview: Bill Day</div>':'')+`<button class="step ${s.n===cur?'on':''}" data-act="jump" data-g="${s.go}"><span class="n ${s.c} ${seen?'seen':''}">${seen?'✓':lab}</span><span><b>${s.t}</b><span>${s.s}</span></span></button>`;}).join('');
   const w=WHY[S.screen];
@@ -752,11 +827,23 @@ function banner(b){
   const o=$('#overlay');o.querySelectorAll('.banner').forEach(e=>e.remove());
   const d=document.createElement('button');d.className='banner';d.dataset.act='banner-open';d.dataset.k=b.key;
   d.innerHTML=`<span class="ico">pay</span><span><small>Paytm · now</small><b>Reminder: ${b.label} ${inr(amtOf(b))}</b><small>Due ${dfmt(b.due)} · Tap to pay in one step</small></span>`;
-  o.appendChild(d);setTimeout(()=>{if(d.isConnected&&!(T.on&&!T.welcome&&TOUR[T.i]&&TOUR[T.i].id==='banner'))d.remove();},9000);track('reminder_sent','t-3 '+b.key);
+  o.appendChild(d);setTimeout(()=>{if(d.isConnected&&!(T.on&&!T.welcome&&TOUR[T.i]&&TOUR[T.i].id==='banner'))d.remove();},9000);track('reminder_sent','before due date, '+b.key);
 }
 function postAll(){Object.values(S.bills).forEach(b=>{if(b.paid&&!b.posted){b.posted=true;}});S.paySt.posted=true;S.paySt.sent=true;}
-function payElec(){const b=S.bills.elec;S.elecAdded=true;S.cur='elec';if(!b.paid){b.paid=true;b.paidAmt=amtOf(b);}}
-function resetElec(){const b=S.bills.elec;S.elecAdded=false;b.paid=false;b.posted=false;delete b.paidAmt;S.paySt={sent:false,posted:false};S.scanning=false;S.cur='elec';S.from='found';}
+function payElec(){const b=S.bills.elec;S.elecAdded=true;S.cur='elec';if(!b.paid){b.paid=true;b.paidAmt=amtOf(b);b.ref=S.inv===2?'BC23DEC4M8':'BC25NOV7K2';}}
+function resetElec(){const b=S.bills.elec;toInv1();S.elecAdded=false;b.paid=false;b.posted=false;delete b.paidAmt;delete b.ref;S.paySt={sent:false,posted:false};S.scanning=false;S.cur='elec';S.from='found';S.fv=null;}
+function prepPaid(){resetElec();S.elecAdded=true;payElec();postAll();}   // first invoice paid and posted
+function doFetch(){
+  S.elecAdded=true;S.bills.elec.name='City Power';track('fields_confirmed');track('bill_added','electricity');
+  sheet(`<div class="center"><div class="spin"></div><h5>Fetching the invoice from City Power…</h5><p>Through Bharat Connect. Amount and due date come from the biller, then the Amount check runs.</p></div>`);
+  setTimeout(()=>{closeSheet();S.cur='elec';S.from='found';track('invoice_fetched',inr(amtOf(S.bills.elec)));track('amount_check_shown',amtOf(S.bills.elec)>1900?'spike':'normal');go('pay',{from:'found'});},1100);
+}
+function helpSheet(){const b=S.bills[S.cur],ref=b.ref||'BC25NOV7K2',st=S.paySt;
+  return `<h5>Get help with this payment</h5><p>Reference <b>${ref}</b> was created when you paid. Quote it to Paytm or ${b.name}.</p>
+   <ul class="aplist"><li>${icon('check',16,2.6)}<span>${st.posted?'Posted: nothing more to do.':st.sent?'Confirmed but not yet posted: we ask '+b.name+' about this reference. Posting can take longer than confirmation.':'Still pending: it usually confirms in seconds. Do not pay again.'}</span></li>
+   <li>${icon('check',16,2.6)}<span>Retrying cannot pay the same invoice twice: a paid or pending invoice is blocked.</span></li>
+   <li>${icon('check',16,2.6)}<span>If money left your account but the payment failed, RBI’s turnaround rules set the outer limit for the reversal (see the deck, A14).</span></li></ul>
+   <button class="btn navy" data-act="close-sheet">Close</button>`;}
 
 /* ---------- actions ---------- */
 const ACT={
@@ -772,57 +859,82 @@ const ACT={
  'start-scan':()=>{track('nudge_click','recharge-to-bill');S.scanning=false;S.from='success';go('scan');},
  'maybe-later':()=>{track('nudge_dismiss');toast('No problem. “Bills” in the bottom bar and Bills Home stay one tap away.');go('home');},
  src:el=>{S.source=el.dataset.s;S.scanning=false;render(false);},
- shutter:()=>{if(S.scanning)return;track('scan_start',S.source);if(S.source==='camera'){S.scanning=true;render(false);setTimeout(()=>{if(S.screen==='scan'&&S.scanning){S.scanning=false;track('scan_read','4 fields');go('found');}},1500);}else{track('scan_read','4 fields');go('found');}},
+ shutter:()=>{if(S.scanning)return;track('scan_start',S.source);if(S.source==='camera'){S.scanning=true;render(false);setTimeout(()=>{if(S.screen==='scan'&&S.scanning){S.scanning=false;track('file_read','biller and ID');go('found');}},1500);}else{track('file_read','biller and ID');go('found');}},
  confirm:()=>{
    if(S.elecAdded){toast('City Power is already in Bills Home.');go('bills');return;}
-   S.elecAdded=true;S.bills.elec.name=($('#f-biller')||{value:'City Power'}).value||'City Power';track('fields_confirmed');track('bill_added','electricity');
-   sheet(`<div class="center"><div class="spin"></div><h5>Fetching from ${S.bills.elec.name}…</h5><p>Through Bharat Connect, with the amount checked against the bill’s history.</p></div>`);
-   setTimeout(()=>{closeSheet();S.cur='elec';S.from='found';track('amount_check_shown',amtOf(S.bills.elec)>1900?'spike':'normal');go('pay',{from:'found'});},1100);},
- 'pay-bill':()=>{const b=S.bills[S.cur];sheet(`<h5>Pay ${inr(amtOf(b))} to ${b.name}</h5><p>Via UPI. Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="auth-bill">Authorise</button>`);},
- 'auth-bill':()=>{closeSheet();const b=S.bills[S.cur];b.paid=true;b.paidAmt=amtOf(b);S.paySt={sent:false,posted:false};track('first_pay',b.key);go('status');
-   setTimeout(()=>{if(S.screen==='status'&&!S.paySt.sent){S.paySt.sent=true;track('sent_to_biller');render(false);}},1400);},
+   const bi=(($('#f-biller')||{value:'City Power'}).value||'').trim(),cn=($('#f-cn')||{value:'7720 4821'}).value||'';
+   S.fv={biller:bi,cn:cn};
+   if(S.billerDown){sheet(`<h5>City Power is not responding</h5><p>Your details are saved. Nothing was added and nothing was charged. Try again in a moment, or edit the details.</p><button class="btn" data-act="retry-fetch">Try again</button><button class="btn ghost" data-act="close-sheet" style="margin-top:2px">Edit details</button>`);track('fetch_failed','biller unavailable');return;}
+   const ok=bi.toLowerCase()==='city power'&&cn.replace(/\D/g,'')==='77204821';
+   if(!ok){sheet(`<h5>We could not find that bill</h5><p>No ${esc(bi)||'biller'} account matches those details. Check the biller and the consumer number against your bill, or try the sample bill.</p><button class="btn" data-act="close-sheet">Edit details</button><button class="btn ghost" data-act="sample-bill" style="margin-top:2px">Try the sample bill</button>`);track('fetch_mismatch');return;}
+   doFetch();},
+ 'retry-fetch':()=>{closeSheet();ACT.confirm();},
+ 'sample-bill':()=>{closeSheet();S.fv=null;track('sample_bill');render(false);},
+ 'pay-bill':()=>{const b=S.bills[S.cur];if(b.paid){toast('This invoice is already paid or pending. It cannot be paid twice.');return;}sheet(`<h5>Pay ${inr(amtOf(b))} to ${b.name}</h5><p>Bill ${inr(amtOf(b))} + Paytm fee ₹0 = ${inr(amtOf(b))} total. Via UPI. Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="auth-bill">Authorise ${inr(amtOf(b))}</button>`);},
+ 'auth-bill':()=>{closeSheet();const b=S.bills[S.cur];
+   if(b.paid){toast('This invoice is already paid or pending. It cannot be paid twice.');go('status');return;}
+   b.paid=true;b.paidAmt=amtOf(b);b.ref=S.inv===2?'BC23DEC4M8':'BC25NOV7K2';S.paySt={sent:false,posted:false};track(S.inv===2?'next_invoice_pay':'first_pay',b.key+' '+b.ref);go('status');
+   setTimeout(()=>{if(S.screen==='status'&&!S.paySt.sent){S.paySt.sent=true;track('payment_confirmed',b.ref);render(false);}},1400);},
+ help:()=>{track('help_open');sheet(helpSheet());},
  'skip-day':()=>{
-   if(S.screen==='bddone'&&S.bd.paid){if(S.bd.posted){toast('Every Bill Day payment is already Posted.');return;}S.bd.sent=true;S.bd.posted=true;track('status_posted','Bill Day, next day');toast('Next day: every biller confirmed. All Bill Day payments are Posted.');render(false);return;}
-   const any=Object.values(S.bills).some(b=>b.paid&&!b.posted);if(!any){toast('Nothing is waiting to post. Pay a bill first.');return;}postAll();track('status_posted','next day');toast('Next day: the biller confirmed. Status is now Posted.');render(false);},
- 'send-reminder':()=>{const nx=[S.bills.elec,S.bills.bb,S.bills.dth].find(b=>!b.paid&&(b.key!=='elec'||S.elecAdded));if(!nx){toast('Everything is paid. Nothing to remind.');return;}banner(nx);},
+   if(S.screen==='bddone'&&S.bd.paidList.length){const pend=S.bd.paidList.filter(p=>p.st==='pending'||p.st==='confirmed');if(!pend.length){toast('Every Bill Day payment is already Posted, or needs a retry.');return;}pend.forEach(p=>p.st='posted');track('status_posted','Bill Day, next day');toast('Next day: the billers posted every confirmed payment.');render(false);return;}
+   const any=Object.values(S.bills).some(b=>b.paid&&!b.posted);if(!any){toast('Nothing is waiting to post. Pay a bill first.');return;}postAll();track('status_posted','next day');toast('Next day: the biller posted the payment. Status is now Posted.');render(false);},
+ 'send-reminder':()=>{const b=S.bills.elec;
+   if(!S.elecAdded){toast('Link a bill first: there is nothing to remind yet.');return;}
+   if(b.paid){toast('Reminders stop once an invoice is confirmed. Try “Next invoice: 23 Dec”.');return;}
+   if(!(S.remind&&b.remind)){toast('Reminders are off. Opt in on Bills Home or after your first payment.');return;}
+   banner(b);},
+ 'next-invoice':()=>{const b=S.bills.elec;
+   if(!S.elecAdded||!b.paid){toast('Pay the first invoice first: the next invoice follows it.');return;}
+   if(S.inv===2){toast('The next invoice (23 Dec) is already issued.');return;}
+   nextInvoice();track('invoice_issued','23 Dec, '+inr(amtOf(b)));
+   if(S.remind&&b.remind){banner(b);}else toast('New City Power invoice: '+inr(amtOf(b))+', due 28 Dec. No reminder was sent because reminders are off.');
+   if(S.screen==='status')go('bills');else render(false);},
  'banner-open':el=>{const b=S.bills[el.dataset.k];el.remove();S.cur=b.key;S.from='bills';track('reminder_tap',b.key);go('pay',{from:'bills'});},
  'pay-row':el=>{S.cur=el.dataset.k;S.from='bills';track('one_tap_pay_open',S.cur);go('pay',{from:'bills'});},
- 'rem-row':el=>{const b=S.bills[el.dataset.k];b.remind=!b.remind;track('reminder_toggle',b.key+' '+(b.remind?'on':'off'));render(false);},
+ 'rem-row':el=>{const b=S.bills[el.dataset.k];const on=b.remind&&S.remind;if(on){b.remind=false;}else{b.remind=true;S.remind=true;}track('reminder_toggle',b.key+' '+(b.remind?'on':'off'));render(false);},
+ 'link-later':el=>{toast('Only electricity is linked in this prototype. Broadband and DTH follow it in a later release.');},
  who:el=>{S.who=el.dataset.w;render(false);},
  'add-bill':()=>{track('add_bill_open');S.scanning=false;S.from='bills';go('scan');},
- 't-remind':()=>{S.remind=!S.remind;track('reminder_pref',S.remind?'on':'off');render(false);},
+ 't-remind':()=>{S.remind=!S.remind;if(S.remind)Object.values(S.bills).forEach(b=>{if(b.key==='elec')b.remind=true;});track('reminder_pref',S.remind?'on':'off');render(false);},
+ 't-remind-next':()=>{const b=S.bills[S.cur],on=S.remind&&b.remind;if(on){b.remind=false;}else{S.remind=true;b.remind=true;}track('reminder_pref',(S.remind&&b.remind)?'on (next invoice)':'off');render(false);},
+ 't-plan':()=>{S.planRemind=!S.planRemind;track('plan_reminder',S.planRemind?'on':'off');render(false);},
  't-hints':()=>{S.hints=!S.hints;render(false);},
+ 't-down':()=>{S.billerDown=!S.billerDown;track('demo_toggle','biller unavailable '+(S.billerDown?'on':'off'));render(false);},
+ 't-fail':()=>{S.failOne=!S.failOne;track('demo_toggle','one failing payment '+(S.failOne?'on':'off'));render(false);},
  't-spike':()=>{
    if(S.screen==='bdset'||S.screen==='bdreview'){S.spike=!S.spike;bdAuto();track('spike_toggle',S.spike?'on (Bill Day)':'off (Bill Day)');render(false);return;}
    if(S.screen==='bddone'){toast('Bill Day is already paid. Open Bill Day again to try a spike.');return;}
-   if(S.bills.elec.paid){toast('The electricity bill is already paid. Start over to try the spike.');return;}S.spike=!S.spike;render(false);},
+   if(S.bills.elec.paid){toast('This invoice is already paid. Start over to try the spike.');return;}S.spike=!S.spike;render(false);},
  restart:()=>{clearOverlay();S=fresh();if(T.on&&!T.welcome)T.i=0;render();},
  jump:el=>{const g=el.dataset.g;clearOverlay();
    if(g.indexOf('bd')===0){bdPrep();S.scanning=false;S.bd=bd0();
-     if(g==='bdreview'){S.bd.set=true;bdAuto();}else if(g==='bddone'){bdPaid();}
+     if(g==='bdreview'){S.bd.set=true;S.bd.init=true;bdAuto();}else if(g==='bddone'){bdPaid();}
      go(g);return;}
    if(['success','scan','found'].includes(g)){resetElec();}
-   if(['pay','status','bills'].includes(g)){S.elecAdded=true;}
-   if(g==='pay'){S.cur='elec';S.from='found';}
-   if(g==='status'){payElec();S.paySt={sent:true,posted:false};}
+   if(g==='pay'){resetElec();S.elecAdded=true;S.cur='elec';S.from='found';}
+   if(g==='status'){resetElec();S.elecAdded=true;payElec();S.paySt={sent:true,posted:false};}
+   if(g==='bills'){prepPaid();}
    S.scanning=false;go(g);},
  about:()=>{const d=$('#about');if(d.showModal)d.showModal();else d.setAttribute('open','');},
  'guide-toggle':()=>{ if(T.on) tourClose(); else if(T.done) tourStart(); else if(T.started) tourResume(); else {T.on=true;T.welcome=true;tourSync();updateGuideUI();} },
  'toast-fastag':()=>toast('Same as today. This prototype only changes the bill paths.'),
  'toast-find':()=>toast('It is printed on the paper bill or in the biller’s SMS, which you may not have at hand.'),
- 'toast-dth':()=>toast('Same as today. DTH comes after electricity in V1.'),
- 'toast-scan':()=>toast('Scan & Pay is unchanged. Bills use the scan on the Add a bill screen.'),
+ 'toast-dth':()=>toast('Same as today. DTH comes after electricity in the pilot.'),
+ 'toast-scan':()=>toast('Scan & Pay is unchanged. Bills use the file picker on the Add a bill screen.'),
  'toast-hist':()=>toast('Not part of this prototype.'),
  'toast-other':()=>toast('Pick the first file or message in the demo.'),
- 'toast-check':()=>{const b=S.bills[S.cur];track('amount_check_open_bill');sheet(`<h5>Compare with the bill</h5><p>The amount we fetched is ${inr(amtOf(b))}. Check it against the figure printed on your bill.</p>
-   <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · Nov<div class="ln"></div>Consumer no. ${b.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(amtOf(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(1500)}-${inr(1900)}</div></div>
+ 'toast-check':()=>{const b=S.bills[S.cur];track('amount_check_open_bill');sheet(`<h5>Compare with the bill</h5><p>The amount fetched from the biller is ${inr(amtOf(b))}. Check it against the figure printed on your bill.</p>
+   <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · ${S.inv===2?'Dec':'Nov'}<div class="ln"></div>Consumer no. 7720 ${b.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(amtOf(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(1500)}-${inr(1900)}</div></div>
    <button class="btn navy" data-act="close-sheet">Close</button>`);},
  'close-sheet':()=>closeSheet(),
- 'toast-autopay':()=>toast(S.bd.autopay?'Autopay is on for City Power, capped at '+inr(S.bd.cap)+' (V1.5 preview).':'V1.5 preview: Autopay unlocks per bill after the 2nd on-time payment. Pay a Bill Day to see the offer.'),
+ 'ap-open':()=>{track('autopay_open',S.bd.autopay?'on':'V1.5 preview');sheet(apInfoSheet());},
+ 'ap-preview':()=>{closeSheet();bdPrep();S.bd=bd0();bdPaid();track('autopay_preview','after a Bill Day payment');go('bddone');ACT['bd-autopay']();},
+ 'ap-off':()=>{closeSheet();S.bd.autopay=false;track('autopay_off','City Power');toast('Autopay is off for City Power. Reminders stay on.');render(false);},
  /* Bill Day (V1.5 preview) */
- 'bd-open':()=>{track('bill_day_offer_open','V1.5 preview');S.bd=bd0();go('bdset');},
+ 'bd-open':()=>{track('bill_day_offer_open','V1.5 preview');if(!S.bd.set)S.bd=bd0();go('bdset');},
  'bd-back':()=>go('bdset'),
- 'bd-day':el=>{S.bd.day=+el.dataset.d;S.bd.set=false;track('bill_day_pick',S.bd.day+'th');render(false);},
+ 'bd-day':el=>{const cap=S.bd.cap;S.bd=bd0();S.bd.cap=cap;S.bd.day=+el.dataset.d;track('bill_day_pick',S.bd.day+'th');render(false);},
  'bd-set':()=>{
    if(S.bd.set){bdBanner();return;}
    S.bd.set=true;track('bill_day_set',S.bd.day+'th of each month');
@@ -830,17 +942,33 @@ const ACT={
    render(false);bdBanner();},
  'bd-open-review':el=>{el.remove();bdReview();},
  'bd-tick':el=>{const k=el.dataset.k;S.bd.sel[k]=!S.bd.sel[k];track('bill_day_tick',k+' '+(S.bd.sel[k]?'on':'off'));render(false);},
- 'bd-check':el=>{const b=bdMeta(el.dataset.k);track('amount_check_open_bill',b.k+' (Bill Day)');sheet(`<h5>Compare with the bill</h5><p>The amount we fetched for ${b.label} is ${inr(bdAmt(b))}. Check it against the figure printed on the bill.</p>
-   <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · Dec<div class="ln"></div>Consumer no. ${S.bills.elec.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(bdAmt(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(b.usual[0])}-${inr(b.usual[1])}</div></div>
+ 'bd-check':el=>{const b=bdMeta(el.dataset.k);track('amount_check_open_bill',b.k+' (Bill Day)');sheet(`<h5>Compare with the bill</h5><p>The amount fetched for ${b.label} is ${inr(bdAmt(b))}. Check it against the figure printed on the bill.</p>
+   <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · Dec<div class="ln"></div>Consumer no. 7720 ${S.bills.elec.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(bdAmt(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(b.usual[0])}-${inr(b.usual[1])}</div></div>
    <button class="btn navy" data-act="close-sheet">Close</button>`);},
- 'bd-pay':()=>{const L=bdTicked();if(!L.length){toast('Tick at least one bill.');return;}
-   sheet(`<h5>Pay ${inr(bdTotal())} · ${L.length} bill${L.length===1?'':'s'}</h5><p>Via UPI. Each bill is its own payment to its biller, started together. Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="bd-auth">Authorise</button>`);},
- 'bd-auth':()=>{closeSheet();S.bd.paidList=bdTicked().map(b=>({k:b.k,amt:bdAmt(b)}));S.bd.paid=true;S.bd.sent=false;S.bd.posted=false;S.bd.autopay=false;track('bill_day_paid',S.bd.paidList.length+' bills');go('bddone');
-   setTimeout(()=>{if(S.screen==='bddone'&&S.bd.paid&&!S.bd.sent){S.bd.sent=true;track('sent_to_biller',S.bd.paidList.length+' bills');render(false);}},1400);},
- 'bd-autopay':()=>{track('autopay_offer_open','City Power');sheet(apSheet());},
+ 'bd-pay':()=>{if(!bdTicked().length){toast('Tick at least one bill.');return;}S.bd.appr={};sheet(bdPaySheet());},
+ 'bd-approve':el=>{const k=el.dataset.k;S.bd.appr[k]=!S.bd.appr[k];const s=document.querySelector('#overlay .sheet');if(s)s.innerHTML=bdPaySheet();},
+ 'bd-auth':()=>{const L=bdTicked().filter(b=>S.bd.appr[b.k]);if(!L.length){toast('Approve at least one bill.');return;}
+   closeSheet();
+   L.forEach(b=>{S.bd.paidList=S.bd.paidList.filter(p=>p.k!==b.k);S.bd.paidList.push({k:b.k,amt:bdAmt(b),st:'pending',ref:bdRef(b)});});
+   S.bd.appr={};S.bd.autopay=false;track('bill_day_paid',L.length+' bills, approved one by one');go('bddone');
+   const keys=L.map(b=>b.k);setTimeout(()=>bdResolve(keys),1400);},
+ 'bd-retry':el=>{const k=el.dataset.k,p=S.bd.paidList.find(x=>x.k===k&&x.st==='failed');if(!p)return;p.st='pending';p.ref=p.ref.replace(/R$/,'')+'R';track('payment_retry',k);render(false);setTimeout(()=>bdResolve([k],true),1400);},
+ 'bd-autopay':()=>{track('autopay_offer_open','City Power');S.bd.apOpt=false;sheet(apSheet());},
  'bd-cap':el=>{S.bd.cap=+el.dataset.c;const s=document.querySelector('#overlay .sheet');if(s)s.innerHTML=apSheet();},
- 'bd-ap-on':()=>{closeSheet();S.bd.autopay=true;track('autopay_on','City Power, cap '+inr(S.bd.cap));toast('Autopay is on for City Power, capped at '+inr(S.bd.cap)+'. Next debit: 28 Jan, after a 24-hour notice.');render(false);}
+ 'ap-opt':()=>{S.bd.apOpt=!S.bd.apOpt;const s=document.querySelector('#overlay .sheet');if(s)s.innerHTML=apSheet();},
+ 'bd-ap-on':()=>{
+   if(capErr()){toast(capErr());return;}
+   if(!S.bd.apOpt){toast('Tick the box to agree to Autopay first.');return;}
+   closeSheet();S.bd.autopay=true;track('autopay_on','City Power, cap '+inr(S.bd.cap));toast('Autopay is on for City Power, capped at '+inr(S.bd.cap)+'. Next debit: 28 Jan, after a 24-hour notice.');render(false);}
 };
+document.addEventListener('input',e=>{
+  if(e.target&&e.target.id==='ap-cap'){
+    const v=e.target.value.trim();S.bd.cap=/^\d+$/.test(v)?parseInt(v,10):NaN;
+    const err=capErr(),ok=!err&&S.bd.apOpt,b=document.getElementById('ap-on'),m=document.getElementById('ap-err');
+    if(m)m.textContent=err;
+    if(b){b.disabled=!ok;b.textContent='Turn on Autopay · cap '+(Number.isInteger(S.bd.cap)?inr(S.bd.cap):'—');}
+  }
+});
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-tour]');
   if(t){e.stopPropagation();tourAction(t.dataset.tour);return;}
@@ -868,48 +996,48 @@ const TOUR=[
  {id:'prompt',match:()=>S.screen==='success'&&!sheetOpen(),target:'.prompt',act:'start-scan',
   title:'Recharge-to-bill prompt',text:'Right after the recharge, Paytm offers Mom’s electricity bill and says why: you recharged 2 numbers in 90 days. Tap <b>Scan her bill</b>.',setup:()=>{clearOverlay();resetElec();go('success');}},
  {id:'scan',match:()=>S.screen==='scan'&&!S.scanning&&!sheetOpen(),target:['[data-act="shutter"]'],act:'shutter',
-  title:'Scan-to-add: no typing',text:'Camera, PDF or SMS share: AI reads the bill, so there is nothing to type. Tap the <b>shutter</b>. (Try the PDF and SMS tabs after the tour.)',setup:()=>{clearOverlay();resetElec();S.from='success';go('scan');}},
+  title:'Scan-to-add: choose a file, not a form',text:'Choose a photo, PDF or SMS share: the app reads the biller and the consumer number, and you can edit both. Tap the <b>shutter</b> to read the photo. (Try the PDF and SMS tabs after the tour.)',setup:()=>{clearOverlay();resetElec();S.from='success';go('scan');}},
  {id:'found',match:()=>S.screen==='found'&&!sheetOpen(),target:['.found','[data-act="confirm"]'],act:'confirm',
-  title:'Check four fields',text:'AI filled biller, consumer number, amount and due date, and the photo is deleted after reading. Tap <b>Confirm and fetch</b>.',setup:()=>{clearOverlay();resetElec();go('found');}},
+  title:'Check what we read',text:'Biller and consumer number come from the file and stay editable; amount and due date arrive from the biller after you confirm. The file is deleted after reading. Tap <b>Confirm and fetch</b>. (Edit a field, or turn on <b>Simulate biller unavailable</b>, to see the recovery sheet.)',setup:()=>{clearOverlay();resetElec();go('found');}},
  {id:'trust',match:onPayFound,target:['.check'],
-  title:'Amount check and refund promise',text:'Before paying, the amount is compared with the history printed on the bill, and the refund promise is shown. Try <b>Simulate a bill spike</b> in the demo controls later.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
+  title:'Verified invoice, Amount check, fees',text:'The invoice comes from the biller. The amount is compared with the history printed on the bill, and fees and the total are shown before paying. Try <b>Simulate a bill spike</b> in the demo controls later.',setup:()=>{clearOverlay();resetElec();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
  {id:'live',match:onPayFound,target:'.tl',
-  title:'Live status, before you pay',text:'The user sees all three steps up front: <b>Paid, Sent to biller, Posted</b>.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
+  title:'The stages, before you pay',text:'The user sees what follows: <b>Payment pending, Payment confirmed, Posted</b>. Posting can take longer than confirmation, so each stage stays visible.',setup:()=>{clearOverlay();resetElec();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
  {id:'pay',match:onPayFound,target:['[data-act="pay-bill"]','[data-act="toast-check"]'],act:'pay-bill',
-  title:'One tap to pay',text:'No new fee is added on this bill in V1 (design rule). Tap <b>Pay</b>.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
+  title:'One tap to pay',text:'No new Paytm fee is added on this bill in the pilot (design rule). Tap <b>Pay</b>.',setup:()=>{clearOverlay();resetElec();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});}},
  {id:'auth2',match:()=>S.screen==='pay'&&sheetOpen(),target:'[data-act="auth-bill"]',act:'auth-bill',
-  title:'Demo only',text:'Again, no PIN and no charge. Tap <b>Authorise</b>.',setup:()=>{clearOverlay();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});ACT['pay-bill']();}},
+  title:'Demo only',text:'Again, no PIN and no charge. Tap <b>Authorise</b>.',setup:()=>{clearOverlay();resetElec();S.elecAdded=true;S.cur='elec';S.from='found';go('pay',{from:'found'});ACT['pay-bill']();}},
  {id:'status',match:()=>S.screen==='status',target:['[data-act="go-bills-after"]','[data-act="skip-day"]'],act:'go-bills-after',
-  title:'Live status keeps going',text:'Each step stays visible until the biller confirms. Tap <b>Skip to tomorrow</b> to watch it post, then <b>See Bills Home</b>.',setup:()=>{clearOverlay();payElec();S.paySt={sent:true,posted:false};go('status');}},
+  title:'Live status keeps going',text:'Pending turns to confirmed with a receipt and a reference for help; posting follows. Tap <b>Skip to tomorrow</b> to watch it post, optionally turn on the next-invoice reminder, then <b>See Bills Home</b>.',setup:()=>{clearOverlay();resetElec();S.elecAdded=true;payElec();S.paySt={sent:true,posted:false};go('status');}},
  {id:'bills',match:()=>S.screen==='bills'&&!bannerUp()&&!sheetOpen(),target:'.sumbar',
-  title:'Bills Home: nothing to remember',text:'Every bill by due date with the total due. The user no longer has to hold it all in their head.',setup:()=>{clearOverlay();S.elecAdded=true;go('bills');}},
+  title:'Bills Home: nothing to remember',text:'Linked bills by due date, with the total due. Categories that are not linked, and the mobile plan renewal, stay outside the total.',setup:()=>{clearOverlay();prepPaid();go('bills');}},
  {id:'reminders',match:()=>S.screen==='bills'&&!bannerUp()&&!sheetOpen(),target:'.mini',
-  title:'Reminders do the remembering',text:'A push 3 days and 1 day before each due date, with one-tap pay. Press <b>Next</b> to receive one.',next:()=>ACT['send-reminder'](),setup:()=>{clearOverlay();S.elecAdded=true;go('bills');}},
+  title:'Reminders: opt in, then they do the remembering',text:'Reminders are opt-in: a push 3 days and 1 day before a due date, stopping once the invoice is confirmed. Press <b>Next</b> to opt in and jump 28 days to the next invoice (23 Dec).',next:()=>{optIn();ACT['next-invoice']();},setup:()=>{clearOverlay();prepPaid();go('bills');}},
  {id:'banner',match:()=>S.screen==='bills'&&bannerUp(),target:'.banner',act:'banner-open',
-  title:'A reminder arrives',text:'It names the bill, the amount and the due date. Tap it to pay in one step.',setup:()=>{clearOverlay();S.elecAdded=true;go('bills');ACT['send-reminder']();}},
+  title:'The next invoice arrives with a reminder',text:'A new City Power invoice (₹1,760, due 28 Dec) is the next step for the user, and the reminder names it. Tap it to pay in one step.',setup:()=>{clearOverlay();prepPaid();optIn();nextInvoice();go('bills');banner(S.bills.elec);}},
  {id:'onetap',match:()=>S.screen==='pay'&&S.from==='bills'&&!sheetOpen(),target:['[data-act="pay-bill"]','[data-act="toast-check"]'],act:'pay-bill',noClick:true,
-  title:'Same checks, one tap',text:'From reminder to payment, the Amount check and refund promise are still shown. Tap <b>Pay</b>, or press Next to finish.',setup:()=>{clearOverlay();payElec();const nb=[S.bills.bb,S.bills.dth].find(b=>!b.paid)||S.bills.bb;S.cur=nb.key;S.from='bills';go('pay',{from:'bills'});}},
+  title:'Same checks, one tap',text:'From reminder to payment, the verified invoice, Amount check, and fees and total are still shown. Tap <b>Pay</b>, or press Next to finish.',setup:()=>{clearOverlay();prepPaid();optIn();nextInvoice();S.cur='elec';S.from='bills';go('pay',{from:'bills'});}},
  {id:'final',final:true,sticky:true,more:'Bill Day ›',
-  title:'That is the loop: Find, Trust, Repeat',text:'Try the <b>bill spike</b> toggle, <b>Add bill</b> on Bills Home, or switch scan sources. One more stop: a V1.5 preview of <b>Bill Day</b>, one day a month to pay everything due.',setup:()=>{}},
+  title:'That is the loop: Find, Trust, Repeat',text:'Try the <b>bill spike</b> toggle, <b>Add bill</b> on Bills Home, or switch scan sources. One more stop: a V1.5 preview of <b>Bill Day</b>, one day a month to review what is due and approve each payment.',setup:()=>{}},
  /* part 2: Bill Day (V1.5 preview), optional */
  {id:'bdintro',part:'bd',match:()=>S.screen==='bills'&&!bannerUp()&&!sheetOpen(),target:'[data-act="bd-open"]',act:'bd-open',
-  title:'V1.5 preview: Bill Day',text:'Once trust is earned, Bills Home offers one day a month to pay everything due. Here is how it looks a month later. Tap <b>Bill Day</b>.',setup:()=>{clearOverlay();bdPrep();go('bills');}},
+  title:'V1.5 preview: Bill Day',text:'Once trust is earned, Bills Home offers one day a month to review what is due. Here is how it looks a month later. Tap <b>Bill Day</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();go('bills');}},
  {id:'bdday',part:'bd',match:()=>S.screen==='bdset'&&!S.bd.set&&!sheetOpen(),target:['.dchips','[data-act="bd-set"]'],act:'bd-set',
-  title:'Pick the day',text:'The suggested day is 3 days before the first due date, so all three bills are caught. The 14-day window is an assumption to test. Tap <b>Set Bill Day</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();go('bdset');}},
+  title:'Pick the day',text:'The suggested day is the 25th: all three invoices are issued by then and the first is due 28 Dec. Other days list fewer bills. The 14-day window is an assumption to test. Tap <b>Set Bill Day</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();go('bdset');}},
  {id:'bdpush',part:'bd',match:()=>S.screen==='bdset'&&S.bd.set&&!sheetOpen(),target:'.banner',act:'bd-open-review',
   title:'On Bill Day, one push',text:'Like the due-date reminders, it names the bills and the total. Tap it to review.',enter:()=>{if(!bannerUp())bdBanner();},next:()=>bdReview(),setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;go('bdset');bdBanner();}},
  {id:'bdreview',part:'bd',match:()=>S.screen==='bdreview'&&!sheetOpen(),target:'.bdlist',
-  title:'One list, every bill checked',text:()=>S.spike?'City Power is higher than usual, so it arrives <b>unticked</b>: Bill Day never quietly pays a spike. Tick it after checking the bill.':'Each bill has its own <b>Amount check</b>. A bill higher than usual arrives unticked. Try <b>Simulate a bill spike</b> in the demo controls.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;bdAuto();go('bdreview');}},
+  title:'One list, every bill checked',text:()=>S.spike?'City Power is higher than usual, so it arrives <b>unticked</b>: Bill Day never quietly pays a spike. Tick it after checking the bill.':'Each bill has its own <b>Amount check</b>. A bill higher than usual arrives unticked. Try <b>Simulate a bill spike</b> in the demo controls.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;S.bd.init=true;bdAuto();go('bdreview');}},
  {id:'bdpay',part:'bd',match:()=>S.screen==='bdreview'&&!sheetOpen(),target:'[data-act="bd-pay"]',act:'bd-pay',
-  title:'Tick, check, pay',text:'Each ticked bill is its own payment, started together, with no new fee. <b>To validate:</b> one approval for several bills; the fallback is one approval per bill in this flow. Tap <b>Pay</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;bdAuto();go('bdreview');}},
- {id:'bdauth',part:'bd',match:()=>S.screen==='bdreview'&&hasAct('bd-auth'),target:'[data-act="bd-auth"]',act:'bd-auth',
-  title:'Demo only',text:'No PIN is asked and nothing is charged. Tap <b>Authorise</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;bdAuto();go('bdreview');ACT['bd-pay']();}},
+  title:'Tick, check, review',text:'Each ticked bill is its own payment and gets its own approval, with no new Paytm fee. Tap <b>Review</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;S.bd.init=true;bdAuto();go('bdreview');}},
+ {id:'bdauth',part:'bd',match:()=>S.screen==='bdreview'&&hasAct('bd-auth'),target:['.apprlist','[data-act="bd-auth"]'],act:'bd-auth',noClick:true,
+  title:'Approve each payment',text:'Each bill is a separate payment to a separate biller, so tick each one to approve it, then <b>Authorise</b>. Demo only: no PIN and no charge. Press <b>Next</b> to approve all and pay.',next:()=>{bdTicked().forEach(b=>S.bd.appr[b.k]=true);ACT['bd-auth']();},setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;S.bd.init=true;bdAuto();go('bdreview');ACT['bd-pay']();}},
  {id:'bddone',part:'bd',match:()=>S.screen==='bddone'&&!sheetOpen(),target:'.apc',act:'bd-autopay',
-  title:'Live status per bill, then Autopay',text:()=>findAct('bd-autopay')?'Each bill keeps its own Live status. Autopay is offered per bill, only after its <b>2nd on-time payment</b>: City Power has it, the other two are at 1 of 2. Tap <b>Set up Autopay</b>.':'City Power was left out, so no bill has reached its 2nd on-time payment and no Autopay offer is shown. Press <b>Next</b> to finish.',next:()=>{T.i=idxOf('bdap');},setup:()=>{clearOverlay();bdPrep();S.bd=bd0();bdPaid();go('bddone');}},
- {id:'bdap',part:'bd',match:()=>S.screen==='bddone'&&hasAct('bd-ap-on'),target:'.sheet',act:'bd-ap-on',
-  title:'Autopay, with guardrails',text:'The user sets the cap, gets a notice 24 hours before every debit and a low-balance nudge, and a bill above the cap is never paid automatically. Tap <b>Turn on Autopay</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();bdPaid();go('bddone');ACT['bd-autopay']();}},
+  title:'Status per bill, then optional Autopay',text:()=>findAct('bd-autopay')?'Each bill keeps its own status and reference. Autopay is optional and offered per bill only after its <b>2nd on-time payment is confirmed</b>: City Power has it, the other two are at 1 of 2. Tap <b>Set up Autopay</b>.':(S.bd.paidList.some(p=>p.st==='pending')?'Each bill shows <b>Pending</b> until its payment is confirmed. Autopay counts a payment only once it is confirmed, so the offer appears in a moment.':'No bill has two confirmed on-time payments, so no Autopay offer is shown. Press <b>Next</b> to finish.'),next:()=>{T.i=idxOf('bdap');},setup:()=>{clearOverlay();bdPrep();S.bd=bd0();bdPaid();go('bddone');}},
+ {id:'bdap',part:'bd',match:()=>S.screen==='bddone'&&hasAct('bd-ap-on'),target:'.sheet',act:'bd-ap-on',noClick:true,
+  title:'Autopay, with guardrails',text:'It is optional: the user ticks to agree, sets a cap (at most ₹15,000), gets a notice 24 hours before every debit, and can cancel any time. A bill above the cap is never paid automatically. Press <b>Next</b> to agree and turn it on.',next:()=>{S.bd.apOpt=true;ACT['bd-ap-on']();},setup:()=>{clearOverlay();bdPrep();S.bd=bd0();bdPaid();go('bddone');ACT['bd-autopay']();}},
  {id:'bdfinal',part:'bd',final:true,sticky:true,
-  title:'That is Bill Day: one day, every bill checked',text:'Bill Day and Autopay are V1.5: they follow reminders and one-tap pay, and are offered only once trust is earned. Reopen this guide any time from <b>? Guide</b>.',setup:()=>{}}
+  title:'That is Bill Day: one day, each bill approved',text:'Bill Day and Autopay are V1.5: they follow reminders and one-tap pay, and are offered only once trust is earned. Reopen this guide any time from <b>? Guide</b>.',setup:()=>{}}
 ];
 const idxOf=id=>TOUR.findIndex(s=>s.id===id);
 const hasAct=a=>!!document.querySelector('#overlay [data-act="'+a+'"]');
@@ -937,7 +1065,7 @@ function hideTour(){const L=$('#tour');L.innerHTML='';T.shown=-1;document.body.c
 function cardHTML(i,st){
   if(T.welcome) return `<div class="tcard welcome"><button class="tx" data-tour="close" aria-label="Close guide" style="position:absolute;top:10px;right:10px">${icon('x',18,2.4)}</button>
     <div class="wmark"><span>pay<span style="color:#fff">tm</span></span></div><h6>Welcome to the Bills Home prototype</h6>
-    <p>A clickable concept of the proposal: <b>find</b> a bill by scanning it, <b>trust</b> the amount before paying, and <b>never miss</b> the next due date.</p>
+    <p>A clickable concept of the proposal: <b>find</b> a bill from a photo, PDF or SMS, <b>trust</b> the invoice before paying, and get a <b>guided next invoice</b>.</p>
     <p><b>Want a guided walk-through?</b> ${idxOf('final')+1} short steps, about 2 minutes, then an optional ${TOUR.length-idxOf('final')-1}-step preview of Bill Day (V1.5). You can close it at any step and pick it up again from the <b style="white-space:nowrap">? Guide</b> pill.</p>
     <button class="tb pri" data-tour="start">Start guided tour</button><button class="tb alt" data-tour="explore">Explore on my own</button></div>`;
   const g=segInfo(i),dots=g.seg.map(j=>`<i class="${j<=i?'d':''}"></i>`).join('');
