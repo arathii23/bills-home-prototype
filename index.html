@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta name="description" content="Clickable concept prototype for a product case study (Bills Home), with an optional step-by-step guide. Not an official Paytm product; every name, amount and date is made up.">
+<meta name="description" content="Clickable concept prototype for a product case study (Bills Home), with an optional step-by-step guide and a Bill Day (V1.5) preview. Not an official Paytm product; every name, amount and date is made up.">
 <title>Bills Home prototype · Paytm Product Campus Case 2</title>
 <style>
 :root{
@@ -39,7 +39,7 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--orange);ou
 .step span{display:block;font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:1px}
 .legend{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 2px}
 .chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;letter-spacing:.2px;display:inline-block}
-.chip.d{background:#DDF4FD;color:#05789F} .chip.t{background:#DCE5F5;color:var(--navy)} .chip.r{background:var(--greenbg);color:#157A52}
+.chip.d{background:#DDF4FD;color:#05789F} .chip.t{background:#DCE5F5;color:var(--navy)} .chip.r{background:var(--greenbg);color:#157A52} .chip.v{background:var(--purplebg);color:var(--purple)}
 .tag{font-size:10px;font-weight:800;padding:3px 8px;border-radius:99px;display:inline-block;letter-spacing:.3px}
 .tag.FOUND{background:var(--navy);color:#fff}.tag.INFERRED{background:var(--amberbg);color:var(--amber)}.tag.ASSUMED{background:var(--purplebg);color:var(--purple)}
 .ctl{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
@@ -231,6 +231,51 @@ button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--orange);ou
 .v15 b{font-size:14px;display:block}.v15 span{font-size:12px;color:var(--muted)}
 .vtag{font-size:10px;font-weight:800;background:#EEE9FD;color:var(--purple);padding:2px 7px;border-radius:99px;margin-left:6px}
 .goal{margin:14px 16px 0;text-align:center;font-size:12.5px;font-weight:700;color:var(--navy);border:1.5px dashed var(--navy);border-radius:14px;padding:10px}
+.tag.TOVALIDATE{background:var(--redbg);color:var(--red)}
+.step .n.v{background:var(--purple)}
+.stepdiv{font-size:10.5px;font-weight:800;letter-spacing:.6px;color:var(--purple);text-transform:uppercase;margin:12px 4px 6px}
+/* Bill Day (V1.5 preview) */
+.bdhero{background:linear-gradient(135deg,#002E6E,#0A4DA8);color:#fff;border-radius:18px;margin:0 16px;padding:15px 16px}
+.bdhero small{display:block;opacity:.85;font-size:12px;line-height:1.45}
+.bdhero .big{font-size:22px;font-weight:900;margin:3px 0 5px;line-height:1.2}
+.dchips{display:flex;gap:8px;margin:6px 16px 4px}
+.dchip{flex:1;position:relative;text-align:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 4px 9px}
+.dchip b{display:block;font-size:20px}
+.dchip span{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+.dchip .sg{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:9.5px;font-weight:800;background:var(--greenbg);color:#157A52;padding:2px 7px;border-radius:99px;white-space:nowrap;margin:0}
+.dchip.on{border-color:var(--cyan);background:#F1FAFE}
+.cmp{display:flex;gap:10px;margin:12px 16px 0}
+.cmp>div{flex:1;border-radius:14px;padding:10px 11px;font-size:12px;line-height:1.4;color:#34425A}
+.cmp .a{background:#fff;border:1.5px solid var(--line)}
+.cmp .b{background:var(--greenbg);border:1.5px solid #BFE6D4}
+.cmp b{display:block;font-size:19px;font-weight:900;margin:2px 0;color:var(--ink)}
+.bdlist{display:block}
+.bdrow{background:#fff;border-radius:16px;margin:0 16px 8px;padding:10px 12px}
+.bdrow .top{display:flex;gap:10px;align-items:flex-start}
+.bdrow .bdchk{margin-top:7px}
+.bdrow .cb{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid #AAB6C8;display:grid;place-items:center;color:#fff;margin-top:6px;background:#fff}
+.bdrow .cb.on{background:var(--cyan);border-color:var(--cyan)}
+.bdrow .ico{flex:none;width:38px;height:38px;border-radius:11px;background:#E6F6FD;color:var(--navy);display:grid;place-items:center;margin-top:3px}
+.bdrow .mid{flex:1;min-width:0}.bdrow .mid>b{display:block;font-size:14.5px}.bdrow .mid>span{display:block;font-size:12px;color:var(--muted)}
+.bdrow .amt{font-weight:800;font-size:15px;margin-top:3px}
+.bdchk{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;line-height:1.4;color:#157A52;margin-top:6px}
+.bdchk svg{flex:none;margin-top:1px}
+.bdchk.bad{color:#7A5410;background:var(--amberbg);border-radius:9px;padding:6px 8px}
+.inl{color:var(--link);font-weight:800;font-size:11.5px;text-decoration:underline}
+.bds{padding:9px 0;border-bottom:1px solid var(--line)}
+.bds:last-child{border:0;padding-bottom:0}
+.bds b{font-size:13.5px}.bds>span{display:block;font-size:12px;color:var(--muted)}
+.stps{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.stp{display:inline-flex;gap:4px;align-items:center;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;border:1.5px solid #C6CFDC;color:var(--muted)}
+.stp.on{background:var(--greenbg);border-color:var(--green);color:#157A52}
+.apc{background:var(--purplebg);border-radius:14px;padding:12px 14px;margin:12px 16px 0;font-size:12.5px;line-height:1.45;color:#3B2F77}
+.apc .apr{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.apc .apr b{font-size:13.5px;color:#2C2166;margin-left:3px}
+.apd{display:inline-block;flex:none;width:12px;height:12px;border-radius:50%;border:2px solid var(--purple);background:#fff}
+.apd.on{background:var(--purple)}
+.aplist{list-style:none;margin:0 0 4px;font-size:13px;line-height:1.5;color:#34425A}
+.aplist li{display:flex;gap:8px;align-items:flex-start;margin-bottom:4px}
+.aplist svg{flex:none;color:var(--green);margin-top:3px}
 /* guided tour */
 #tour{position:absolute;inset:0;z-index:60;pointer-events:none}
 .tdim{position:absolute;background:rgba(8,18,40,.64);pointer-events:auto;transition:top .25s,left .25s,width .25s,height .25s}
@@ -291,13 +336,13 @@ dialog .gbtn{margin-top:16px}
   <aside class="panel left">
     <div class="guidebox">
       <b>Step-by-step guide</b>
-      <p>A short guided tour walks you through every screen, one tap at a time. Close it at any step with the ✕ or Esc, and pick it up again here.</p>
+      <p>A short guided tour walks you through every screen, one tap at a time, and ends with an optional Bill Day (V1.5) preview. Close it at any step with the ✕ or Esc, and pick it up again here.</p>
       <button class="gbtn" id="guideBtn" data-act="guide-toggle">Start guided tour</button>
     </div>
     <h2>Bills Home: the journey</h2>
     <p class="sub">Or jump straight to any step. Orange rings mark what to tap next.</p>
     <div id="steps"></div>
-    <div class="legend"><span class="chip d">D Discover</span><span class="chip t">T Try</span><span class="chip r">R Regular</span></div>
+    <div class="legend"><span class="chip d">D Discover</span><span class="chip t">T Try</span><span class="chip r">R Regular</span><span class="chip v">V1.5 preview</span></div>
     <div class="ctl">
       <h3>Demo controls</h3>
       <button class="tog" data-act="t-hints"><span>Show tap hints</span><i class="sw on" id="sw-hints"></i></button>
@@ -335,11 +380,11 @@ dialog .gbtn{margin-top:16px}
   <h4>What is simulated</h4>
   <ul><li>All names, amounts, dates and bill details are made up.</li><li>No network calls, no real payment, no PIN: the Authorise step is a demo.</li><li>The AI bill reading is shown as a scripted result.</li></ul>
   <h4>Design rules shown</h4>
-  <ul><li>The photo is deleted after reading; only four fields are kept.</li><li>No new fee added by Paytm on bills in V1.</li><li>Autopay and Bill Day are V1.5 concepts, offered only after trust is earned.</li></ul>
+  <ul><li>The photo is deleted after reading; only four fields are kept.</li><li>No new fee added by Paytm on bills in V1.</li><li>Bill Day and Autopay are V1.5 previews, offered only after trust is earned: one day a month to pay everything due, and capped Autopay after the 2nd on-time payment.</li></ul>
   <h4>Look and feel</h4>
   <p>Based on Paytm's public app screenshots. It is a recreation, not the real app, and uses a text wordmark instead of any Paytm logo.</p>
   <h4>Where it sits in the deck</h4>
-  <p>Slides 5 and 6 (solution and journey), A7 and A8 (what apps show today), A12 (shown last in the research conversations).</p>
+  <p>Slides 5 and 6 (solution and journey, with Bill Day under Repeat), slide 8 (the test plan), A7 (what apps show today), A11 (where each target comes from), A14 (RBI rules behind the Autopay design).</p>
   <form method="dialog"><button class="gbtn">Close</button></form>
 </dialog>
 
@@ -382,10 +427,11 @@ const daysTo=d=>Math.round((d-TODAY)/864e5);
 const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
 const $=s=>document.querySelector(s);
 let S;
+function bd0(){return {day:25,set:false,sel:{},paid:false,sent:false,posted:false,cap:2500,autopay:false,paidList:[]};}
 function fresh(){
   return {screen:'home',hints:S?S.hints:true,spike:false,plan:{amt:299,days:28},source:'camera',
     scanning:false,elecAdded:false,remind:true,cur:'elec',from:'found',paySt:{sent:false,posted:false},who:'all',
-    visited:new Set(),log:[],
+    visited:new Set(),log:[],bd:bd0(),
     bills:{
       elec:{key:'elec',name:'City Power',label:'Mom’s electricity',who:'mom',kind:'Electricity',icon:'zap',due:addDays(TODAY,3),paid:false,posted:false,remind:true,range:[1500,1900],cn:'4821'},
       bb:{key:'bb',name:'NetLink Fibre',label:'Broadband',who:'home',kind:'Broadband',icon:'wifi',amt:799,due:addDays(TODAY,7),paid:false,posted:false,remind:false},
@@ -561,9 +607,52 @@ bills(){
    <button class="brow" data-act="add-bill" style="border:1.5px dashed #9FB3D1;background:transparent;justify-content:center;color:var(--navy);font-weight:800;gap:8px">${icon('plus',20,2.4)}Add bill</button>
    <div class="mini"><span><b>Reminders</b><span>A push 3 days and 1 day before each due date, with one-tap pay</span></span><button class="pill ${S.remind?'on':''}" data-act="t-remind">${S.remind?'On ✓':'Off'}</button></div>
    <div style="font-weight:800;margin:18px 16px 8px">Next, once trust is earned</div>
-   <div class="v15"><button class="r" data-act="toast-billday"><span class="lk">${icon('cal',20)}</span><span><b>Bill Day<span class="vtag">V1.5</span></b><span>One day each month to pay everything due in one go</span></span></button>
-     <button class="r" data-act="toast-autopay"><span class="lk">${icon('repeat',20)}</span><span><b>Autopay<span class="vtag">V1.5</span></b><span>Capped, offered after your 2nd on-time payment</span></span></button></div>
+   <div class="v15"><button class="r" data-act="bd-open"><span class="lk">${icon('cal',20)}</span><span><b>Bill Day<span class="vtag">V1.5</span></b><span>${S.bd.set?'On: the '+S.bd.day+'th of every month':'One day each month to pay everything due in one go'}</span></span></button>
+     <button class="r" data-act="toast-autopay"><span class="lk">${icon('repeat',20)}</span><span><b>Autopay<span class="vtag">V1.5</span></b><span>${S.bd.autopay?'On for City Power, capped at '+inr(S.bd.cap):'Capped, offered after your 2nd on-time payment'}</span></span></button></div>
    <div class="goal">Design goal: nothing to remember</div><div style="height:24px"></div>${bnav('bills')}`;
+},
+bdset(){
+  const D=S.bd.day,cnt=d=>BD_BILLS.filter(b=>b.due<=addDays(new Date(2026,11,d),14)).length,n=cnt(D);
+  const chip=d=>`<button class="dchip${D===d?' on':''}" data-act="bd-day" data-d="${d}" aria-pressed="${D===d}">${d===25?'<span class="sg">Suggested</span>':''}<b>${d}th</b><span>${cnt(d)} bill${cnt(d)===1?'':'s'}</span></button>`;
+  return hdr('Bill Day','go-bills',true)+`<div class="bdhero" style="margin-top:12px"><small>V1.5 preview · next cycle, Dec 2026</small><div class="big">One day a month.<br>Everything due, paid.</div><small>Pick a day. On that day Bills Home lists every bill due in the next 14 days, each with its Amount check, so you pay once.</small></div>
+   <div style="font-weight:800;margin:16px 16px 0">Pick your Bill Day</div>
+   <div class="dchips" style="margin-top:14px">${[15,20,25].map(chip).join('')}</div>
+   <div class="note">${icon('info',16)}<span>${D===25?'Suggested: the 25th, 3 days before your first due date (28 Dec), so all 3 bills are caught.':'The 25th would catch all 3 bills. Pick any day and change it later.'}</span></div>
+   <div class="cmp"><div class="a">Without Bill Day<b>3 due dates</b>28 Dec, 2 Jan and 5 Jan: each bill needs its own moment</div><div class="b">With Bill Day<b>1 day</b>${dfmt(BD_DATE())}: one push, one list with ${n} bill${n===1?'':'s'} due in the next 14 days</div></div>
+   <div class="sticky"><button class="btn${hint()}" data-act="bd-set">${S.bd.set?'Preview the Bill Day push':'Set Bill Day: the '+D+'th of every month'}</button>
+    <div class="center" style="font-size:11.5px;color:var(--muted);margin-top:8px">No new fee added by Paytm on these bills (design rule). Change or switch off any time.</div></div>`;
+},
+bdreview(){
+  const L=bdList(),tick=bdTicked(),tot=bdTotal(),anyBad=tick.some(bdBad);
+  const row=b=>{
+    const a=bdAmt(b),bad=bdBad(b),on=!!S.bd.sel[b.k];
+    const chk=bad?`<div class="bdchk bad">${icon('alert',15)}<span><b>Higher than usual.</b> ${inr(a)} against ${inr(b.usual[0])}-${inr(b.usual[1])} on the bill.${on?'':' Left unticked.'} <button class="inl" data-act="bd-check" data-k="${b.k}">Check the bill</button></span></div>`
+      :`<div class="bdchk">${icon('check',15,2.6)}<span><b>Amount check:</b> ${b.usual?'inside the usual '+inr(b.usual[0])+'-'+inr(b.usual[1]):'same as your last 3 payments'}</span></div>`;
+    return `<div class="bdrow"><div class="top"><button class="cb${on?' on':''}" data-act="bd-tick" data-k="${b.k}" role="checkbox" aria-checked="${on}" aria-label="Pay ${b.label}, ${inr(a)}">${on?icon('check',16,3):''}</button><span class="ico">${icon(b.icon,20)}</span><div class="mid"><b>${b.label}</b><span>${b.name} · due ${dfmt(b.due)}</span></div><div class="amt">${inr(a)}</div></div>${chk}</div>`;};
+  return hdr('Bill Day · '+dfmt(BD_DATE()),'bd-back',true)+`<div class="billhead" style="margin-top:10px;padding:12px 14px"><div><div style="font-size:12px;color:var(--muted)">${tick.length} of ${L.length} bills ticked · next 14 days</div><div style="font-size:15px;font-weight:800">Due ${dfmt(L[0].due)} to ${dfmt(L[L.length-1].due)}</div></div><div class="big">${inr(tot)}</div></div>
+   <div style="font-weight:800;margin:12px 16px 8px;font-size:14px">Tick the bills to pay</div>
+   <div class="bdlist">${L.map(row).join('')}</div>
+   <div class="check"><span class="ico" style="background:#E6F2FF;color:#1A5FD0">${icon('shield',20)}</span><div><b>Refund promise and Live status</b><span>Each bill keeps its own Paid, Sent to biller, Posted status. No biller confirmation in 24 hours? We refund you or chase the biller, and show each step.</span></div></div>
+   <div class="payvia"><span><b>Pay using</b><br><span>UPI · Savings account ••0734</span></span><span style="color:var(--green)">${icon('check',20,2.6)}</span></div>
+   <div class="sticky"><button class="btn${anyBad?' warn':hint(tick.length>0)}" data-act="bd-pay"${tick.length?'':' disabled'}>${tick.length?(anyBad?'Pay '+inr(tot)+' anyway':'Pay '+inr(tot)+' · '+tick.length+' bill'+(tick.length>1?'s':'')):'Tick a bill to pay'}</button>
+     <div class="center" style="font-size:11.5px;color:var(--muted);margin-top:8px">No new fee added by Paytm on these bills (design rule).</div></div>`;
+},
+bddone(){
+  const P=S.bd.paidList,tot=P.reduce((s,p)=>s+p.amt,0),L=bdList(),left=L.filter(b=>!P.some(p=>p.k===b.k));
+  const stp=(on,t)=>`<span class="stp${on?' on':''}">${on?icon('check',11,3):''}${t}</span>`;
+  const rows=P.map(p=>{const b=bdMeta(p.k);return `<div class="bds"><b>${b.label}</b><span>${b.name} · ${inr(p.amt)}</span><div class="stps">${stp(true,'Paid')}${stp(S.bd.sent,'Sent to biller')}${stp(S.bd.posted,'Posted')}</div></div>`;}).join('');
+  const unl=P.filter(p=>bdMeta(p.k).prior+1>=2);
+  const apRows=P.map(p=>{const b=bdMeta(p.k),c=b.prior+1;return `<div class="apr"><span class="apd on"></span><span class="apd${c>=2?' on':''}"></span><b>${b.name}</b><i style="margin-left:auto;font-style:normal;font-size:11.5px;font-weight:700">${c>=2?'Offer unlocked':c+' of 2'}</i></div>`;}).join('');
+  const apAct=S.bd.autopay?`<div class="bdchk" style="margin-top:8px">${icon('check',15,2.6)}<span><b>Autopay is on for City Power</b>, capped at ${inr(S.bd.cap)}. A notice goes 24 hours before every debit.</span></div>`
+    :unl.length?`<button class="btn${hint()}" data-act="bd-autopay" style="margin-top:10px;font-size:14px;padding:11px">Set up Autopay for ${bdMeta(unl[0].k).name}</button>`
+    :`<div style="margin-top:6px">No bill has reached its 2nd on-time payment yet, so no Autopay offer is shown.</div>`;
+  return `<div class="center" style="padding-top:14px"><div class="okring" style="width:70px;height:70px">${icon('check',36,3)}</div>
+    <div style="font-size:20px;font-weight:900">${inr(tot)} paid · ${P.length} bill${P.length===1?'':'s'}</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px">Bill Day ${dfmt(BD_DATE())} · UPI</div></div>
+   <div class="tl bdtl" style="margin-top:16px"><h4>Live status, bill by bill</h4>${rows}</div>
+   ${left.length?`<div class="check bad"><span class="ico">${icon('alert',20)}</span><div><b>${left.length} bill${left.length===1?'':'s'} left out</b><span>${left.map(b=>b.label+' ('+inr(bdAmt(b))+')').join(', ')} ${left.length===1?'was':'were'} not ticked, so ${left.length===1?'it stays':'they stay'} in Bills Home with reminders until checked.</span></div></div>`:''}
+   <div class="apc"><b style="display:block;font-size:13.5px;color:#2C2166;margin-bottom:6px">Autopay unlocks after the 2nd on-time payment</b>${apRows}${apAct}</div>
+   <div class="pad" style="padding-top:16px"><button class="btn ghost" data-act="go-bills">Back to Bills Home</button>${S.bd.posted?'':`<button class="btn ghost" data-act="skip-day" style="margin-top:2px">Skip to tomorrow</button>`}</div>`;
 }
 };
 
@@ -573,17 +662,56 @@ function unpaid(){return billRows().filter(r=>!r.paid);}
 function unpaidTotal(){return unpaid().reduce((s,r)=>s+amtOf(r),0);}
 function dueBy(){const u=unpaid();return u.length?u.reduce((m,r)=>r.due>m?r.due:m,u[0].due):TODAY;}
 
+/* ---------- Bill Day (V1.5 preview): an independent next-cycle scenario, Dec 2026 ---------- */
+const BD_BILLS=[
+ {k:'elec',name:'City Power',label:'Mom’s electricity',icon:'zap',due:new Date(2026,11,28),usual:[1500,1900],prior:1},
+ {k:'bb',name:'NetLink Fibre',label:'Broadband',icon:'wifi',due:new Date(2027,0,2),amt:799,prior:0},
+ {k:'dth',name:'Sky DTH',label:'DTH',icon:'tv',due:new Date(2027,0,5),amt:350,prior:0}];
+const bdAmt=b=>b.k==='elec'?(S.spike?3240:1760):b.amt;
+const bdBad=b=>!!b.usual&&bdAmt(b)>b.usual[1];
+const BD_DATE=()=>new Date(2026,11,S.bd.day);
+const bdList=()=>BD_BILLS.filter(b=>b.due<=addDays(BD_DATE(),14));
+const bdTicked=()=>bdList().filter(b=>S.bd.sel[b.k]);
+const bdTotal=()=>bdTicked().reduce((s,b)=>s+bdAmt(b),0);
+const bdMeta=k=>BD_BILLS.find(b=>b.k===k);
+function bdAuto(){BD_BILLS.forEach(b=>{S.bd.sel[b.k]=!bdBad(b);});}   // a bill above its usual range starts unticked
+function bdReview(){bdAuto();S.bd.paid=false;S.bd.sent=false;S.bd.posted=false;S.bd.autopay=false;S.bd.paidList=[];track('bill_day_open',bdList().length+' bills');go('bdreview');}
+function bdPrep(){const sp=S.spike;S.spike=false;S.elecAdded=true;if(!S.bills.elec.paid)payElec();S.spike=sp;postAll();}   // cycle 1 is complete: electricity paid and posted
+function bdPaid(){S.bd.set=true;bdAuto();S.bd.paid=true;S.bd.sent=true;S.bd.posted=false;S.bd.autopay=false;S.bd.paidList=bdTicked().map(b=>({k:b.k,amt:bdAmt(b)}));}
+function bdBanner(){
+  const o=$('#overlay');o.querySelectorAll('.banner').forEach(e=>e.remove());
+  const L=bdList(),tot=L.reduce((s,b)=>s+bdAmt(b),0);
+  const d=document.createElement('button');d.className='banner';d.dataset.act='bd-open-review';
+  d.innerHTML=`<span class="ico">pay</span><span><small>Paytm · ${dfmt(BD_DATE())}, 9:00 am</small><b>It’s Bill Day: ${L.length} bill${L.length===1?'':'s'} due, ${inr(tot)}</b><small>Tap to review and pay in one go</small></span>`;
+  o.appendChild(d);setTimeout(()=>{if(d.isConnected&&!(T.on&&!T.welcome&&TOUR[T.i]&&TOUR[T.i].id==='bdpush'))d.remove();},9000);track('bill_day_push',dfmt(BD_DATE()));
+}
+function apSheet(){
+  const c=S.bd.cap,tick=icon('check',16,2.6);
+  return `<h5>Autopay for City Power</h5><p>Pays this bill on its due date, never above the cap you choose. Demo only: the one-time registration with extra authentication is not shown.</p>
+   <div style="font-weight:800;font-size:13px">Your cap for one bill</div>
+   <div class="dchips" style="margin:14px 0 6px">${[2000,2500,3000].map(x=>`<button class="dchip${c===x?' on':''}" data-act="bd-cap" data-c="${x}" aria-pressed="${c===x}">${x===2500?'<span class="sg">Suggested</span>':''}<b style="font-size:16px">${inr(x)}</b></button>`).join('')}</div>
+   <div style="font-size:11.5px;color:var(--muted);margin-bottom:12px">Suggested: about a third above your highest recent bill (${inr(1900)}).</div>
+   <ul class="aplist"><li>${tick}<span>A notice 24 hours before every debit, with a choice to skip that one</span></li>
+    <li>${tick}<span>A bill above your cap is never paid automatically: we ask you first</span></li>
+    <li>${tick}<span>A low-balance nudge the day before, so the debit does not fail</span></li>
+    <li>${tick}<span>Pause or cancel any time in Bills Home</span></li></ul>
+   <button class="btn hint" data-act="bd-ap-on">Turn on Autopay · cap ${inr(c)}</button>`;
+}
+
 /* ---------- side panel copy ---------- */
 const WHY={
- home:{step:0,title:'Home: the familiar card, plus a Bills tab',tag:'FOUND',text:'The Recharge &amp; Bills card keeps its category icons. Tapping Electricity Bill opens a state-and-biller picker today (try it), and no scan option is listed on the listings or pages captured in A7 and A8. The New Bills tab and Bills Home card are the proposal.',barrier:['d'],deck:'Slide 4, [8]; A7 image 1; A8',metric:'Baseline: electricity is 33% of Bharat Connect bill volume; Paytm’s unit carries 9%'},
- today:{step:0,title:'Today’s path: three things to type',tag:'INFERRED',text:'State, then biller, then a consumer number that people often do not know (a published design study found this [33]). This is the Discover and Try barrier the proposal removes.',barrier:['d','t'],deck:'Slide 4; [8], [33]; A8 (web pages), A7 (listing images)',metric:'Add-to-first-pay within 14 days: 40%+'},
+ home:{step:0,title:'Home: the familiar card, plus a Bills tab',tag:'FOUND',text:'The Recharge &amp; Bills card keeps its category icons. Tapping Electricity Bill opens a state-and-biller picker today (try it), and no scan option is listed on the listings or pages captured in A7. The New Bills tab and Bills Home card are the proposal.',barrier:['d'],deck:'Slide 4, [8]; A7 (image 1)',metric:'Baseline: electricity is 33% of Bharat Connect bill volume; Paytm’s unit carries 9%'},
+ today:{step:0,title:'Today’s path: three things to type',tag:'INFERRED',text:'State, then biller, then a consumer number that people often do not know (a published design study found this [33]). This is the Discover and Try barrier the proposal removes.',barrier:['d','t'],deck:'Slide 4; [8], [33]; A7 (listing images and web pages)',metric:'Add-to-first-pay within 14 days: 40%+'},
  recharge:{step:0,title:'The moment the user already has',tag:'INFERRED',text:'A recharge for someone else is the entry point. The user is already paying for family, so no new habit is asked for yet.',barrier:['d'],deck:'Slide 5, A6 (enter at a moment the user already has)',ml:'Who sees the prompt',metric:'S1 = users who recharge 2+ different numbers in 90 days (slide 4)'},
  success:{step:1,title:'Entry: the recharge-to-bill prompt',tag:'INFERRED',text:'The success screen offers the electricity bill of the person just recharged. It is shown to remote family payers (S1) with a plain reason: “you recharged 2 different numbers in the last 90 days”.',barrier:['d'],deck:'Slide 5, slide 6; [31], [33]',metric:'Nudge click rate 8%+ on S1',rules:['Reminder for the plan renewal is optional and off the critical path']},
- scan:{step:2,title:'Find: scan-to-add',tag:'INFERRED',text:'Camera, PDF or SMS share. AI reads the biller, consumer ID, due date and amount, so nobody has to type a consumer ID they may not know.',barrier:['d','t'],deck:'Slide 5, slide 6; [33] Simpl case study (A14)',metric:'Add-to-first-pay within 14 days: 40%+',rules:['Photo is deleted after reading','Fallback: the manual form if the read is low-confidence']},
+ scan:{step:2,title:'Find: scan-to-add',tag:'INFERRED',text:'Camera, PDF or SMS share. AI reads the biller, consumer ID, due date and amount, so nobody has to type a consumer ID they may not know.',barrier:['d','t'],deck:'Slide 5, slide 6; [33] Simpl case study (A13)',metric:'Add-to-first-pay within 14 days: 40%+',rules:['Photo is deleted after reading','Fallback: the manual form if the read is low-confidence']},
  found:{step:3,title:'Confirm four fields',tag:'ASSUMED',text:'The user checks what the AI read and taps Confirm. The 95% field-accuracy target is a working proposal; below it the product falls back to the form.',barrier:['t'],deck:'Slide 5 (accuracy target, ASSUMED); [23] DPDP Rules',metric:'Bill-fetch success: 90%+',rules:['Only biller, consumer ID, due date and amount are stored','Consent and a DPDP-ready notice']},
  pay:{step:4,title:'Trust: amount check and refund promise',tag:'INFERRED',text:'The fetched amount is compared with the history printed on the bill and a spike is flagged before paying. The refund promise and all three status steps are shown up front. Try “Simulate a bill spike”.',barrier:['t'],deck:'Slide 5, slide 6; [34], [36] (RBI turnaround rules)',metric:'Guardrails: payment failure rate, refund time p90, complaints per 10k bills',rules:['No new fee added on bills in V1','Quote the 5-day outer limit, aim for faster']},
- status:{step:5,title:'Live status',tag:'FOUND',text:'Paid, Sent to biller, Posted. Failed or unposted payments are the loudest complaint in the reviews and posts we read (43 of 63 PayZapp bill reviews describe a failure; single posts report paid bills that did not post), so each step stays visible until the biller confirms.',barrier:['t'],deck:'Slide 3 insight 4; [13], [28], [29]; A13',metric:'Refund time p90; complaints per 10k bills',rules:['Reminders are offered after the first payment','Autopay waits for V1.5']},
- bills:{step:6,title:'Repeat: Bills Home and reminders',tag:'INFERRED',text:'Every bill by due date with one-tap pay, and a push 3 days and 1 day before each due date. Bill Day and Autopay are V1.5, after trust is earned.',barrier:['r'],deck:'Slide 5, slide 7; [16], [24] (RBI e-mandate rules)',metric:'Cycle-2 repeat 50%+; North Star: cross-category repeat rate +1.5 pp vs holdout',rules:['Autopay: capped, after the 2nd on-time payment, 24-hour pre-debit notice','Cap nudges per user per month']}
+ status:{step:5,title:'Live status',tag:'FOUND',text:'Paid, Sent to biller, Posted. Failed or unposted payments are the loudest complaint in the reviews and posts we read (43 of 63 PayZapp bill reviews describe a failure; single posts report paid bills that did not post), so each step stays visible until the biller confirms.',barrier:['t'],deck:'Slide 3 insight 4; [13], [28], [29]; A12',metric:'Refund time p90; complaints per 10k bills',rules:['Reminders are offered after the first payment','Autopay waits for V1.5']},
+ bills:{step:6,title:'Repeat: Bills Home and reminders',tag:'INFERRED',text:'Every bill by due date with one-tap pay, and a push 3 days and 1 day before each due date. Bill Day and Autopay are V1.5, after trust is earned: tap Bill Day below for a preview.',barrier:['r'],deck:'Slide 5, slide 7; [16], [24] (RBI e-mandate rules)',metric:'Cycle-2 repeat 50%+; North Star: cross-category repeat rate +1.5 pp vs holdout',rules:['Autopay: capped, after the 2nd on-time payment, 24-hour pre-debit notice','Cap nudges per user per month']},
+ bdset:{step:7,title:'Bill Day: the user picks one day a month',tag:'ASSUMED',text:'Bills Home suggests the day that catches every bill: here the 25th, three days before the first due date (28 Dec). On that day one push opens one list of everything due in the next 14 days. The 14-day window and the suggested-day rule are working assumptions to tune in the test. Only bills the biller has already issued can be paid; the rest stay on reminders.',barrier:['r'],deck:'Slide 5, slide 6 (Repeat, V1.5); A9; A11',metric:'Bill Day opt-in among users with 2+ bills; share of cycle-2 bills paid on Bill Day',rules:['Offered to users with 2+ bills after their first on-time payment (ASSUMED)','Change or switch off the day any time','Preview scenario: next cycle, Dec 2026']},
+ bdreview:{step:8,title:'Bill Day: one list, every bill checked',tag:'INFERRED',text:'Every bill due in the next 14 days, each with its own Amount check. A bill that is higher than usual arrives unticked, so Bill Day never quietly pays a spike: try “Simulate a bill spike” in the demo controls. Each bill is still its own payment to its biller, so each keeps its own Live status and the same refund promise.',barrier:['t','r'],deck:'Slide 5, slide 6; [34], [36]; A9; A11',metric:'Bill Day completion rate; Amount check flags per 1,000 bills; payment failure rate (guardrail)',val:'whether one approval can cover several bills (each is a separate biller payment). Fallback: one approval per bill inside the same flow.',rules:['Higher-than-usual bills start unticked','No new fee added on bills in V1','Refund promise and Live status apply to every bill']},
+ bddone:{step:9,title:'Bill Day done: Live status, then Autopay',tag:'ASSUMED',text:'Every paid bill shows Paid, Sent to biller, Posted. Autopay is offered per bill, only after its 2nd on-time payment: City Power has it (this was its 2nd), the other two are at 1 of 2. The offer is capped, with a 24-hour notice before every debit, a low-balance nudge, and a pause or cancel option.',barrier:['r'],deck:'Slide 5; A14 [24], [37]; [16], [43] (Autopay failure data); A11',metric:'Autopay opt-in among eligible bills; Autopay debit failure rate (guardrail); cycle-3 repeat',rules:['The user sets the cap; suggested at about a third above the highest recent bill','24-hour pre-debit notice with a per-debit opt-out (RBI e-mandate framework)','A bill above the cap is never debited: the user is asked first']}
 };
 const STEPS=[
  {n:0,c:'z',t:'Start: Home',s:'Recharge & Bills, plus a Bills tab',go:'home'},
@@ -592,23 +720,27 @@ const STEPS=[
  {n:3,c:'',t:'Confirm four fields',s:'Biller, ID, due date, amount',go:'found'},
  {n:4,c:'',t:'Trust: amount check',s:'Plus the refund promise',go:'pay'},
  {n:5,c:'',t:'Live status',s:'Paid, Sent to biller, Posted',go:'status'},
- {n:6,c:'r',t:'Repeat: Bills Home',s:'Due calendar and reminders',go:'bills'}];
-const scrStep=s=>({home:0,today:0,recharge:0,success:1,scan:2,found:3,pay:4,status:5,bills:6}[s]);
+ {n:6,c:'r',t:'Repeat: Bills Home',s:'Due calendar and reminders',go:'bills'},
+ {n:7,c:'v',t:'Pick the day',s:'One day a month, suggested for you',go:'bdset'},
+ {n:8,c:'v',t:'Review and pay',s:'Amount check on every bill',go:'bdreview'},
+ {n:9,c:'v',t:'Done, then Autopay',s:'Live status and the unlock rule',go:'bddone'}];
+const scrStep=s=>({home:0,today:0,recharge:0,success:1,scan:2,found:3,pay:4,status:5,bills:6,bdset:7,bdreview:8,bddone:9}[s]);
 
 /* ---------- render ---------- */
-const LIGHT=['recharge','scan','found','pay','today'];
+const LIGHT=['recharge','scan','found','pay','today','bdset','bdreview'];
 function render(anim=true){
-  const v=$('#view'); v.style.animation='none'; v.innerHTML=SC[S.screen](); void v.offsetWidth; v.style.animation=anim?'':'none'; v.scrollTop=0;
+  const v=$('#view'),keep=anim?0:v.scrollTop; v.style.animation='none'; v.innerHTML=SC[S.screen](); void v.offsetWidth; v.style.animation=anim?'':'none'; v.scrollTop=keep;
   $('#status').classList.toggle('light',LIGHT.includes(S.screen));
   $('#status').style.background=LIGHT.includes(S.screen)?'#fff':'';
   document.body.classList.toggle('nohints',!S.hints);
   $('#sw-hints').classList.toggle('on',S.hints); $('#sw-spike').classList.toggle('on',S.spike);
   const cur=scrStep(S.screen); if(S.screen!=='home'||S.visited.size)S.visited.add(cur); else S.visited.add(0);
-  $('#steps').innerHTML=STEPS.map(s=>{const seen=S.visited.has(s.n)&&s.n!==cur;return `<button class="step ${s.n===cur?'on':''}" data-act="jump" data-g="${s.go}"><span class="n ${s.c} ${seen?'seen':''}">${seen?'✓':(s.n===0?'•':s.n)}</span><span><b>${s.t}</b><span>${s.s}</span></span></button>`;}).join('');
+  $('#steps').innerHTML=STEPS.map(s=>{const seen=S.visited.has(s.n)&&s.n!==cur;const lab=s.c==='v'?'V'+(s.n-6):(s.n===0?'•':s.n);return (s.n===7?'<div class="stepdiv">V1.5 preview: Bill Day</div>':'')+`<button class="step ${s.n===cur?'on':''}" data-act="jump" data-g="${s.go}"><span class="n ${s.c} ${seen?'seen':''}">${seen?'✓':lab}</span><span><b>${s.t}</b><span>${s.s}</span></span></button>`;}).join('');
   const w=WHY[S.screen];
-  $('#why').innerHTML=`<h3>${w.step?'Step '+w.step+' of 6':'Where we start'}</h3><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${w.barrier.map(b=>`<span class="chip ${b}">${{d:'D Discover',t:'T Try',r:'R Regular'}[b]}</span>`).join('')}<span class="tag ${w.tag}">${w.tag}</span></div>
+  const hd=w.step>6?'V1.5 preview · Bill Day '+(w.step-6)+' of 3':(w.step?'Step '+w.step+' of 6':'Where we start');
+  $('#why').innerHTML=`<h3>${hd}</h3><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">${w.barrier.map(b=>`<span class="chip ${b}">${{d:'D Discover',t:'T Try',r:'R Regular'}[b]}</span>`).join('')}<span class="tag ${w.tag}">${w.tag}</span>${w.val?'<span class="tag TOVALIDATE">TO VALIDATE</span>':''}</div>
    <div style="font-size:16px;font-weight:800;color:var(--navy);margin-top:10px;line-height:1.3">${w.title}</div><p>${w.text}</p>
-   <div class="meta"><b>${w.ml||'Metric it moves'}:</b> ${w.metric}<br><b>Deck:</b> ${w.deck}</div>
+   <div class="meta"><b>${w.ml||'Metric it moves'}:</b> ${w.metric}<br><b>Deck:</b> ${w.deck}${w.val?'<br><b>To validate:</b> '+w.val:''}</div>
    ${w.rules?`<ul class="rules">${w.rules.map(r=>`<li>${r}</li>`).join('')}</ul>`:''}`;
   renderLog(); updateGuideUI();
 }
@@ -649,7 +781,9 @@ const ACT={
  'pay-bill':()=>{const b=S.bills[S.cur];sheet(`<h5>Pay ${inr(amtOf(b))} to ${b.name}</h5><p>Via UPI. Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="auth-bill">Authorise</button>`);},
  'auth-bill':()=>{closeSheet();const b=S.bills[S.cur];b.paid=true;b.paidAmt=amtOf(b);S.paySt={sent:false,posted:false};track('first_pay',b.key);go('status');
    setTimeout(()=>{if(S.screen==='status'&&!S.paySt.sent){S.paySt.sent=true;track('sent_to_biller');render(false);}},1400);},
- 'skip-day':()=>{const any=Object.values(S.bills).some(b=>b.paid&&!b.posted);if(!any){toast('Nothing is waiting to post. Pay a bill first.');return;}postAll();track('status_posted','next day');toast('Next day: the biller confirmed. Status is now Posted.');render(false);},
+ 'skip-day':()=>{
+   if(S.screen==='bddone'&&S.bd.paid){if(S.bd.posted){toast('Every Bill Day payment is already Posted.');return;}S.bd.sent=true;S.bd.posted=true;track('status_posted','Bill Day, next day');toast('Next day: every biller confirmed. All Bill Day payments are Posted.');render(false);return;}
+   const any=Object.values(S.bills).some(b=>b.paid&&!b.posted);if(!any){toast('Nothing is waiting to post. Pay a bill first.');return;}postAll();track('status_posted','next day');toast('Next day: the biller confirmed. Status is now Posted.');render(false);},
  'send-reminder':()=>{const nx=[S.bills.elec,S.bills.bb,S.bills.dth].find(b=>!b.paid&&(b.key!=='elec'||S.elecAdded));if(!nx){toast('Everything is paid. Nothing to remind.');return;}banner(nx);},
  'banner-open':el=>{const b=S.bills[el.dataset.k];el.remove();S.cur=b.key;S.from='bills';track('reminder_tap',b.key);go('pay',{from:'bills'});},
  'pay-row':el=>{S.cur=el.dataset.k;S.from='bills';track('one_tap_pay_open',S.cur);go('pay',{from:'bills'});},
@@ -658,9 +792,15 @@ const ACT={
  'add-bill':()=>{track('add_bill_open');S.scanning=false;S.from='bills';go('scan');},
  't-remind':()=>{S.remind=!S.remind;track('reminder_pref',S.remind?'on':'off');render(false);},
  't-hints':()=>{S.hints=!S.hints;render(false);},
- 't-spike':()=>{if(S.bills.elec.paid){toast('The electricity bill is already paid. Start over to try the spike.');return;}S.spike=!S.spike;render(false);},
+ 't-spike':()=>{
+   if(S.screen==='bdset'||S.screen==='bdreview'){S.spike=!S.spike;bdAuto();track('spike_toggle',S.spike?'on (Bill Day)':'off (Bill Day)');render(false);return;}
+   if(S.screen==='bddone'){toast('Bill Day is already paid. Open Bill Day again to try a spike.');return;}
+   if(S.bills.elec.paid){toast('The electricity bill is already paid. Start over to try the spike.');return;}S.spike=!S.spike;render(false);},
  restart:()=>{clearOverlay();S=fresh();if(T.on&&!T.welcome)T.i=0;render();},
  jump:el=>{const g=el.dataset.g;clearOverlay();
+   if(g.indexOf('bd')===0){bdPrep();S.scanning=false;S.bd=bd0();
+     if(g==='bdreview'){S.bd.set=true;bdAuto();}else if(g==='bddone'){bdPaid();}
+     go(g);return;}
    if(['success','scan','found'].includes(g)){resetElec();}
    if(['pay','status','bills'].includes(g)){S.elecAdded=true;}
    if(g==='pay'){S.cur='elec';S.from='found';}
@@ -678,8 +818,28 @@ const ACT={
    <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · Nov<div class="ln"></div>Consumer no. ${b.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(amtOf(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(1500)}-${inr(1900)}</div></div>
    <button class="btn navy" data-act="close-sheet">Close</button>`);},
  'close-sheet':()=>closeSheet(),
- 'toast-billday':()=>toast('V1.5 concept: one day each month to pay everything due. Not in V1.'),
- 'toast-autopay':()=>toast('V1.5 concept: capped Autopay after the 2nd on-time payment, with a 24-hour notice.')
+ 'toast-autopay':()=>toast(S.bd.autopay?'Autopay is on for City Power, capped at '+inr(S.bd.cap)+' (V1.5 preview).':'V1.5 preview: Autopay unlocks per bill after the 2nd on-time payment. Pay a Bill Day to see the offer.'),
+ /* Bill Day (V1.5 preview) */
+ 'bd-open':()=>{track('bill_day_offer_open','V1.5 preview');S.bd=bd0();go('bdset');},
+ 'bd-back':()=>go('bdset'),
+ 'bd-day':el=>{S.bd.day=+el.dataset.d;S.bd.set=false;track('bill_day_pick',S.bd.day+'th');render(false);},
+ 'bd-set':()=>{
+   if(S.bd.set){bdBanner();return;}
+   S.bd.set=true;track('bill_day_set',S.bd.day+'th of each month');
+   toast('Bill Day set: the '+S.bd.day+'th of every month. Skipping ahead to '+dfmt(BD_DATE())+' for this preview.');
+   render(false);bdBanner();},
+ 'bd-open-review':el=>{el.remove();bdReview();},
+ 'bd-tick':el=>{const k=el.dataset.k;S.bd.sel[k]=!S.bd.sel[k];track('bill_day_tick',k+' '+(S.bd.sel[k]?'on':'off'));render(false);},
+ 'bd-check':el=>{const b=bdMeta(el.dataset.k);track('amount_check_open_bill',b.k+' (Bill Day)');sheet(`<h5>Compare with the bill</h5><p>The amount we fetched for ${b.label} is ${inr(bdAmt(b))}. Check it against the figure printed on the bill.</p>
+   <div class="paper" style="margin:0 auto 16px;transform:none;border:1px solid var(--line)"><h6>CITY POWER</h6>Electricity bill · Dec<div class="ln"></div>Consumer no. ${S.bills.elec.cn}<br>Due date: ${dfmt(b.due)}<div class="ln"></div><div class="amt">Amount ${inr(bdAmt(b))}</div><div style="font-size:9px;margin-top:4px;color:#666">Usual range on this bill: ${inr(b.usual[0])}-${inr(b.usual[1])}</div></div>
+   <button class="btn navy" data-act="close-sheet">Close</button>`);},
+ 'bd-pay':()=>{const L=bdTicked();if(!L.length){toast('Tick at least one bill.');return;}
+   sheet(`<h5>Pay ${inr(bdTotal())} · ${L.length} bill${L.length===1?'':'s'}</h5><p>Via UPI. Each bill is its own payment to its biller, started together. Demo only: no PIN is entered and nothing is charged.</p><button class="btn hint" data-act="bd-auth">Authorise</button>`);},
+ 'bd-auth':()=>{closeSheet();S.bd.paidList=bdTicked().map(b=>({k:b.k,amt:bdAmt(b)}));S.bd.paid=true;S.bd.sent=false;S.bd.posted=false;S.bd.autopay=false;track('bill_day_paid',S.bd.paidList.length+' bills');go('bddone');
+   setTimeout(()=>{if(S.screen==='bddone'&&S.bd.paid&&!S.bd.sent){S.bd.sent=true;track('sent_to_biller',S.bd.paidList.length+' bills');render(false);}},1400);},
+ 'bd-autopay':()=>{track('autopay_offer_open','City Power');sheet(apSheet());},
+ 'bd-cap':el=>{S.bd.cap=+el.dataset.c;const s=document.querySelector('#overlay .sheet');if(s)s.innerHTML=apSheet();},
+ 'bd-ap-on':()=>{closeSheet();S.bd.autopay=true;track('autopay_on','City Power, cap '+inr(S.bd.cap));toast('Autopay is on for City Power, capped at '+inr(S.bd.cap)+'. Next debit: 28 Jan, after a 24-hour notice.');render(false);}
 };
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-tour]');
@@ -729,17 +889,38 @@ const TOUR=[
   title:'A reminder arrives',text:'It names the bill, the amount and the due date. Tap it to pay in one step.',setup:()=>{clearOverlay();S.elecAdded=true;go('bills');ACT['send-reminder']();}},
  {id:'onetap',match:()=>S.screen==='pay'&&S.from==='bills'&&!sheetOpen(),target:['[data-act="pay-bill"]','[data-act="toast-check"]'],act:'pay-bill',noClick:true,
   title:'Same checks, one tap',text:'From reminder to payment, the Amount check and refund promise are still shown. Tap <b>Pay</b>, or press Next to finish.',setup:()=>{clearOverlay();payElec();const nb=[S.bills.bb,S.bills.dth].find(b=>!b.paid)||S.bills.bb;S.cur=nb.key;S.from='bills';go('pay',{from:'bills'});}},
- {id:'final',final:true,sticky:true,
-  title:'That is the loop: Find, Trust, Repeat',text:'Try the <b>bill spike</b> toggle, <b>Add bill</b> on Bills Home, or switch scan sources. Bill Day and Autopay are V1.5 concepts. Reopen this guide any time from <b>? Guide</b>.',setup:()=>{}}
+ {id:'final',final:true,sticky:true,more:'Bill Day ›',
+  title:'That is the loop: Find, Trust, Repeat',text:'Try the <b>bill spike</b> toggle, <b>Add bill</b> on Bills Home, or switch scan sources. One more stop: a V1.5 preview of <b>Bill Day</b>, one day a month to pay everything due.',setup:()=>{}},
+ /* part 2: Bill Day (V1.5 preview), optional */
+ {id:'bdintro',part:'bd',match:()=>S.screen==='bills'&&!bannerUp()&&!sheetOpen(),target:'[data-act="bd-open"]',act:'bd-open',
+  title:'V1.5 preview: Bill Day',text:'Once trust is earned, Bills Home offers one day a month to pay everything due. Here is how it looks a month later. Tap <b>Bill Day</b>.',setup:()=>{clearOverlay();bdPrep();go('bills');}},
+ {id:'bdday',part:'bd',match:()=>S.screen==='bdset'&&!S.bd.set&&!sheetOpen(),target:['.dchips','[data-act="bd-set"]'],act:'bd-set',
+  title:'Pick the day',text:'The suggested day is 3 days before the first due date, so all three bills are caught. The 14-day window is an assumption to test. Tap <b>Set Bill Day</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();go('bdset');}},
+ {id:'bdpush',part:'bd',match:()=>S.screen==='bdset'&&S.bd.set&&!sheetOpen(),target:'.banner',act:'bd-open-review',
+  title:'On Bill Day, one push',text:'Like the due-date reminders, it names the bills and the total. Tap it to review.',enter:()=>{if(!bannerUp())bdBanner();},next:()=>bdReview(),setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;go('bdset');bdBanner();}},
+ {id:'bdreview',part:'bd',match:()=>S.screen==='bdreview'&&!sheetOpen(),target:'.bdlist',
+  title:'One list, every bill checked',text:()=>S.spike?'City Power is higher than usual, so it arrives <b>unticked</b>: Bill Day never quietly pays a spike. Tick it after checking the bill.':'Each bill has its own <b>Amount check</b>. A bill higher than usual arrives unticked. Try <b>Simulate a bill spike</b> in the demo controls.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;bdAuto();go('bdreview');}},
+ {id:'bdpay',part:'bd',match:()=>S.screen==='bdreview'&&!sheetOpen(),target:'[data-act="bd-pay"]',act:'bd-pay',
+  title:'Tick, check, pay',text:'Each ticked bill is its own payment, started together, with no new fee. <b>To validate:</b> one approval for several bills; the fallback is one approval per bill in this flow. Tap <b>Pay</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;bdAuto();go('bdreview');}},
+ {id:'bdauth',part:'bd',match:()=>S.screen==='bdreview'&&hasAct('bd-auth'),target:'[data-act="bd-auth"]',act:'bd-auth',
+  title:'Demo only',text:'No PIN is asked and nothing is charged. Tap <b>Authorise</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();S.bd.set=true;bdAuto();go('bdreview');ACT['bd-pay']();}},
+ {id:'bddone',part:'bd',match:()=>S.screen==='bddone'&&!sheetOpen(),target:'.apc',act:'bd-autopay',
+  title:'Live status per bill, then Autopay',text:()=>findAct('bd-autopay')?'Each bill keeps its own Live status. Autopay is offered per bill, only after its <b>2nd on-time payment</b>: City Power has it, the other two are at 1 of 2. Tap <b>Set up Autopay</b>.':'City Power was left out, so no bill has reached its 2nd on-time payment and no Autopay offer is shown. Press <b>Next</b> to finish.',next:()=>{T.i=idxOf('bdap');},setup:()=>{clearOverlay();bdPrep();S.bd=bd0();bdPaid();go('bddone');}},
+ {id:'bdap',part:'bd',match:()=>S.screen==='bddone'&&hasAct('bd-ap-on'),target:'.sheet',act:'bd-ap-on',
+  title:'Autopay, with guardrails',text:'The user sets the cap, gets a notice 24 hours before every debit and a low-balance nudge, and a bill above the cap is never paid automatically. Tap <b>Turn on Autopay</b>.',setup:()=>{clearOverlay();bdPrep();S.bd=bd0();bdPaid();go('bddone');ACT['bd-autopay']();}},
+ {id:'bdfinal',part:'bd',final:true,sticky:true,
+  title:'That is Bill Day: one day, every bill checked',text:'Bill Day and Autopay are V1.5: they follow reminders and one-tap pay, and are offered only once trust is earned. Reopen this guide any time from <b>? Guide</b>.',setup:()=>{}}
 ];
 const idxOf=id=>TOUR.findIndex(s=>s.id===id);
+const hasAct=a=>!!document.querySelector('#overlay [data-act="'+a+'"]');
+function segInfo(i){const p=TOUR[i].part||'main',seg=[];TOUR.forEach((s,j)=>{if((s.part||'main')===p)seg.push(j);});return {part:p,pos:seg.indexOf(i)+1,tot:seg.length,seg};}
 
 function updateGuideUI(){
   const b=$('#guideBtn'),i=$('#island'),t=$('#islandTxt'); if(!b)return;
   let label='Start guided tour',short='Guide';
   if(T.on){label='Close the guide';short='Close';}
   else if(T.done){label='Restart guided tour';short='Guide';}
-  else if(T.started){label='Resume guide (step '+(T.i+1)+' of '+TOUR.length+')';short='Resume';}
+  else if(T.started){const g=segInfo(T.i);label='Resume guide ('+(g.part==='bd'?'Bill Day, ':'')+'step '+g.pos+' of '+g.tot+')';short='Resume';}
   b.textContent=label; b.classList.toggle('on',T.on); t.textContent=short; i.classList.toggle('live',T.on);
   i.setAttribute('aria-label',label);
 }
@@ -757,13 +938,17 @@ function cardHTML(i,st){
   if(T.welcome) return `<div class="tcard welcome"><button class="tx" data-tour="close" aria-label="Close guide" style="position:absolute;top:10px;right:10px">${icon('x',18,2.4)}</button>
     <div class="wmark"><span>pay<span style="color:#fff">tm</span></span></div><h6>Welcome to the Bills Home prototype</h6>
     <p>A clickable concept of the proposal: <b>find</b> a bill by scanning it, <b>trust</b> the amount before paying, and <b>never miss</b> the next due date.</p>
-    <p><b>Want a guided walk-through?</b> ${TOUR.length} short steps, about 2 minutes. You can close it at any step and pick it up again from the <b style="white-space:nowrap">? Guide</b> pill.</p>
+    <p><b>Want a guided walk-through?</b> ${idxOf('final')+1} short steps, about 2 minutes, then an optional ${TOUR.length-idxOf('final')-1}-step preview of Bill Day (V1.5). You can close it at any step and pick it up again from the <b style="white-space:nowrap">? Guide</b> pill.</p>
     <button class="tb pri" data-tour="start">Start guided tour</button><button class="tb alt" data-tour="explore">Explore on my own</button></div>`;
-  const dots=TOUR.map((_,j)=>`<i class="${j<=i?'d':''}"></i>`).join('');
-  return `<div class="tcard"><div class="tarrow"></div><div class="thd"><span class="tstep">${st.final?'ALL DONE':'STEP '+(i+1)+' OF '+TOUR.length}</span><button class="tx" data-tour="close" aria-label="Close guide">${icon('x',18,2.4)}</button></div>
-   <h6>${st.title}</h6><p>${st.text}</p><div class="tbar">${dots}</div>
-   <div class="tbtns">${i>0?'<button class="tb alt" data-tour="back">‹ Back</button>':''}<span class="sp"></span>${st.skipTo?`<button class="tb lnk" data-tour="skip">${st.skipLabel||'Skip'}</button>`:''}${st.final?'<button class="tb alt" data-tour="restart">Restart</button>':''}<button class="tb pri" data-tour="next">${st.final?'Finish':'Next ›'}</button></div>
-   <div class="tfoot"><button class="tb" data-tour="close">Skip tour</button><span>← → keys · Esc closes</span></div></div>`;
+  const g=segInfo(i),dots=g.seg.map(j=>`<i class="${j<=i?'d':''}"></i>`).join('');
+  const lab=st.final?'ALL DONE':(g.part==='bd'?'BILL DAY PREVIEW · STEP '+g.pos+' OF '+g.tot:'STEP '+g.pos+' OF '+g.tot);
+  const tx=typeof st.text==='function'?st.text():st.text;
+  const right=st.final?(st.more?`<button class="tb alt" data-tour="finish">Finish</button><button class="tb pri" data-tour="more">${st.more}</button>`:`<button class="tb alt" data-tour="restart">Restart</button><button class="tb pri" data-tour="next">Finish</button>`):`<button class="tb pri" data-tour="next">Next ›</button>`;
+  const foot=st.more?`<button class="tb" data-tour="restart">Restart tour</button>`:`<button class="tb" data-tour="close">Skip tour</button>`;
+  return `<div class="tcard"><div class="tarrow"></div><div class="thd"><span class="tstep">${lab}</span><button class="tx" data-tour="close" aria-label="Close guide">${icon('x',18,2.4)}</button></div>
+   <h6>${st.title}</h6><p>${tx}</p><div class="tbar">${dots}</div>
+   <div class="tbtns">${i>0?'<button class="tb alt" data-tour="back">‹ Back</button>':''}<span class="sp"></span>${st.skipTo?`<button class="tb lnk" data-tour="skip">${st.skipLabel||'Skip'}</button>`:''}${right}</div>
+   <div class="tfoot">${foot}<span>← → keys · Esc closes</span></div></div>`;
 }
 function showStep(i){
   const L=$('#tour'),st=T.welcome?{}:TOUR[i];
@@ -771,7 +956,8 @@ function showStep(i){
     L.innerHTML='<div class="tdim d0"></div><div class="tdim d1"></div><div class="tdim d2"></div><div class="tdim d3"></div><div class="thole"></div>'+cardHTML(i,st);
     T.shown=i;T.welcomeShown=T.welcome;T.scrolled=false;
     L.querySelectorAll('.tdim').forEach(d=>d.addEventListener('click',nudge));
-    const pb=L.querySelector('[data-tour="next"],[data-tour="start"]'); if(pb)pb.focus({preventScroll:true});
+    const pb=L.querySelector('[data-tour="next"],[data-tour="start"],[data-tour="more"]'); if(pb)pb.focus({preventScroll:true});
+    if(st.enter)st.enter();
   }
   document.body.classList.add('touring');
   tourLayout();
@@ -823,8 +1009,10 @@ function tourSync(){
   if(!T.on){hideTour();return;}
   if(T.welcome){showStep(0);return;}
   let idx=-1;const cur=TOUR[T.i];
-  if(cur&&(cur.sticky||cur.match()))idx=T.i;
-  else{
+  if(cur&&(cur.sticky||cur.match())){
+    idx=T.i;
+    if(cur.more&&S.screen.indexOf('bd')===0){const nx=TOUR.findIndex((s,j)=>j>T.i&&!s.sticky&&s.match());if(nx>=0)idx=nx;}   // the user opened Bill Day on their own
+  }else{
     for(let j=T.i+1;j<TOUR.length;j++)if(!TOUR[j].sticky&&TOUR[j].match()){idx=j;break;}
     if(idx<0)for(let j=T.i-1;j>=0;j--)if(!TOUR[j].sticky&&TOUR[j].match()){idx=j;break;}
   }
@@ -846,9 +1034,10 @@ function tourClose(){
 }
 function tourFinish(){T.on=false;T.done=true;T.welcome=false;hideTour();updateGuideUI();toast('Tour complete. Explore freely, or reopen the guide from “? Guide”.');}
 function tourBack(){if(T.i<=0)return;T.i--;TOUR[T.i].setup();tourSync();}
+function tourMore(){T.i=idxOf('bdintro');TOUR[T.i].setup();tourSync();}
 function tourNext(){
   const st=TOUR[T.i];
-  if(st.final){tourFinish();return;}
+  if(st.final){if(st.more)tourMore();else tourFinish();return;}
   if(st.act&&!st.noClick){const el=findAct(st.act);if(el){el.click();return;}}
   if(st.next)st.next();
   T.i=Math.min(T.i+1,TOUR.length-1);tourSync();
@@ -857,6 +1046,8 @@ function tourAction(a){
   if(a==='start'){tourStart();}
   else if(a==='explore'||a==='close'){tourClose();}
   else if(a==='next'){tourNext();}
+  else if(a==='more'){tourMore();}
+  else if(a==='finish'){tourFinish();}
   else if(a==='back'){tourBack();}
   else if(a==='skip'){const st=TOUR[T.i];T.i=idxOf(st.skipTo);TOUR[T.i].setup();tourSync();}
   else if(a==='restart'){tourStart();}
